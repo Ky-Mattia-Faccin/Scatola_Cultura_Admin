@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ServizoHttp } from '../../../services/servizo-http';
 
-interface catDisabilita {
+export interface catDisabilita {
   categoria: string;
   descrizione: string;
   checked: boolean;
@@ -14,45 +15,42 @@ interface catDisabilita {
   templateUrl: './disabilita-categoria.html',
   styleUrl: './disabilita-categoria.css',
 })
-export class DisabilitaCategoria  implements OnInit{
-  
-  disabilita!: catDisabilita[];
-
-  disableCategories() {
-    this.disabilita = this.disabilita.filter((cat) => !cat.checked);
-  }
 
 
-  ngOnInit(): void {
-    this.disabilita=disabilitaMock
-  }
+
+export class DisabilitaCategoria implements OnInit {
+
+  disabilita?: catDisabilita[];
+  disabilitaDisattivate!:string[]
+
+  constructor(private servizioHttp: ServizoHttp) {}
+
+
+
+
+
+  onToggleCategoria(cat: catDisabilita) {
+  const disattiva = cat.checked;
+
+  this.servizioHttp.patchCategoria(cat.categoria, disattiva).subscribe({
+    next: () => {
+      console.log(`Categoria ${cat.categoria} ${disattiva ? 'disattivata' : 'riattivata'}`);
+    },
+    error: (err) => {
+      console.error(`Errore ${disattiva ? 'disattivazione' : 'riattivazione'} categoria ${cat.categoria}`, err);
+
+      cat.checked = !cat.checked;
+    }
+  });
 }
 
 
-export const disabilitaMock: catDisabilita[] = [
-  {
-    categoria: 'Manutenzione',
-    descrizione: 'Chiuso per lavori fino a fine mese',
-    checked: false
-  },
-  {
-    categoria: 'Aggiornamento',
-    descrizione: 'Aggiornamento software in corso',
-    checked: false
-  },
-  {
-    categoria: 'Pulizia',
-    descrizione: 'Pulizie programmate settimanali',
-    checked: false
-  },
-  {
-    categoria: 'Eventi Speciali',
-    descrizione: 'Prenotazioni bloccate per evento privato',
-    checked: false
-  },
-  {
-    categoria: 'Emergenza',
-    descrizione: 'Inagibilità temporanea per emergenza',
-    checked: false
-  }
-];
+  ngOnInit(): void {
+  this.servizioHttp.getCategorie().subscribe(value => {
+    this.disabilita = value;
+    console.log('Categorie caricate:', this.disabilita);
+  });
+}
+}
+
+
