@@ -34,8 +34,8 @@ export class CreaStruttura {
       this.convertToBase64(file)
         .then((base64) => {
           this.base64Image = base64.split(',')[1];
-          this.selectedFile = file; // importantissimo, lo aggiungo per sicurezza
-          this.cdr.detectChanges(); // forza aggiornamento vista
+          this.selectedFile = file; 
+          this.cdr.detectChanges(); 
           console.log('base64Image settata:', this.base64Image?.slice(0, 30));
         })
         .catch((err) => {
