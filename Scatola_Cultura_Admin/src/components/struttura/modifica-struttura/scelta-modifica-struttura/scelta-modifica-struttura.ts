@@ -7,23 +7,22 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-scelta-modifica-struttura',
-  imports:[CommonModule,RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './scelta-modifica-struttura.html',
-  styleUrls: ['./scelta-modifica-struttura.css']
+  styleUrls: ['./scelta-modifica-struttura.css'],
 })
+export class SceltaModificaStruttura implements OnInit {
+  strutture: Struttura[] = [];
 
+  strutture$!: Observable<Struttura[]>;
 
-export class SceltaModificaStruttura implements OnInit{
-  
-  strutture:Struttura[]=[]
-
-  strutture$!:Observable<Struttura[]>;
-
-
-  constructor(private servizioHttp:ServizoHttp){}
+  constructor(private servizioHttp: ServizoHttp) {}
 
   ngOnInit(): void {
-    this.strutture$=this.servizioHttp.getStrutture()
-  }
+    this.strutture$ = this.servizioHttp.getStrutture();
 
+    this.strutture$.subscribe((strutture) => {
+      sessionStorage.setItem('strutture', JSON.stringify(strutture));
+    });
+  }
 }
