@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Struttura } from '../interfaces/Istruttura';
 import { HttpClientModule } from '@angular/common/http';
@@ -28,8 +28,19 @@ export class ServizoHttp {
   getStrutture(): Observable<Struttura[]> {
     return of(struttureMock);
   }
-}
 
+  sendModifiche(file: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    return this.httpClient
+      .post<{ imageData: string }>(
+        'http://192.168.123.150:5000/api/Immagine/post/',
+        {formData}
+      )
+      .pipe(map((response) => `data:image/jpeg;base64,${response.imageData}`));
+  }
+}
 export const struttureMock: Struttura[] = [
   {
     idStruttura: 1,
@@ -40,14 +51,23 @@ export const struttureMock: Struttura[] = [
     provincia: 'NH',
     via: 'Havenlaan',
     ambito: 'Arte',
+    social1: '',
+    social2: '',
+    posizione: '',
+    sitoWeb: '',
+    didascaliaImmagine: 'Ceramic planters displayed in a gallery.',
+    testoSemplificato: 'Decorative planters for indoor use.',
+    flgDisabilita: false,
+    immagine: {
+      nomeImmagine: '',
+      byteImmagine: 7,
+    },
     disabilita: [
       {
         categoria: 'Manutenzione',
         descrizione: 'Chiuso per lavori fino a maggio.',
       },
     ],
-    DidascaliaImmagine: 'Ceramic planters displayed in a gallery.',
-    TestoSemplificato: 'Decorative planters for indoor use.',
   },
   {
     idStruttura: 2,
@@ -58,14 +78,23 @@ export const struttureMock: Struttura[] = [
     provincia: 'FI',
     via: 'Via della Repubblica',
     ambito: 'Cultura',
+    social1: '',
+    social2: '',
+    posizione: '',
+    sitoWeb: '',
+    didascaliaImmagine: 'Historic villa facade with gardens.',
+    testoSemplificato: 'Villa for cultural events.',
+    flgDisabilita: false,
+    immagine: {
+      nomeImmagine: '',
+      byteImmagine: 6,
+    },
     disabilita: [
       {
         categoria: 'Manutenzione',
         descrizione: 'Chiuso per lavori fino a maggio.',
       },
     ],
-    DidascaliaImmagine: 'Historic villa facade with gardens.',
-    TestoSemplificato: 'Villa for cultural events.',
   },
   {
     idStruttura: 3,
@@ -76,14 +105,23 @@ export const struttureMock: Struttura[] = [
     provincia: 'MI',
     via: 'Corso Milano',
     ambito: 'Esposizioni',
+    social1: '',
+    social2: '',
+    posizione: '',
+    sitoWeb: '',
+    didascaliaImmagine: 'Interior of modern exhibition space.',
+    testoSemplificato: 'Cultural exhibition center.',
+    flgDisabilita: false,
+    immagine: {
+      nomeImmagine: '',
+      byteImmagine: 5,
+    },
     disabilita: [
       {
         categoria: 'Eventi Speciali',
         descrizione: 'Prenotazioni chiuse per mostra temporanea.',
       },
     ],
-    DidascaliaImmagine: 'Interior of modern exhibition space.',
-    TestoSemplificato: 'Cultural exhibition center.',
   },
   {
     idStruttura: 4,
@@ -94,14 +132,23 @@ export const struttureMock: Struttura[] = [
     provincia: 'RM',
     via: 'Piazza Roma',
     ambito: 'Comunità',
+    social1: '',
+    social2: '',
+    posizione: '',
+    sitoWeb: '',
+    didascaliaImmagine: 'Community center building with people.',
+    testoSemplificato: 'Community activities and events.',
+    flgDisabilita: false,
+    immagine: {
+      nomeImmagine: '',
+      byteImmagine: 15,
+    },
     disabilita: [
       {
         categoria: 'Manutenzione',
         descrizione: 'Chiuso per lavori fino a maggio.',
       },
     ],
-    DidascaliaImmagine: 'Community center building with people.',
-    TestoSemplificato: 'Community activities and events.',
   },
   {
     idStruttura: 5,
@@ -112,13 +159,22 @@ export const struttureMock: Struttura[] = [
     provincia: 'PR',
     via: 'Via Verdi',
     ambito: 'Musica',
+    social1: '',
+    social2: '',
+    posizione: '',
+    sitoWeb: '',
+    didascaliaImmagine: 'Band rehearsing inside the venue.',
+    testoSemplificato: 'Venue for music rehearsals and concerts.',
+    flgDisabilita: false,
+    immagine: {
+      nomeImmagine: '',
+      byteImmagine: 12,
+    },
     disabilita: [
       {
         categoria: 'Manutenzione',
         descrizione: 'Chiuso per lavori fino a maggio.',
       },
     ],
-    DidascaliaImmagine: 'Band rehearsing inside the venue.',
-    TestoSemplificato: 'Venue for music rehearsals and concerts.',
   },
 ];

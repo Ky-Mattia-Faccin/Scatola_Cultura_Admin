@@ -16,7 +16,7 @@ export class SceltaModificaStruttura implements OnInit{
   
   strutture:Struttura[]=[]
 
-  selectedId: number | null = null;
+
 
   constructor(private servizioHttp:ServizoHttp){}
 

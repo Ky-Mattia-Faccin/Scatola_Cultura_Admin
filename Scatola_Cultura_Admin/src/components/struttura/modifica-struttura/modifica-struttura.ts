@@ -3,6 +3,7 @@ import { ActivatedRoute} from '@angular/router';
 import { Struttura } from '../../../interfaces/Istruttura';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ServizoHttp } from '../../../services/servizo-http';
 
 @Component({
   selector: 'app-modifica-struttura',
@@ -12,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ModificaStruttura implements OnInit{
 
-  constructor(private rotta:ActivatedRoute){}
+  constructor(private rotta:ActivatedRoute, private servizioHttp:ServizoHttp){}
 
   strutture:Struttura[]=[]
 
@@ -43,9 +44,21 @@ export class ModificaStruttura implements OnInit{
     }
   }
 
-  onFileSelected(evento:Event){
-    //invio a cloud
+ onFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    const file = input.files[0];
+    this.servizioHttp.sendModifiche(file).subscribe({
+      next: (base64Image) => {
+        console.log('Upload completato:', base64Image);
+       
+      },
+      error: (err) => {
+        console.error('Errore upload:', err);
+      }
+    });
   }
+}
 
 
 

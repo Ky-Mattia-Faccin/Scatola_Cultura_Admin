@@ -1,54 +1,137 @@
 <form class="form">
   <p class="title">Modifica Struttura</p>
   <p class="message">Modifica i campi</p>
-  <div class="flex">
-    <label>
-      <span>Nome</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.nomeStruttura" name="nomeStruttura" />
-    </label>
 
-    <label>
-      <span>Ambito</span>
-      <input class="input" required [(ngModel)]="struttura.ambito" name="ambito" />
-    </label>
+  <div class="container">
+    <!-- Riga 1 -->
+    <div class="row mb-3">
+      <div class="col-6 d-flex gap-2">
+        <label class="flex-fill d-flex flex-column">
+          <span>Nome</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            required
+            [(ngModel)]="struttura.nomeStruttura"
+            name="nomeStruttura"
+          />
+        </label>
 
-    <label>
-      <span>Descrizione</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.descrizione" name="descrizione" />
-    </label>
+        <label class="flex-fill d-flex flex-column">
+          <span>Ambito</span>
+          <input
+            class="form-control flex-grow-1"
+            required
+            [(ngModel)]="struttura.ambito"
+            name="ambito"
+          />
+        </label>
+      </div>
 
-    <label>
-      <span>Città</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.citta" name="citta" />
-    </label>
+      <div class="col-6 d-flex gap-2">
+        <label class="flex-fill d-flex flex-column">
+          <span>Città</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            required
+            [(ngModel)]="struttura.citta"
+            name="citta"
+          />
+        </label>
 
-    <label>
-      <span>Provincia</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.provincia" name="provincia" />
-    </label>
+        <label class="flex-fill d-flex flex-column">
+          <span>Provincia</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            required
+            [(ngModel)]="struttura.provincia"
+            name="provincia"
+          />
+        </label>
 
-    <label>
-      <span>Via</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.via" name="via" />
-    </label>
-
-    <label>
-      <span>Posizione</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.indirizzoCompleto" name="indirizzoCompleto" />
-    </label>
-
-      <label>
-        <span>Social</span>
-        <input class="input" type="text"  />
-      </label>
-  </div>
-
-  <label for="file" class="custum-file-upload">
-    <div class="text">
-      <span>Premi per caricare un'immagine</span>
+        <label class="flex-fill d-flex flex-column">
+          <span>Via</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            required
+            [(ngModel)]="struttura.via"
+            name="via"
+          />
+        </label>
+      </div>
     </div>
-    <input id="file" type="file" (change)="onFileSelected($event)" />
-  </label>
 
-  <button class="confirm">Conferma</button>
+    <!-- Riga 2: Descrizione più alta -->
+    <div class="row mb-3"  style="min-height: 15vh">
+      <div class="col d-flex flex-column">
+        <label class="flex-grow-1 d-flex flex-column">
+          <span>Descrizione</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            required
+            [(ngModel)]="struttura.descrizione"
+            name="descrizione"
+          />
+        </label>
+      </div>
+    </div>
+
+    <!-- Riga 3: TestiSemplici più alta -->
+    <div class="row mb-3" style="min-height: 15vh">
+      <div class="col d-flex flex-column">
+        <label class="flex-grow-1 d-flex flex-column">
+          <span>TestiSemplici</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            required
+            [(ngModel)]="struttura.testoSemplificato"
+            name="testiSemplici"
+          />
+        </label>
+      </div>
+    </div>
+
+    <!-- Riga 4 -->
+    <div class="row mb-3">
+      <div class="col-6">
+        <label class="d-flex flex-column">
+          <span>Posizione</span>
+          <input
+            class="form-control"
+            type="text"
+            required
+            [(ngModel)]="struttura.posizione"
+            name="indirizzoCompleto"
+          />
+        </label>
+      </div>
+
+      <div class="col-6">
+        <label class="d-flex flex-column">
+          <span>Social</span>
+          <input class="form-control" type="text" />
+        </label>
+      </div>
+    </div>
+
+    <!-- Riga 5: input + bottone in basso a destra -->
+    <div class="row mb-3">
+      <div class="col-8">
+        <label for="file" class="custum-file-upload d-flex flex-column">
+          <div class="text">
+            <span>Premi per caricare un'immagine</span>
+          </div>
+          <input id="file" type="file" (change)="onFileSelected($event)" />
+        </label>
+      </div>
+      <div class="col-4 d-flex flex-column">
+        <button class="btn btn-primary mt-auto align-self-end" >Conferma</button>
+      </div>
+    </div>
+  </div>
 </form>
