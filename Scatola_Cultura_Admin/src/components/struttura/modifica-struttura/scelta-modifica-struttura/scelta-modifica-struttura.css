@@ -1,0 +1,90 @@
+.card {
+  height: 79vh;
+  width: 93vw;
+
+  padding: 2vw;
+
+  border: 1px solid #808080cc;
+
+  margin: 1%;
+
+  background-color: #1a1a1a;
+  color: #fff;
+
+  border: 1px solid #333;
+  border-radius: 25px;
+
+  position: relative;
+}
+/*=====contenitore musei=====*/
+.structures-wrapper {
+  height: 90%;
+  width: 100%;
+
+  display: flex;
+  flex-flow: column nowrap;
+
+  gap: 2vh;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/*=========musei=========*/
+.structure {
+  height: 5vh;
+  width: 98%;
+
+  display: flex;
+  align-items: center;
+  padding-left: 1%;
+
+
+  background-color: #333;
+  border: 1px solid #69696965;
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+
+.structure:has(input.radio:checked) {
+  background-color: #00bfff;
+  color: black;
+}
+
+.structure label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+.radio{
+    display: none;
+}
+/*======conferma=========*/
+.confirm {
+  position: absolute;
+  bottom: 2%;
+  right: 2%;
+
+  border: none;
+  outline: none;
+
+  padding: 2%;
+
+  transform: 0.3s ease;
+
+  background-color: #00bfff;
+
+  border-radius: 25px;
+
+  cursor: pointer;
+}
+
+.confirm:active {
+  
+  transform: scale(0.95);
+  background-color: #08c;
+  transition: transform 0.1s, background-color 0.1s;
+}

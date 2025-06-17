@@ -1,0 +1,86 @@
+<nav class="nb-navbar">
+  <div class="nb-header">
+    <div class="nb-logo">
+      <span class="nb-logo-text">
+        <img src="../../../assets/logo_Kymos.jpg" alt="kymos" />
+      </span>
+    </div>
+
+    <div class="nb-desktop-menu">
+      <div class="nb-struttura-item" (click)="toggleStruttura()">
+        <button class="nb-struttura-button">
+          Struttura
+          <svg
+            class="nb-icon"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+        <div class="nb-struttura-dropdown" *ngIf="isStrutturaOpen">
+          <div class="nb-dropdown-item" routerLink="/creaStruttura">Crea</div>
+          <div class="nb-dropdown-item" routerLink="/sceltaModificaStruttura">
+            Modifica
+          </div>
+        </div>
+      </div>
+
+      <div class="nb-search-bar">
+        <div class="nb-search-input-wrapper">
+          <svg
+            class="nb-search-icon"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 21l-4.35-4.35M16.65 16.65a7.5 7.5 0 111.414-1.414l4.243 4.243"
+            ></path>
+          </svg>
+          <input type="text" placeholder="Cerca..." class="nb-search-input" />
+        </div>
+      </div>
+
+      <div class="nb-categoria-item" (click)="toggleCategoria()">
+        <button class="nb-categoria-button">
+          Categoria
+          <svg
+            class="nb-icon"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+        <div class="nb-categoria-dropdown" *ngIf="isCategoriaOpen">
+          <div class="nb-dropdown-item" routerLink="/creaCategoria">Crea</div>
+          <div class="nb-dropdown-item" routerLink="/DisabilitaCategoria">
+            Disabilita
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

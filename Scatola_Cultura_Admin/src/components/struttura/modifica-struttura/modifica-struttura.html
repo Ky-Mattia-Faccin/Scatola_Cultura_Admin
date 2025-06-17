@@ -1,0 +1,54 @@
+<form class="form">
+  <p class="title">Modifica Struttura</p>
+  <p class="message">Modifica i campi</p>
+  <div class="flex">
+    <label>
+      <span>Nome</span>
+      <input class="input" type="text" required [(ngModel)]="struttura.nomeStruttura" name="nomeStruttura" />
+    </label>
+
+    <label>
+      <span>Ambito</span>
+      <input class="input" required [(ngModel)]="struttura.ambito" name="ambito" />
+    </label>
+
+    <label>
+      <span>Descrizione</span>
+      <input class="input" type="text" required [(ngModel)]="struttura.descrizione" name="descrizione" />
+    </label>
+
+    <label>
+      <span>Città</span>
+      <input class="input" type="text" required [(ngModel)]="struttura.citta" name="citta" />
+    </label>
+
+    <label>
+      <span>Provincia</span>
+      <input class="input" type="text" required [(ngModel)]="struttura.provincia" name="provincia" />
+    </label>
+
+    <label>
+      <span>Via</span>
+      <input class="input" type="text" required [(ngModel)]="struttura.via" name="via" />
+    </label>
+
+    <label>
+      <span>Posizione</span>
+      <input class="input" type="text" required [(ngModel)]="struttura.indirizzoCompleto" name="indirizzoCompleto" />
+    </label>
+
+      <label>
+        <span>Social</span>
+        <input class="input" type="text"  />
+      </label>
+  </div>
+
+  <label for="file" class="custum-file-upload">
+    <div class="text">
+      <span>Premi per caricare un'immagine</span>
+    </div>
+    <input id="file" type="file" (change)="onFileSelected($event)" />
+  </label>
+
+  <button class="confirm">Conferma</button>
+</form>
