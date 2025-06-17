@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="structures-wrapper">
+  <div class="structures-wrapper"  *ngIf="strutture$ | async as strutture">
     <label class="structure" *ngFor="let struttura of strutture; let i = index">
       <input
         type="radio"

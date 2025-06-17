@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ServizoHttp } from '../../../services/servizo-http';
+import { Observable } from 'rxjs';
 
 export interface catDisabilita {
   categoria: string;
@@ -20,7 +21,7 @@ export interface catDisabilita {
 
 export class DisabilitaCategoria implements OnInit {
 
-  disabilita?: catDisabilita[];
+  disabilita: catDisabilita[]=[];
   disabilitaDisattivate!:string[]
 
   constructor(private servizioHttp: ServizoHttp) {}
@@ -44,12 +45,10 @@ export class DisabilitaCategoria implements OnInit {
   });
 }
 
+disabilita$!: Observable<catDisabilita[]>;
 
   ngOnInit(): void {
-  this.servizioHttp.getCategorie().subscribe(value => {
-    this.disabilita = value;
-    console.log('Categorie caricate:', this.disabilita);
-  });
+  this.disabilita$ = this.servizioHttp.getCategorie();
 }
 }
 

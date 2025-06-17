@@ -35,12 +35,12 @@ export class ServizoHttp {
   }
 
   patchCategoria(id: string, disattiva: boolean): Observable<any> {
-    return this.httpClient.patch(`/api/categorie/id=${id}`, {
+    return this.httpClient.patch(`http://192.168.123.150:5000/api/Disabilita/patch?id=${id}`, {
       disattiva: true,
     });
   }
 
-  sendImg(file: File): Observable<string> {
+  sendImg(file: File): Observable<string> { 
     const formData = new FormData();
     formData.append('image', file);
 

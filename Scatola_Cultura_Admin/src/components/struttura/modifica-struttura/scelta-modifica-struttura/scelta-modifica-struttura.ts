@@ -3,6 +3,7 @@ import { Struttura } from '../../../../interfaces/Istruttura';
 import { ServizoHttp } from '../../../../services/servizo-http';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-scelta-modifica-struttura',
@@ -16,20 +17,13 @@ export class SceltaModificaStruttura implements OnInit{
   
   strutture:Struttura[]=[]
 
+  strutture$!:Observable<Struttura[]>;
 
 
   constructor(private servizioHttp:ServizoHttp){}
 
   ngOnInit(): void {
-    console.log('inizializzato');
-    this.servizioHttp.getStrutture().subscribe(value=>{
-      this.strutture=value
-      
-      const struttureJSON=JSON.stringify(this.strutture)
-      sessionStorage.setItem('strutture',struttureJSON)
-
-
-    })
+    this.strutture$=this.servizioHttp.getStrutture()
   }
 
 }

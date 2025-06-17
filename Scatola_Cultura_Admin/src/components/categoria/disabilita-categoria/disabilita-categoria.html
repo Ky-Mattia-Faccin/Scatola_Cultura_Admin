@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="structures-wrapper">
+  <div class="structures-wrapper" *ngIf="disabilita$ | async as disabilita">
     <label class="structure" *ngFor="let d of disabilita; let i = index">
       <input
         type="checkbox"
