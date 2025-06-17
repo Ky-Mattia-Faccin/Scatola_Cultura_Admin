@@ -1,1 +1,16 @@
-<p>disabilita-categoria works!</p>
+<div class="card">
+  <div class="structures-wrapper">
+    <label class="structure" *ngFor="let d of disabilita; let i = index">
+      <input
+        type="checkbox"
+        class="checkbox"
+        name="strutturaSelection{{i}}"
+         [(ngModel)]="d.checked"
+      />
+      <span>{{ d.categoria }}</span>
+
+
+       <button class="btn btn-primary confirm-btn" (click)="disableCategories()">Conferma</button>
+    </label>
+</div>
+

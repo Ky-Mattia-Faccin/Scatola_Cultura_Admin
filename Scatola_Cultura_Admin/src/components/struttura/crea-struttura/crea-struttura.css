@@ -152,15 +152,11 @@ label span {
   padding-left: 1rem;
 }
 
-/* Consiglio: rimuovere margin-top: 5% da .custum-file-upload per non creare troppo spazio verticale */
 
 /* Aggiunto per il container del form */
 .container {
   max-width: 100%;
 }
 
-/* Righe più alte: min-height per riga e input che occupa tutta l’altezza */
-.row.mb-3[style*="min-height"] {
-  /* già impostato inline style nel markup */
-}
+
 
