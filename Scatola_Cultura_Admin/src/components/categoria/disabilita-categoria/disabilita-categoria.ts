@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 export interface catDisabilita {
   categoria: string;
   descrizione: string;
-  checked: boolean;
+  flgDisabilita: boolean;
 }
 
 @Component({
@@ -16,40 +16,39 @@ export interface catDisabilita {
   templateUrl: './disabilita-categoria.html',
   styleUrl: './disabilita-categoria.css',
 })
-
-
-
 export class DisabilitaCategoria implements OnInit {
-
-  disabilita: catDisabilita[]=[];
-  disabilitaDisattivate!:string[]
+  disabilita: catDisabilita[] = [];
+  disabilitaDisattivate!: string[];
 
   constructor(private servizioHttp: ServizoHttp) {}
 
-
-
-
-
   onToggleCategoria(cat: catDisabilita) {
-  const disattiva = cat.checked;
+    const disattiva = cat.flgDisabilita;
 
-  this.servizioHttp.patchCategoria(cat.categoria, disattiva).subscribe({
-    next: () => {
-      console.log(`Categoria ${cat.categoria} ${disattiva ? 'disattivata' : 'riattivata'}`);
-    },
-    error: (err) => {
-      console.error(`Errore ${disattiva ? 'disattivazione' : 'riattivazione'} categoria ${cat.categoria}`, err);
+    this.servizioHttp.patchCategoria(cat.categoria, disattiva).subscribe({
+      next: () => {
+        console.log(
+          `Categoria ${cat.categoria} ${
+            disattiva ? 'disattivata' : 'riattivata'
+          }`
+        );
+      },
+      error: (err) => {
+        console.error(
+          `Errore ${disattiva ? 'disattivazione' : 'riattivazione'} categoria ${
+            cat.categoria
+          }`,
+          err
+        );
 
-      cat.checked = !cat.checked;
-    }
-  });
-}
+        cat.flgDisabilita = !cat.flgDisabilita;
+      },
+    });
+  }
 
-disabilita$!: Observable<catDisabilita[]>;
+  disabilita$!: Observable<catDisabilita[]>;
 
   ngOnInit(): void {
-  this.disabilita$ = this.servizioHttp.getCategorie();
+    this.disabilita$ = this.servizioHttp.getCategorie();
+  }
 }
-}
-
-

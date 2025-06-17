@@ -44,22 +44,7 @@ export class ModificaStruttura implements OnInit{
     }
   }
 
- onFileSelected(event: Event) {
-  const input = event.target as HTMLInputElement;
-  if (input.files && input.files.length > 0) {
-    const file = input.files[0];
-    this.servizioHttp.sendImg(file).subscribe({
-      next: (base64Image) => {
-        console.log('Upload completato:', base64Image);
-       
-      },
-      error: (err) => {
-        console.error('Errore upload:', err);
-      }
-    });
-  }
+ 
 }
 
 
-
-}
