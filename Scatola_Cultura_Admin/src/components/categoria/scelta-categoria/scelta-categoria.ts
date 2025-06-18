@@ -14,15 +14,19 @@ export interface catDisabilita {
 @Component({
   selector: 'app-disabilita-categoria',
   imports: [CommonModule, FormsModule],
-  templateUrl: './disabilita-categoria.html',
-  styleUrl: './disabilita-categoria.css',
+  templateUrl: './scelta-categoria.html',
+  styleUrl: './scelta-categoria.css',
 })
-export class DisabilitaCategoria implements OnInit {
+export class SceltaCategoria implements OnInit {
   disabilita: catDisabilita[] = [];
   disabilitaDisattivate!: string[];
   azione: string = 'disabilita';
 
-  constructor(private servizioHttp: ServizioHttp,private Activeroute:ActivatedRoute,private router:Router) {}
+  constructor(
+    private servizioHttp: ServizioHttp,
+    private Activeroute: ActivatedRoute,
+    private router: Router
+  ) {}
 
   onToggleCategoria(cat: catDisabilita) {
     if (this.azione === 'disabilita') {
@@ -48,9 +52,13 @@ export class DisabilitaCategoria implements OnInit {
         },
       });
     } else if (this.azione === 'seleziona') {
+      if (cat.flgDisabilita) {
         sessionStorage.setItem('categoriaSelezionata', cat.categoria);
         console.log('Categoria selezionata:', cat.categoria);
         this.router.navigate(['/creaDisabilità']);
+      }else{
+        
+      }
     }
   }
 
@@ -59,12 +67,8 @@ export class DisabilitaCategoria implements OnInit {
   ngOnInit(): void {
     this.disabilita$ = this.servizioHttp.getCategorie();
 
-    this.Activeroute.queryParams.subscribe(parametri=>{
-      this.azione=parametri['azione']
-    })
-
-    
-
-
+    this.Activeroute.queryParams.subscribe((parametri) => {
+      this.azione = parametri['azione'];
+    });
   }
 }

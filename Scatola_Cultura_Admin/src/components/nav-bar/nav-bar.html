@@ -55,7 +55,7 @@
         </button>
         <div class="nb-disabilita-dropdown" *ngIf="isDisabilitaOpen">
           <div class="nb-dropdown-item" routerLink="/sceltaStruttura" [queryParams]="{azione:'seleziona'}">Crea</div>
-          <div class="nb-dropdown-item" routerLink="">
+          <div class="nb-dropdown-item" routerLink="/sceltaStruttura"  [queryParams]="{azione:'selezionaModifica'}">
             Modifica
           </div>
           <div class="nb-dropdown-item" routerLink="">Disabilita</div>

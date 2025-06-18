@@ -3,7 +3,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Struttura } from '../interfaces/Istruttura';
 import { HttpClientModule } from '@angular/common/http';
-import { catDisabilita } from '../components/categoria/disabilita-categoria/disabilita-categoria';
+import { catDisabilita } from '../components/categoria/scelta-categoria/scelta-categoria';
 @Injectable({
   providedIn: 'root',
 })

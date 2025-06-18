@@ -8,10 +8,10 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-scelta-modifica-struttura',
   imports: [CommonModule, RouterLink],
-  templateUrl: './scelta-modifica-struttura.html',
-  styleUrls: ['./scelta-modifica-struttura.css'],
+  templateUrl: './scelta-struttura.html',
+  styleUrls: ['./scelta-struttura.css'],
 })
-export class SceltaModificaStruttura implements OnInit {
+export class SceltaStruttura implements OnInit {
 
   azione: string = 'modifica'; 
 
@@ -41,7 +41,8 @@ export class SceltaModificaStruttura implements OnInit {
     else if(this.azione==='seleziona'){
       sessionStorage.setItem('idStrutturaSelezionata',id.toString())
       this.router.navigate(['/disabilitaCategoria'], { queryParams: { azione: 'seleziona' }})
-
+    }else if(this.azione==='selezionaModifica'){
+      this.router.navigate(['/modificaDisabilità/',id])
     }
 
   }
