@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ServizoHttp } from '../../../services/servizo-http';
+import { ServizioHttp } from '../../../services/servizio-http';
 import { Observable } from 'rxjs';
 
 export interface catDisabilita {
@@ -20,7 +20,7 @@ export class DisabilitaCategoria implements OnInit {
   disabilita: catDisabilita[] = [];
   disabilitaDisattivate!: string[];
 
-  constructor(private servizioHttp: ServizoHttp) {}
+  constructor(private servizioHttp: ServizioHttp) {}
 
   onToggleCategoria(cat: catDisabilita) {
     const disattiva = cat.flgDisabilita;

@@ -7,7 +7,7 @@ import { catDisabilita } from '../components/categoria/disabilita-categoria/disa
 @Injectable({
   providedIn: 'root',
 })
-export class ServizoHttp {
+export class ServizioHttp {
   constructor(private httpClient: HttpClient) {}
 
   getStrutture(): Observable<Struttura[]> {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Struttura } from '../../../../interfaces/Istruttura';
-import { ServizoHttp } from '../../../../services/servizo-http';
+import { ServizioHttp } from '../../../../services/servizio-http';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -16,7 +16,7 @@ export class SceltaModificaStruttura implements OnInit {
 
   strutture$!: Observable<Struttura[]>;
 
-  constructor(private servizioHttp: ServizoHttp) {}
+  constructor(private servizioHttp: ServizioHttp) {}
 
   ngOnInit(): void {
     this.strutture$ = this.servizioHttp.getStrutture();

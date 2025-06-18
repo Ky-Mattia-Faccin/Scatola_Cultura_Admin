@@ -1,12 +1,15 @@
 import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
-import { ServizoHttp } from '../../../services/servizo-http';
+import { ServizioHttp } from '../../../services/servizio-http';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-crea-struttura',
-  imports: [FormsModule],
+  imports: [FormsModule,CommonModule],
   templateUrl: './crea-struttura.html',
   styleUrl: './crea-struttura.css',
 })
+
+
 export class CreaStruttura {
   formData: any = {
     nomeStruttura: '',
@@ -16,15 +19,19 @@ export class CreaStruttura {
     via: '',
     descrizione: '',
     testiSemplici: '',
+    IndirizzoCompleto:'',
     posizione: '',
-    social: '',
+    Instagram: '',
+    Facebook:'',
+    sitoWeb:'',
+    didascaliaImmagine:'',
   };
 
   base64Image: string | null = null;
   selectedFile: File | null = null;
 
   constructor(
-    private servizoHttp: ServizoHttp,
+    private servizoHttp: ServizioHttp,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -52,6 +59,8 @@ export class CreaStruttura {
       reader.onerror = (error) => reject(error);
     });
   }
+
+
   submit() {
     if (!this.base64Image) {
       console.error('Nessuna immagine selezionata');
@@ -64,20 +73,22 @@ export class CreaStruttura {
       Citta: this.formData.citta,
       Provincia: this.formData.provincia,
       Via: this.formData.via,
-      IndirizzoCompleto: 'indirizzo',
+      IndirizzoCompleto: this.formData.IndirizzoCompleto,
       Descrizione: this.formData.descrizione,
       TestoSemplificato: this.formData.testiSemplici,
       Posizione: this.formData.posizione,
-      Social1: this.formData.social,
-      Social2: '',
-      sitoWeb: '',
-      ByteImmagine: this.base64Image,
-      NomeImmagine: this.selectedFile?.name || 'image.jpg',
+      Social1: this.formData.Instagram,
+      Social2: this.formData.Facebook,
+      SitoWeb: this.formData.sitoWeb,
       DataInserimento: new Date().toISOString(),
       FlgDisabilita: false,
-      DidascaliaImmagine: "Immagine caricata dall'utente",
+      Immagine:{
+        ByteImmagine: this.base64Image,
+        NomeImmagine: this.selectedFile?.name || 'errore',
+        DidascaliaImmagine: this.formData.didascaliaImmagine,
+      }
     };
-
+    console.log(dataToSend);
     this.servizoHttp.sendData(dataToSend).subscribe({
       next: (res) => {
         console.log('Upload riuscito', res);
