@@ -89,7 +89,7 @@ export class CreaStruttura {
       }
     };
     console.log(dataToSend);
-    this.servizoHttp.sendData(dataToSend).subscribe({
+    this.servizoHttp.sendStruttura(dataToSend).subscribe({
       next: (res) => {
         console.log('Upload riuscito', res);
         alert('Struttura creata con successo!');

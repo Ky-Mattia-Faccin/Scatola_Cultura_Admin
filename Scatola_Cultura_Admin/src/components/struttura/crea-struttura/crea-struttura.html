@@ -7,11 +7,12 @@
     <div class="row mb-3">
       <div class="col-6 d-flex gap-2">
         <label class="flex-fill d-flex flex-column">
-          <span>Nome</span>
+          <span>Nome (max 100 caratteri )</span>
           <input
             class="form-control flex-grow-1"
             type="text"
             required
+            maxlength="100"
             [(ngModel)]="formData.nomeStruttura"
             name="nomeStruttura"
             autocomplete="off"
@@ -19,12 +20,13 @@
         </label>
 
         <label class="flex-fill d-flex flex-column">
-          <span>Ambito</span>
+          <span>Ambito (max 200 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             required
             [(ngModel)]="formData.ambito"
             name="ambito"
+            maxlength="200"
             autocomplete="off"
           />
         </label>
@@ -32,11 +34,12 @@
 
       <div class="col-6 d-flex gap-2">
         <label class="flex-fill d-flex flex-column">
-          <span>Città</span>
+          <span>Città (max 50 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             type="text"
             required
+            maxlength="50"
             [(ngModel)]="formData.citta"
             name="citta"
             autocomplete="off"
@@ -44,11 +47,12 @@
         </label>
 
         <label class="flex-fill d-flex flex-column">
-          <span>Provincia</span>
+          <span>Provincia (max 2 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             type="text"
             required
+            maxlength="2"
             [(ngModel)]="formData.provincia"
             name="provincia"
             autocomplete="off"
@@ -56,11 +60,12 @@
         </label>
 
         <label class="flex-fill d-flex flex-column">
-          <span>Via</span>
+          <span>Via (max 100 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             type="text"
             required
+            maxlength="100"
             [(ngModel)]="formData.via"
             name="via"
             autocomplete="off"
@@ -89,11 +94,12 @@
     <div class="row mb-3" style="min-height: 15vh">
       <div class="col d-flex flex-column">
         <label class="flex-grow-1 d-flex flex-column">
-          <span>TestiSemplici</span>
+          <span>TestiSemplici (max 150 caratteri)</span>
           <textarea
             class="form-control flex-grow-1"
             type="text"
             name="testiSemplici"
+            maxlength="150"
             [(ngModel)]="formData.testiSemplici"
             placeholder=".."
             autocomplete="off"
@@ -105,12 +111,13 @@
     <div class="row mb-3">
       <div class="col-6 d-flex gap-2">
         <label class="flex-fill d-flex flex-column">
-          <span>Indirizzo Completo</span>
+          <span>Indirizzo Completo (max 200 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             type="text"
             [(ngModel)]="formData.Indirizzocompleto"
             required
+            maxlength="200"
             name="posizione"
             autocomplete="off"
           />
@@ -124,7 +131,6 @@
             name="posizione"
             autocomplete="off"
             #posizioneRef="ngModel"
-             pattern="https?://(www\.)?(google\.[a-z]+|goo\.gl)/.*"
             [ngClass]="{ 'is-invalid': posizioneRef.invalid && posizioneRef.touched }"
           />
         </label>
@@ -139,19 +145,21 @@
             pattern="https?://(www\.)?instagram\.com/.*"
             [(ngModel)]="formData.Instagram"
             name="instagram"
+            maxlength="250"
             autocomplete="off"
             #instagramRef="ngModel"
             [ngClass]="{ 'is-invalid': instagramRef.invalid && instagramRef.touched }"
           />
         </label>
         <label class="flex-fill d-flex flex-column">
-          <span>Facebook (link)</span>
+          <span>Facebook (link) </span>
           <input
             class="form-control flex-grow-1"
             type="url"
             pattern="https?://(www\.)?facebook\.com/.*"
             [(ngModel)]="formData.Facebook"
             name="facebook"
+            maxlength="250"
             autocomplete="off"
             #facebookRef="ngModel"
             [ngClass]="{ 'is-invalid': facebookRef.invalid && facebookRef.touched }"
@@ -164,6 +172,7 @@
             type="url"
             [(ngModel)]="formData.sitoWeb"
             name="sitoWeb"
+            maxlength="250"
             autocomplete="off"
             #sitoWebRef="ngModel"
             [ngClass]="{ 'is-invalid': sitoWebRef.invalid && sitoWebRef.touched }"
@@ -193,9 +202,10 @@
       <!-- Didascalia -->
       <div class="col-md-5">
         <label class="d-flex flex-column">
-          <span class="mb-1">Didascalia</span>
+          <span class="mb-1">Didascalia (max 50 caratteri)</span>
           <textarea
             type="text"
+            maxlength="50"
             class="form-control"
             name="didascaliaImmagine"
             [(ngModel)]="formData.didascaliaImmagine"

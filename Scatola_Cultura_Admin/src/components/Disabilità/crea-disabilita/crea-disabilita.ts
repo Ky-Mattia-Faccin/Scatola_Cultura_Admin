@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SceltaModificaStruttura } from '../../struttura/modifica-struttura/scelta-struttura/scelta-struttura';
+import { SceltaStruttura } from '../../struttura/modifica-struttura/scelta-struttura/scelta-struttura';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 

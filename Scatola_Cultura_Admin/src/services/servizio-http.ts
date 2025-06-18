@@ -45,10 +45,20 @@ export class ServizioHttp {
     );
   }
 
-  sendData(dati: any): Observable<any> {
+  sendStruttura(dati: any): Observable<any> {
     return this.httpClient.post(
       'http://192.168.123.150:5000/api/Struttura/postConImmagine',
       dati
     );
   }
+
+
+  updateStruttura(dati:any,id:number){
+    return this.httpClient.put(
+      `http://192.168.123.150:5000/api/Struttura/updateStruttura/${id}`,
+      dati
+    );
+
+  }
+
 }

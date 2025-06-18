@@ -58,12 +58,13 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {}
 
+  idStruttura:number=0;
   ngOnInit(): void {
     this.routeSub = this.rotta.paramMap.subscribe((params: ParamMap) => {
       const parametroId = params.get('id');
       if (parametroId !== null) {
-        const idStruttura = parseInt(parametroId, 10);
-        this.loadStruttura(idStruttura);
+         this.idStruttura = parseInt(parametroId, 10);
+        this.loadStruttura(this.idStruttura);
       }
     });
   }
@@ -154,7 +155,7 @@ export class ModificaStruttura implements OnInit, OnDestroy {
 
     console.log(dataToSend);
 
-    this.servizioHttp.sendData(dataToSend).subscribe({
+    this.servizioHttp.updateStruttura(dataToSend,this.idStruttura).subscribe({
       next: (res) => {
         console.log('Upload riuscito', res);
         alert('Struttura modificata con successo!');

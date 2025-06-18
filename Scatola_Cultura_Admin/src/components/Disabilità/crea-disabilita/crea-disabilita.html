@@ -1,12 +1,12 @@
-<form class="form" (submit)="submit()">
-  <p class="title">Crea Categoria</p>
+<form class="form" (submit)="submit()" #disabilitaForm="ngForm" novalidate>
+  <p class="title">Crea Disabilità</p>
   <p class="message">Completa tutti i campi</p>
 
   <!-- Riga 1: Nome -->
   <div class="row mb-3">
     <div class="col-6 d-flex gap-2">
       <label class="flex-fill d-flex flex-column">
-        <span>Nome</span>
+        <span>Categoria</span>
         <span
           class="form-control flex-grow-1"
           name="nomeStruttura"
@@ -32,5 +32,5 @@
     </div>
   </div>
 
-  <button class="btn btn-primary confirm-btn" type="submit" >Crea</button>
+  <button class="btn btn-primary confirm-btn" type="submit" [disabled]="!disabilitaForm.valid" >Crea</button>
 </form>

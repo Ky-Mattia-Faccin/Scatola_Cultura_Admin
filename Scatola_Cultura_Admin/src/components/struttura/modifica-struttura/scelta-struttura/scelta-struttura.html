@@ -1,4 +1,7 @@
 <div class="card">
+  <div class="title">
+    Seleziona una struttura
+  </div>
   <div class="structures-wrapper" *ngIf="strutture$ | async as strutture">
     <label class="structure" *ngFor="let struttura of strutture; let i = index">
       <input
