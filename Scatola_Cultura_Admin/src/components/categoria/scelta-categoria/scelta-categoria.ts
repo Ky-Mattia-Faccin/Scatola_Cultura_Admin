@@ -18,7 +18,6 @@ export interface catDisabilita {
   styleUrl: './scelta-categoria.css',
 })
 export class SceltaCategoria implements OnInit {
-  disabilita: catDisabilita[] = [];
   disabilitaDisattivate!: string[];
   azione: string = 'disabilita';
 

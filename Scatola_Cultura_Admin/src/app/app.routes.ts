@@ -5,6 +5,7 @@ import { CreaCategoria } from '../components/categoria/crea-categoria/crea-categ
 import { SceltaCategoria } from '../components/categoria/scelta-categoria/scelta-categoria';
 import { SceltaStruttura } from '../components/struttura/modifica-struttura/scelta-struttura/scelta-struttura';
 import { CreaDisabilita } from '../components/Disabilità/crea-disabilita/crea-disabilita';
+import { ModificaDisabilita } from '../components/Disabilità/modifica-disabilita/modifica-disabilita';
 
 export const routes: Routes = [
     {
@@ -26,6 +27,6 @@ export const routes: Routes = [
         path:'creaDisabilità',component:CreaDisabilita
     },
     {
-        path:'modificaDisabilita/:id',component:ModificaStruttura
+        path:'modificaDisabilita/:id',component:ModificaDisabilita
     }
 ];

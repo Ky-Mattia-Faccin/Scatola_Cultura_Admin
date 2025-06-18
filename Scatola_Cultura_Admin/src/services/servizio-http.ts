@@ -7,6 +7,9 @@ import { catDisabilita } from '../components/categoria/scelta-categoria/scelta-c
 @Injectable({
   providedIn: 'root',
 })
+
+
+
 export class ServizioHttp {
   constructor(private httpClient: HttpClient) {}
 
@@ -69,6 +72,14 @@ export class ServizioHttp {
         disattiva:true
       }
     )
+  }
+
+
+  sendCategoria(dati: any): Observable<any> {
+    return this.httpClient.post(
+      'http://192.168.123.150:5000/api/Disabilita/post',
+      dati
+    );
   }
 
 }
