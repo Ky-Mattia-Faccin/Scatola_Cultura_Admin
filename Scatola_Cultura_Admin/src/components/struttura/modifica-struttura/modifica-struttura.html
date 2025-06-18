@@ -1,6 +1,6 @@
-<form class="form">
+<form class="form" (submit)="submit()" #strutturaForm="ngForm" novalidate>
   <p class="title">Modifica Struttura</p>
-  <p class="message">Modifica i campi</p>
+  <p class="message">Completa tutti i campi (tutti obbligatori)</p>
 
   <div class="container">
     <!-- Riga 1 -->
@@ -12,7 +12,7 @@
             class="form-control flex-grow-1"
             type="text"
             required
-            [(ngModel)]="struttura.nomeStruttura"
+            [(ngModel)]="datiForm.nomeStruttura"
             name="nomeStruttura"
             autocomplete="off"
           />
@@ -23,7 +23,7 @@
           <input
             class="form-control flex-grow-1"
             required
-            [(ngModel)]="struttura.ambito"
+            [(ngModel)]="datiForm.ambito"
             name="ambito"
             autocomplete="off"
           />
@@ -37,7 +37,7 @@
             class="form-control flex-grow-1"
             type="text"
             required
-            [(ngModel)]="struttura.citta"
+            [(ngModel)]="datiForm.citta"
             name="citta"
             autocomplete="off"
           />
@@ -49,7 +49,7 @@
             class="form-control flex-grow-1"
             type="text"
             required
-            [(ngModel)]="struttura.provincia"
+            [(ngModel)]="datiForm.provincia"
             name="provincia"
             autocomplete="off"
           />
@@ -61,7 +61,7 @@
             class="form-control flex-grow-1"
             type="text"
             required
-            [(ngModel)]="struttura.via"
+            [(ngModel)]="datiForm.via"
             name="via"
             autocomplete="off"
           />
@@ -70,7 +70,7 @@
     </div>
 
     <!-- Riga 2: Descrizione più alta -->
-    <div class="row mb-3"  style="min-height: 15vh">
+    <div class="row mb-3" style="min-height: 15vh">
       <div class="col d-flex flex-column">
         <label class="flex-grow-1 d-flex flex-column">
           <span>Descrizione</span>
@@ -78,15 +78,14 @@
             class="form-control flex-grow-1"
             type="text"
             required
-            [(ngModel)]="struttura.descrizione"
+            [(ngModel)]="datiForm.descrizione"
             name="descrizione"
             autocomplete="off"
           ></textarea>
         </label>
       </div>
     </div>
-
-    <!-- Riga 3: TestiSemplici più alta -->
+    <!-- Riga 3: Testi Semplici -->
     <div class="row mb-3" style="min-height: 15vh">
       <div class="col d-flex flex-column">
         <label class="flex-grow-1 d-flex flex-column">
@@ -94,51 +93,129 @@
           <textarea
             class="form-control flex-grow-1"
             type="text"
-            required
-            [(ngModel)]="struttura.testoSemplificato"
             name="testiSemplici"
+            [(ngModel)]="datiForm.testiSemplici"
+            placeholder=".."
             autocomplete="off"
           ></textarea>
         </label>
       </div>
     </div>
-
-    <!-- Riga 4 -->
+    <!-- Riga 4: Posizione e Social -->
     <div class="row mb-3">
-      <div class="col-6">
-        <label class="d-flex flex-column">
-          <span>Posizione</span>
+      <div class="col-6 d-flex gap-2">
+        <label class="flex-fill d-flex flex-column">
+          <span>Indirizzo Completo</span>
           <input
-            class="form-control"
+            class="form-control flex-grow-1"
             type="text"
+            [(ngModel)]="datiForm.IndirizzoCompleto"
             required
-            [(ngModel)]="struttura.posizione"
-            name="indirizzoCompleto"
+            name="posizione"
             autocomplete="off"
+          />
+        </label>
+        <label class="flex-fill d-flex flex-column">
+          <span>Posizione (link)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="url"
+            [(ngModel)]="datiForm.posizione"
+            required
+            name="posizione"
+            autocomplete="off"
+            #posizioneRef="ngModel"
+             pattern="https?://(www\.)?(google\.[a-z]+|goo\.gl)/.*"
+            [ngClass]="{ 'is-invalid': posizioneRef.invalid && posizioneRef.touched }"
           />
         </label>
       </div>
 
-      <div class="col-6">
-        <label class="d-flex flex-column">
-          <span>Social</span>
-          <input class="form-control" type="text" />
+      <div class="col-6 d-flex gap-2">
+        <label class="flex-fill d-flex flex-column">
+          <span>Instagram (link)</span>
+          <input
+            class="form-control flex-grow-1"
+          
+            type="url"
+            pattern="https?://(www\.)?instagram\.com/.*"
+            [(ngModel)]="datiForm.Instagram"
+            name="instagram"
+            autocomplete="off"
+            #instagramRef="ngModel"
+            [ngClass]="{ 'is-invalid': instagramRef.invalid && instagramRef.touched }"
+          />
+        </label>
+        <label class="flex-fill d-flex flex-column">
+          <span>Facebook (link)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="url"
+            pattern="https?://(www\.)?facebook\.com/.*"
+            [(ngModel)]="datiForm.Facebook"
+            name="facebook"
+            autocomplete="off"
+            #facebookRef="ngModel"
+            [ngClass]="{ 'is-invalid': facebookRef.invalid && facebookRef.touched }"
+          />
+        </label>
+        <label class="flex-fill d-flex flex-column">
+          <span>Sito Web (link)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="url"
+            [(ngModel)]="datiForm.sitoWeb"
+            name="sitoWeb"
+            autocomplete="off"
+            #sitoWebRef="ngModel"
+            [ngClass]="{ 'is-invalid': sitoWebRef.invalid && sitoWebRef.touched }"
+          />
         </label>
       </div>
     </div>
-
     <!-- Riga 5: input + bottone in basso a destra -->
-    <div class="row mb-3">
-      <div class="col-8">
-        <label for="file" class="custum-file-upload d-flex flex-column">
-          <div class="text">
-            <span>Premi per caricare un'immagine</span>
+    <!-- Riga 5: immagine personalizzata + didascalia + pulsante -->
+    <div class="row mb-3 align-items-end">
+      <!-- Input immagine personalizzato -->
+      <div class="col-md-4">
+        <label for="file" class="custum-file-upload d-flex flex-column" [ngClass]="{'loaded':base64Image}">
+          <div class="text mb-1" >
+            <span *ngIf="!base64Image">Carica immagine</span>
+            <span *ngIf="base64Image">Immagine caricata con successo</span>
           </div>
-          <input id="file" type="file"  />
+          <input
+            id="file"
+            type="file"
+            (change)="onFileSelected($event)"
+            style="cursor: pointer"
+          />
         </label>
       </div>
-      <div class="col-4 d-flex flex-column">
-        <button class="btn btn-primary mt-auto align-self-end" >Conferma</button>
+
+      <!-- Didascalia -->
+      <div class="col-md-5">
+        <label class="d-flex flex-column">
+          <span class="mb-1">Didascalia</span>
+          <textarea
+            type="text"
+            class="form-control"
+            required
+            name="didascaliaImmagine"
+            [(ngModel)]="datiForm.didascaliaImmagine"
+            autocomplete="off"
+          ></textarea>
+        </label>
+      </div>
+
+      <!-- Bottone "Conferma" -->
+      <div class="col-md-3 d-flex justify-content-end">
+        <button
+          class="btn btn-primary mt-3 mt-md-0"
+          type="submit"
+          [disabled]="!strutturaForm.valid"
+        >
+          Conferma
+        </button>
       </div>
     </div>
   </div>

@@ -16,6 +16,7 @@ import { ServizioHttp } from '../../services/servizio-http';
 export class NavBar {
   isCategoriaOpen: Boolean = false;
   isStrutturaOpen: boolean = false;
+  isDisabilitaOpen: boolean = false;
 
   strutture!: Struttura[];
 
@@ -27,6 +28,9 @@ export class NavBar {
 
   toggleCategoria() {
     this.isCategoriaOpen = !this.isCategoriaOpen;
+  }
+  toggleDisabilita() {
+    this.isDisabilitaOpen = !this.isDisabilitaOpen;
   }
 
   // Esegue la ricerca filtrando le strutture e naviga verso la pagina di modifica

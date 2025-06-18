@@ -11,12 +11,12 @@ export interface Struttura {
   social2:string;
   posizione:string;
   sitoWeb:string;
-  didascaliaImmagine:string;
   testoSemplificato:string;
   flgDisabilita:boolean;
   immagine:{
     nomeImmagine:string;
     byteImmagine:number;
+    didascaliaImmagine:string;
   };
   disabilita:[
     {categoria:string, descrizione:string}
