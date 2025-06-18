@@ -127,7 +127,7 @@
 
   z-index: 10;
 }
-.nb-disabilita-dropdown{
+.nb-disabilita-dropdown,.nb-struttura-dropdown{
   height: 15vh;
 }
 .nb-dropdown-item{

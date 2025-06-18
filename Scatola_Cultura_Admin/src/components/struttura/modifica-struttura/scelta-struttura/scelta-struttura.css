@@ -90,8 +90,16 @@
   cursor: pointer;
   gap: 0.5rem;
 }
+.structure:has(input.checkbox:checked) {
+  background-color: #3434349a;
+  color: #e13a3a;
 
-/*=== RADIO HIDDEN ===*/
-.radio {
+  text-decoration: line-through;
+}
+.checkbox {
+  display: none;
+}
+
+.radio{
   display: none;
 }

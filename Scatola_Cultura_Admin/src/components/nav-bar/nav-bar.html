@@ -28,8 +28,19 @@
         </button>
         <div class="nb-struttura-dropdown" *ngIf="isStrutturaOpen">
           <div class="nb-dropdown-item" routerLink="/creaStruttura">Crea</div>
-          <div class="nb-dropdown-item" routerLink="/sceltaStruttura" [queryParams]="{azione: 'modifica'}">
+          <div
+            class="nb-dropdown-item"
+            routerLink="/sceltaStruttura"
+            [queryParams]="{azione: 'modifica'}"
+          >
             Modifica
+          </div>
+          <div
+            class="nb-dropdown-item"
+            routerLink="/sceltaStruttura"
+            [queryParams]="{azione:'disabilita'}"
+          >
+            Disabilita
           </div>
         </div>
       </div>
@@ -54,11 +65,21 @@
           </svg>
         </button>
         <div class="nb-disabilita-dropdown" *ngIf="isDisabilitaOpen">
-          <div class="nb-dropdown-item" routerLink="/sceltaStruttura" [queryParams]="{azione:'seleziona'}">Crea</div>
-          <div class="nb-dropdown-item" routerLink="/sceltaStruttura"  [queryParams]="{azione:'selezionaModifica'}">
+          <div
+            class="nb-dropdown-item"
+            routerLink="/sceltaStruttura"
+            [queryParams]="{azione:'seleziona'}"
+          >
+            Crea
+          </div>
+          <div
+            class="nb-dropdown-item"
+            routerLink="/sceltaStruttura"
+            [queryParams]="{azione:'selezionaModifica'}"
+          >
             Modifica
           </div>
-          <div class="nb-dropdown-item" routerLink="">Disabilita</div>
+          <div class="nb-dropdown-item">Disabilita</div>
         </div>
       </div>
 
@@ -79,7 +100,12 @@
               d="M21 21l-4.35-4.35M16.65 16.65a7.5 7.5 0 111.414-1.414l4.243 4.243"
             ></path>
           </svg>
-          <input type="text" placeholder="Cerca struttura" class="nb-search-input" (change)="search()" />
+          <input
+            type="text"
+            placeholder="Cerca struttura"
+            class="nb-search-input"
+            (change)="search()"
+          />
         </div>
       </div>
 
@@ -104,7 +130,11 @@
         </button>
         <div class="nb-categoria-dropdown" *ngIf="isCategoriaOpen">
           <div class="nb-dropdown-item" routerLink="/creaCategoria">Crea</div>
-          <div class="nb-dropdown-item" routerLink="/disabilitaCategoria" [queryParams]="{azione:'disabilita'}">
+          <div
+            class="nb-dropdown-item"
+            routerLink="/disabilitaCategoria"
+            [queryParams]="{azione:'disabilita'}"
+          >
             Disabilita
           </div>
         </div>

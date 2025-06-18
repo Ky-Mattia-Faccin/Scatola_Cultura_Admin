@@ -106,29 +106,3 @@
 }
 
 
-
-.confirm-btn {
-  position: absolute;
-  bottom: 2%;
-  right: 2%;
-
-  background-color: #00bfff;
-  border: none;
-  border-radius: 25px;
-  padding: 0.75rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #fff;
-  cursor: pointer;
-  z-index: 10;
-
-  transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-.confirm-btn:hover {
-  background-color: #08c;
-}
-
-.confirm-btn:active {
-  transform: scale(0.95);
-}

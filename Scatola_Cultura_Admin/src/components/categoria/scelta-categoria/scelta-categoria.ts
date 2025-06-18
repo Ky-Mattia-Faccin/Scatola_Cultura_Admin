@@ -47,7 +47,6 @@ export class SceltaCategoria implements OnInit {
             } categoria ${cat.categoria}`,
             err
           );
-
           cat.flgDisabilita = !cat.flgDisabilita;
         },
       });

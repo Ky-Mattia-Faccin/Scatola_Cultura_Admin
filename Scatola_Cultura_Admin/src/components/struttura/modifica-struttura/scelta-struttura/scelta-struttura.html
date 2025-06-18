@@ -1,17 +1,32 @@
 <div class="card">
-  <div class="title">
-    Seleziona una struttura
-  </div>
+  <div class="title">Seleziona una struttura</div>
   <div class="structures-wrapper" *ngIf="strutture$ | async as strutture">
     <label class="structure" *ngFor="let struttura of strutture; let i = index">
+
+       <!-- Se azione è 'disabilita', mostra checkbox -->
+    <ng-container *ngIf="azione === 'disabilita'; else radioMode">
+      <input
+        type="checkbox"
+        class="checkbox"
+        [(ngModel)]="struttura.flgDisabilita"
+        [name]="'strutturaCheckbox' + i"
+        (change)="onSelectStruttura(struttura, struttura.idStruttura)"
+      />
+    </ng-container>
+
+       <!-- Altrimenti mostra radio -->
+    <ng-template #radioMode>
       <input
         type="radio"
         class="radio"
         name="strutturaSelection"
         [value]="struttura.idStruttura"
         [id]="'struttura-' + i"
-        (change)="onSelectStruttura(struttura.idStruttura)"
+        (change)="onSelectStruttura(struttura, struttura.idStruttura)"
       />
+    </ng-template>
+
+    
       <span>{{ struttura.nomeStruttura }}</span>
     </label>
   </div>

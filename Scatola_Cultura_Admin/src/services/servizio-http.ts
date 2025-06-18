@@ -13,7 +13,8 @@ export class ServizioHttp {
   getStrutture(): Observable<Struttura[]> {
     return this.httpClient
       .get<Struttura[]>(
-        'https://dev.api.scatolacultura.it/api/DisabilitaStruttura/get'
+        //'https://dev.api.scatolacultura.it/api/DisabilitaStruttura/get'
+        `http://192.168.123.150:5000/api/DisabilitaStruttura/get`
       )
       .pipe(
         catchError((error) => {
@@ -59,6 +60,15 @@ export class ServizioHttp {
       dati
     );
 
+  }
+
+
+  patchStrutture(id:number,disattiva:boolean){
+    return this.httpClient.patch(`http://192.168.123.150:5000/api/Struttura/patch?id=${id}`,
+      {
+        disattiva:true
+      }
+    )
   }
 
 }
