@@ -28,7 +28,7 @@
         </button>
         <div class="nb-struttura-dropdown" *ngIf="isStrutturaOpen">
           <div class="nb-dropdown-item" routerLink="/creaStruttura">Crea</div>
-          <div class="nb-dropdown-item" routerLink="/sceltaModificaStruttura">
+          <div class="nb-dropdown-item" routerLink="/sceltaStruttura" [queryParams]="{azione: 'modifica'}">
             Modifica
           </div>
         </div>
@@ -54,7 +54,7 @@
           </svg>
         </button>
         <div class="nb-disabilita-dropdown" *ngIf="isDisabilitaOpen">
-          <div class="nb-dropdown-item" routerLink="">Crea</div>
+          <div class="nb-dropdown-item" routerLink="/sceltaStruttura" [queryParams]="{azione:'seleziona'}">Crea</div>
           <div class="nb-dropdown-item" routerLink="">
             Modifica
           </div>
@@ -104,7 +104,7 @@
         </button>
         <div class="nb-categoria-dropdown" *ngIf="isCategoriaOpen">
           <div class="nb-dropdown-item" routerLink="/creaCategoria">Crea</div>
-          <div class="nb-dropdown-item" routerLink="/disabilitaCategoria">
+          <div class="nb-dropdown-item" routerLink="/disabilitaCategoria" [queryParams]="{azione:'disabilita'}">
             Disabilita
           </div>
         </div>

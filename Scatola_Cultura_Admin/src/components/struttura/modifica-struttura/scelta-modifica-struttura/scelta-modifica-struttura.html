@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="structures-wrapper"  *ngIf="strutture$ | async as strutture">
+  <div class="structures-wrapper" *ngIf="strutture$ | async as strutture">
     <label class="structure" *ngFor="let struttura of strutture; let i = index">
       <input
         type="radio"
@@ -7,8 +7,9 @@
         name="strutturaSelection"
         [value]="struttura.idStruttura"
         [id]="'struttura-' + i"
-        [routerLink]="['/modificaStruttura', struttura.idStruttura]"
+        (change)="onSelectStruttura(struttura.idStruttura)"
       />
       <span>{{ struttura.nomeStruttura }}</span>
     </label>
+  </div>
 </div>

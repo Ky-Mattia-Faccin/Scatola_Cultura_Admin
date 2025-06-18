@@ -4,6 +4,7 @@ import { ModificaStruttura } from '../components/struttura/modifica-struttura/mo
 import { CreaCategoria } from '../components/categoria/crea-categoria/crea-categoria';
 import { DisabilitaCategoria } from '../components/categoria/disabilita-categoria/disabilita-categoria';
 import { SceltaModificaStruttura } from '../components/struttura/modifica-struttura/scelta-modifica-struttura/scelta-modifica-struttura';
+import { CreaDisabilita } from '../components/Disabilità/crea-disabilita/crea-disabilita';
 
 export const routes: Routes = [
     {
@@ -19,6 +20,9 @@ export const routes: Routes = [
         path:'disabilitaCategoria',component:DisabilitaCategoria
     },
     {
-        path:'sceltaModificaStruttura',component:SceltaModificaStruttura
+        path:'sceltaStruttura',component:SceltaModificaStruttura
+    },
+    {
+        path:'creaDisabilità',component:CreaDisabilita
     }
 ];
