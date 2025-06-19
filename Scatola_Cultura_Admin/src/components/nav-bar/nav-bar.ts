@@ -14,35 +14,44 @@ import { ServizioHttp } from '../../services/servizio-http';
 
 
 export class NavBar {
+  // Stati per gestire l'apertura/chiusura dei menu a tendina
   isCategoriaOpen: Boolean = false;
   isStrutturaOpen: boolean = false;
   isDisabilitaOpen: boolean = false;
 
+   // Array per memorizzare le strutture caricate
   strutture!: Struttura[];
 
   constructor(private servizio: ServizioHttp, private router: Router) {}
 
+   // Toggle apertura/chiusura menu strutture
   toggleStruttura() {
     this.isStrutturaOpen = !this.isStrutturaOpen;
   }
 
+    // Toggle apertura/chiusura menu categorie
   toggleCategoria() {
     this.isCategoriaOpen = !this.isCategoriaOpen;
   }
+  // Toggle apertura/chiusura menu disabilità
   toggleDisabilita() {
     this.isDisabilitaOpen = !this.isDisabilitaOpen;
   }
 
-  // Esegue la ricerca filtrando le strutture e naviga verso la pagina di modifica
+
+  // Metodo per eseguire la ricerca filtrando le strutture per nome
+  // e navigare alla pagina di modifica della struttura trovata
   search() {
     const input = document.querySelector('.nb-search-input') as HTMLInputElement;
     const filtro = input.value;
 
+        // Se le strutture sono già in sessionStorage, usa quelle per il filtro
     if (sessionStorage.getItem('strutture')) {
       const struttureJSON = sessionStorage.getItem('strutture');
       this.strutture = JSON.parse(struttureJSON || '[]');
       this.filterAndNavigate(filtro);
     } else {
+       // Altrimenti, le carica da backend e poi filtra
       this.servizio.getStrutture().subscribe((value) => {
         this.strutture = value;
         this.filterAndNavigate(filtro);
@@ -50,7 +59,7 @@ export class NavBar {
     }
   }
 
-  /**
+ /**
    * Filtra la lista delle strutture cercando quelle il cui nome contiene il filtro
    * e naviga alla pagina di modifica della struttura trovata.
    */
@@ -60,9 +69,7 @@ export class NavBar {
     );
 
     if (struttura) {
-      /* nella configurazione del RouterModule per far ricaricare la pagina 
-      *  se si naviga verso la stessa route con parametri diversi.    
-      */
+      // Naviga alla pagina di modifica struttura con id specifico
       this.router.navigate(['/modificaStruttura', struttura.idStruttura]);
     }
   }

@@ -101,12 +101,15 @@ export class SceltaDisabilitaStruttura implements OnInit {
 
 
   onSelectDisabilita(dis: Disabilita) {
+     // Salva lo stato attuale di disabilitazione della disabilità
   const stato = dis.flgDisabilita;
 
+    // Invia la richiesta PATCH al server per aggiornare lo stato di disabilitazione della disabilità
   this.servizioHttp
     .patchDisabilità(dis.disabilitaStruttura, stato)
     .subscribe({
       next: () => {
+        // In caso di successo, logga in console un messaggio che indica l’azione effettuata
         console.log(
           `Disabilità ${dis.categoria.nome} ${
             stato ? 'disabilitata' : 'riabilitata'
@@ -114,10 +117,12 @@ export class SceltaDisabilitaStruttura implements OnInit {
         );
       },
       error: (err) => {
+      // In caso di errore, logga l’errore in console
         console.error(
           `Errore ${stato ? 'disabilitando' : 'riabilitando'} disabilità`,
           err
         );
+        // Ripristina lo stato originale della disabilità (inversione dell’azione fallita)
         dis.flgDisabilita = !dis.flgDisabilita; 
       },
     });

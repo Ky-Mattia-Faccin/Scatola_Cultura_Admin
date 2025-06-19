@@ -185,10 +185,25 @@
     <div class="row mb-3 align-items-end">
       <!-- Input immagine personalizzato -->
       <div class="col-md-4">
-        <label for="file" class="custum-file-upload d-flex flex-column" [ngClass]="{'loaded':base64Image}">
-          <div class="text mb-1" >
+        <label
+          for="file"
+          class="custum-file-upload d-flex flex-column"
+          [ngClass]="{'loaded':base64Image}"
+        >
+          <div class="text mb-1">
             <span *ngIf="!base64Image">Carica immagine</span>
-            <span *ngIf="base64Image">Immagine caricata con successo</span>
+            <span *ngIf="base64Image" class="d-block mt-2">
+               Immagine caricata con successo
+              <img
+                [src]="'data:image/*;base64,' + base64Image"
+                alt="Anteprima immagine"
+                style="
+                  max-width: 20%;
+                  max-height: 20%;
+                  border: 1px solid #ccc;
+                "
+              />
+            </span>
           </div>
           <input
             id="file"

@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 
 export class CreaStruttura {
   formData: any = {
+     // Oggetto contenente i dati del form per la nuova struttura
     nomeStruttura: '',
     ambito: '',
     citta: '',
@@ -27,6 +28,7 @@ export class CreaStruttura {
     didascaliaImmagine:'',
   };
 
+    // Variabili per la gestione dell'immagine
   base64Image: string | null = null;
   selectedFile: File | null = null;
 
@@ -35,6 +37,7 @@ export class CreaStruttura {
     private cdr: ChangeDetectorRef
   ) {}
 
+    // Metodo chiamato al caricamento di un file: converte l'immagine in base64
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -42,7 +45,7 @@ export class CreaStruttura {
         .then((base64) => {
           this.base64Image = base64.split(',')[1];
           this.selectedFile = file; 
-          this.cdr.detectChanges(); 
+          this.cdr.detectChanges(); // Forza il rilevamento dei cambiamenti
         })
         .catch((err) => {
           console.error('Errore conversione file:', err);
@@ -50,6 +53,7 @@ export class CreaStruttura {
     }
   }
 
+   // Metodo per convertire un file immagine in una stringa base64
   convertToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -59,7 +63,7 @@ export class CreaStruttura {
     });
   }
 
-
+  // Metodo per inviare i dati della nuova struttura al backend
   submit() {
     if (!this.base64Image) {
       console.error('Nessuna immagine selezionata');
@@ -87,6 +91,7 @@ export class CreaStruttura {
         DidascaliaImmagine: this.formData.didascaliaImmagine,
       }
     };
+      // Invio dei dati al backend tramite servizio HTTP
     this.servizoHttp.sendStruttura(dataToSend).subscribe({
       next: (res) => {
         alert('Struttura creata con successo!');

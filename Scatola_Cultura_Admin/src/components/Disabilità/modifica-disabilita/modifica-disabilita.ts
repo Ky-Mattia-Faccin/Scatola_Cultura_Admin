@@ -32,18 +32,26 @@ export class ModificaDisabilita implements OnInit {
 }
 
 
-  submit(){
-    this.servizioHttp.UpdateDisabilità(this.disabilita.descrizione,this.disabilita.disabilitaStruttura).subscribe({
+ submit() {
+  // Chiama il servizio HTTP per aggiornare la disabilità, passando descrizione e ID
+  this.servizioHttp.UpdateDisabilità(this.disabilita.descrizione, this.disabilita.disabilitaStruttura)
+    .subscribe({
       next: (res) => {
+        // Se la richiesta va a buon fine, mostra un messaggio di conferma all'utente
         alert('Struttura modificata con successo!');
       },
       error: (err) => {
+        // Se c'è un errore, lo stampa sulla console per debug
         console.error('Errore upload', err);
+
         if (err.error && err.error.errors) {
           console.error('Dettagli errori validazione:', err.error.errors);
         }
+
+        // Mostra un messaggio di errore all'utente invitandolo a riprovare
         alert('Errore nel caricamento, riprova.');
       }
     });
-  }
+}
+
 }

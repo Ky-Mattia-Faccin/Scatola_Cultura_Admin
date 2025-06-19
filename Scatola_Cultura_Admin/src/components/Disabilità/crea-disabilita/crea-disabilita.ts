@@ -27,17 +27,22 @@ export class CreaDisabilita implements OnInit {
     const cat = sessionStorage.getItem('categoriaSelezionata');
     this.categoria = cat ? cat : '';
   }
+submit() {
+  // Crea l'oggetto body con i dati da inviare al server
+  const body = {
+    IdCategoria: this.categoria,  
+    IdStruttura: this.idStruttura, 
+    Descrizione: this.descrizione,
+  };
 
-  submit() {
-    const body = {
-      IdCategoria: this.categoria,
-      IdStruttura: this.idStruttura,
-      Descrizione: this.descrizione,
-    };
+  // Invia i dati al server tramite il servizio HTTP
+  this.servizio.sendDisabilità(body).subscribe({
 
-    this.servizio.sendDisabilità(body).subscribe({
-      next: () => window.alert('Categoria inviata con successo'),
-      error: () => window.alert('Errore invio categoria'),
-    });
-  }
+    next: () => window.alert('Categoria inviata con successo'),
+    
+
+    error: () => window.alert('Errore invio categoria'),
+  });
+}
+
 }
