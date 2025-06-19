@@ -19,23 +19,24 @@ export class ModificaDisabilita implements OnInit {
   categoria ?: string;
   descrizione?:string;
 
-  // Oggetto per gestire la sottoscrizione alla route
+  // Sottoscrizione per ascoltare i parametri della route
   private routeSub!: Subscription;
 
   ngOnInit(): void {
-    this.getParams()
-    const arrayDisabilitaJSON=sessionStorage.getItem(`disabilita${this.id}`)
+  // Recupera il parametro 'categoria' dalla route
+    this.getCat()
+
+  // Recupera dall’archivio sessionStorage l’array di disabilità selezionate
+    const arrayDisabilitaJSON=sessionStorage.getItem(`disabilitàStrutturaSelezionata`)
     const arrayDisabilità:Disabilita[]=JSON.parse(arrayDisabilitaJSON || '[]')
 
+    // Trova la disabilità corrispondente alla categoria recuperata dalla route
     this.disabilita=arrayDisabilità.find((d) => d.categoria.nome === this.categoria)!;
   }
 
-  getParams() {
+  getCat() {
+        // Sottoscrizione per aggiornare la categoria in base al parametro della route
     this.routeSub = this.route.paramMap.subscribe((params: ParamMap) => {
-      const parametroId = params.get('id');
-
-      if (parametroId !== null) this.id = parseInt(parametroId, 10);
-
       const cat = params.get('categoria')?.toString();
 
       if (cat !== null) this.categoria = cat;
@@ -43,6 +44,6 @@ export class ModificaDisabilita implements OnInit {
   }
 
   submit(){
-
+       // Metodo per inviare i dati modificati al backend (da implementare)
   }
 }

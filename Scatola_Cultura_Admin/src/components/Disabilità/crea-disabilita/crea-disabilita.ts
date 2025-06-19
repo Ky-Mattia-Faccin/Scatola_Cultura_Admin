@@ -15,18 +15,18 @@ export class CreaDisabilita implements OnInit {
   descrizione:string='';
 
   ngOnInit(): void {
-    //prendere id struttura e la categoria dal session storage
+     // Recupera l'id della struttura selezionata da sessionStorage
 
     const id = sessionStorage.getItem('idStrutturaSelezionata');
     this.idStruttura = id ? parseInt(id, 10): 1;
 
-
+     // Recupera la categoria selezionata da sessionStorage
     const cat=sessionStorage.getItem('categoriaSelezionata');
     this.categoria=cat ? cat : '';
   }
 
   submit(){
-    //invia al back end
+       // Invio dei dati al backend (da implementare)
   }
 
 }

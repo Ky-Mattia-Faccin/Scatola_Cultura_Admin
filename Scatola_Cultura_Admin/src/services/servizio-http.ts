@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Struttura } from '../interfaces/Istruttura';
+import { Disabilita, Struttura } from '../interfaces/Istruttura';
 import { HttpClientModule } from '@angular/common/http';
 import { catDisabilita } from '../interfaces/Istruttura';
 @Injectable({
@@ -76,40 +76,15 @@ export class ServizioHttp {
     );
   }
 
-  getDisabilitàStruttura(id: number): Observable<Struttura> {
+  getDisabilitàStruttura(id: number): Observable<Disabilita[]> {
     return this.httpClient
-      .get<Struttura>(
+      .get<Disabilita[]>(
         `http://192.168.123.150:5000/api/DisabilitaStruttura/getByID/${id}`
       )
       .pipe(
         catchError((error) => {
           console.error('Errore nel recupero delle disabilità:', error);
-
-          // Restituisci un oggetto "Struttura" vuoto
-          const strutturaVuota: Struttura = {
-            idStruttura: 0,
-            nomeStruttura: '',
-            descrizione: '',
-            indirizzoCompleto: '',
-            citta: '',
-            provincia: '',
-            via: '',
-            ambito: '',
-            social1: '',
-            social2: '',
-            posizione: '',
-            sitoWeb: '',
-            testoSemplificato: '',
-            flgDisabilita: false,
-            immagine: {
-              nomeImmagine: '',
-              byteImmagine: 0,
-              didascaliaImmagine: '',
-            },
-            disabilita: [],
-          };
-
-          return of(strutturaVuota);
+          return of([])
         })
       );
   }

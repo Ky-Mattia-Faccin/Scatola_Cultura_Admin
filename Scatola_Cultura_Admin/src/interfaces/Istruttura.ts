@@ -30,20 +30,9 @@ export interface catDisabilita {
 
 
 export interface Disabilita{
+  idStruttura:number,
   categoria:catDisabilita;
   descrizione:string,
+  testoSemplice:'semplice',
   flgDisabilita:boolean;
 }
-
-/*
-disabilita:[
-  {
-  categoria:{
-    nome:'visiva',
-    descrizione:'desc',
-    flgDisabilita:false
-  },
-  descrizione:'descrizione',
-  flgDisabilita:false
-}
-]*/

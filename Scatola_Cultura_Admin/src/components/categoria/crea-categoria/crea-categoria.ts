@@ -10,6 +10,7 @@ import { ServizioHttp } from '../../../services/servizio-http';
   styleUrl: './crea-categoria.css',
 })
 export class CreaCategoria {
+  // Dati del form per la nuova categoria
   formData = {
     IdCategoria: '',
     DescCategoria: '',
@@ -17,6 +18,7 @@ export class CreaCategoria {
 
   constructor(private servizio: ServizioHttp) {}
 
+    // Invio dei dati al servizio HTTP  
   submit() {
     this.servizio.sendCategoria(this.formData).subscribe({
       next: () => window.alert('Categoria inviata con successo'),

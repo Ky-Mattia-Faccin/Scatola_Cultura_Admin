@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ValueChangeEvent } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { map, Observable, shareReplay, Subscription, tap } from 'rxjs';
 import { ServizioHttp } from '../../../services/servizio-http';
@@ -24,9 +24,7 @@ export class SceltaDisabilitaStruttura implements OnInit {
 
   // Observable che conterrà la lista di disabilità ottenute da HTTP
   disabilita$!: Observable<Disabilita[]>;
-
-  // Array di disabilità per uso interno, utile per salvataggio in sessionStorage
-  disabilita: Disabilita[] = [];
+  disabilita!:Disabilita[]
 
   // Oggetto per gestire la sottoscrizione alla route
   private routeSub!: Subscription;
@@ -43,23 +41,10 @@ export class SceltaDisabilitaStruttura implements OnInit {
   }
 
   //chiamata per ottenere le disabilita della struttura dall'id
-  loadDisabilita() {
-    this.disabilita$ = this.servizioHttp
-      .getDisabilitàStruttura(this.idStruttura)
-      .pipe(
-        tap((struttura) => {
-          // Estrae le disabilità dalla struttura e le salva in una variabile locale
-          this.disabilita = struttura.disabilita;
-          // Salva le disabilità nel sessionStorage
-          sessionStorage.setItem(
-            `disabilita${this.idStruttura}`,
-            JSON.stringify(this.disabilita)
-          );
-        }),
-        map((struttura) => struttura.disabilita), // Estrae solo l'array di disabilità
-        shareReplay(1)
-      );
-  }
+loadDisabilita() {
+  this.disabilita$ = this.servizioHttp
+    .getDisabilitàStruttura(this.idStruttura)
+}
 
   // Metodo chiamato quando si clicca su una disabilità:
   // naviga alla pagina per modificarla, passando la categoria nella route
@@ -67,9 +52,10 @@ export class SceltaDisabilitaStruttura implements OnInit {
     console.log('idStruttura:', this.idStruttura);
     console.log('categoria:', dis.categoria.nome);
 
+    sessionStorage.setItem('disabilitaSelezionata', JSON.stringify(dis));
+
     this.router.navigate([
       '/modificaDisabilità',
-      this.idStruttura,
       dis.categoria.nome.trim(),
     ]);
   }

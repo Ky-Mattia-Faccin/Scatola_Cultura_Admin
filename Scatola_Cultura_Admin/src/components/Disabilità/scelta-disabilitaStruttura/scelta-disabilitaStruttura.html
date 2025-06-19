@@ -1,12 +1,11 @@
   <div class="card">
     <div class="title">Seleziona una Disabilità</div>
     <div class="structures-wrapper" *ngIf="disabilita$ | async as disabilita">
-      <label class="structure" *ngFor="let d of disabilita ; let i = index">
+      <label class="structure" *ngFor="let d of disabilita ; let i = index" >
         <input
           type="radio"
           class="radio"
-          name="disabilitàSelection{{i}}"
-          [(ngModel)]="d.flgDisabilita"
+          name="disabilitàSelection{{i}}"   
           (change)="onClickDisabilita(d)"
         />
         <span>{{ d.categoria.nome }}</span>
