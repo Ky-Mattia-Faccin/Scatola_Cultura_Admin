@@ -84,17 +84,25 @@ export class ServizioHttp {
       .pipe(
         catchError((error) => {
           console.error('Errore nel recupero delle disabilità:', error);
-          return of([])
+          return of([]);
         })
       );
   }
 
-  patchDisabilità(id:number,disattiva:boolean): Observable<any>{
+  patchDisabilità(id: number, disattiva: boolean): Observable<any> {
     return this.httpClient.patch(
       `http://192.168.123.150:5000/api/DisabilitaStruttura/patch?id=${id}`,
       {
         disattiva: true,
       }
+    );
+  }
+
+  UpdateDisabilità(dati: string, id: number) {
+    console.log(typeof dati, dati);
+    return this.httpClient.put(
+      `http://192.168.123.150:5000/api/DisabilitaStruttura/aggiornaDescrizione?id=${id}`,
+        String(dati),
     );
   }
 }
