@@ -99,10 +99,10 @@ export class ServizioHttp {
   }
 
   UpdateDisabilità(dati: string, id: number) {
-    console.log(typeof dati, dati);
+    const body = { descrizione: dati };
     return this.httpClient.put(
       `http://192.168.123.150:5000/api/DisabilitaStruttura/aggiornaDescrizione?id=${id}`,
-        String(dati),
+        body,
     );
   }
 }
