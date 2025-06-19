@@ -51,7 +51,6 @@ export class SceltaCategoria implements OnInit {
        // Seleziona la categoria e naviga alla pagina di creazione disabilità
       if (cat.flgDisabilita) {
         sessionStorage.setItem('categoriaSelezionata', cat.nome);
-        console.log('Categoria selezionata:', cat.nome);
         this.router.navigate(['/creaDisabilità']);
       }
     }

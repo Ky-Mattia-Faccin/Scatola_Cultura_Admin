@@ -6,6 +6,18 @@ import { map, Observable, shareReplay, Subscription, tap } from 'rxjs';
 import { ServizioHttp } from '../../../services/servizio-http';
 import { Disabilita, Struttura } from '../../../interfaces/Istruttura';
 
+export interface DisabilitaBackend {
+  idStruttura: number;
+  descrizione: string;
+  flgDisabilita: boolean;
+  disabilitaStruttura: number;
+  disabilita: {
+    categoria: string;
+    descrizione: string;
+    flgDisabilita: boolean;
+  };
+}
+
 @Component({
   selector: 'app-scelta-disabilita',
   imports: [CommonModule, FormsModule],
@@ -24,7 +36,10 @@ export class SceltaDisabilitaStruttura implements OnInit {
 
   // Observable che conterrà la lista di disabilità ottenute da HTTP
   disabilita$!: Observable<Disabilita[]>;
-  disabilita!:Disabilita[]
+  disabilita!: Disabilita[];
+
+
+  azione!:string
 
   // Oggetto per gestire la sottoscrizione alla route
   private routeSub!: Subscription;
@@ -38,25 +53,53 @@ export class SceltaDisabilitaStruttura implements OnInit {
         this.loadDisabilita();
       }
     });
+
+    this.route.queryParams.subscribe(parametri => {
+    this.azione = parametri['azione'];
+    })
+
   }
 
   //chiamata per ottenere le disabilita della struttura dall'id
-loadDisabilita() {
-  this.disabilita$ = this.servizioHttp
-    .getDisabilitàStruttura(this.idStruttura)
-}
+
+  loadDisabilita() {
+    this.disabilita$ = this.servizioHttp
+      .getDisabilitàStruttura(this.idStruttura)
+      .pipe(
+        //per convertire i dati nel tipo Disabilita
+        map((dataFromBackend: DisabilitaBackend[]): Disabilita[] =>
+          dataFromBackend.map(
+            (item: DisabilitaBackend): Disabilita => ({
+              idStruttura: item.idStruttura,
+              categoria: {
+                nome: item.disabilita.categoria,
+                descrizione: item.disabilita.descrizione,
+                flgDisabilita: item.disabilita.flgDisabilita,
+              },
+              descrizione: item.descrizione,
+              testoSemplice: 'semplice',
+              flgDisabilita: item.flgDisabilita,
+            })
+          )
+        ),
+        tap((mappa: Disabilita[]) => (this.disabilita = mappa)),
+        shareReplay(1)
+      );
+  }
+
 
   // Metodo chiamato quando si clicca su una disabilità:
   // naviga alla pagina per modificarla, passando la categoria nella route
   onClickDisabilita(dis: Disabilita) {
-    console.log('idStruttura:', this.idStruttura);
-    console.log('categoria:', dis.categoria.nome);
 
-    sessionStorage.setItem('disabilitaSelezionata', JSON.stringify(dis));
+      sessionStorage.setItem('disabilitaSelezionata', JSON.stringify(dis));
+      this.router.navigate(['/modificaDisabilità']);
 
-    this.router.navigate([
-      '/modificaDisabilità',
-      dis.categoria.nome.trim(),
-    ]);
+    
+  }
+
+
+  onSelectDisabilita(dis:Disabilita){
+
   }
 }

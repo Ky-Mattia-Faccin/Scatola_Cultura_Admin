@@ -76,9 +76,9 @@ export class ServizioHttp {
     );
   }
 
-  getDisabilitàStruttura(id: number): Observable<Disabilita[]> {
+  getDisabilitàStruttura(id: number): Observable<any[]> {
     return this.httpClient
-      .get<Disabilita[]>(
+      .get<any[]>(
         `http://192.168.123.150:5000/api/DisabilitaStruttura/getByID/${id}`
       )
       .pipe(

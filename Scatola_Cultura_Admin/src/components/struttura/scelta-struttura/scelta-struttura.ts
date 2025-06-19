@@ -78,7 +78,9 @@ export class SceltaStruttura implements OnInit {
       case 'selezionaDisabilità':
         this.router.navigate(['/sceltaDisabilitàStruttura/', id])
       break;
-
+        case 'disattivaDisabilità': 
+        this.router.navigate(['/sceltaDisabilitàStruttura/', id],{ queryParams:{azione:'disattiva'}}) 
+          break
       default:
         console.warn('Azione non riconosciuta:', this.azione);
         break;

@@ -2,12 +2,24 @@
     <div class="title">Seleziona una Disabilità</div>
     <div class="structures-wrapper" *ngIf="disabilita$ | async as disabilita">
       <label class="structure" *ngFor="let d of disabilita ; let i = index" >
+        <ng-container *ngIf="azione === 'disattiva'; else radioMode">
+      <input
+        type="checkbox"
+        class="checkbox"
+        [(ngModel)]="d.flgDisabilita"
+        [name]="'strutturaCheckbox' + i"
+        (change)="onSelectDisabilita(d)"
+      />
+    </ng-container>
+
+    <ng-template #radioMode>
         <input
           type="radio"
           class="radio"
-          name="disabilitàSelection{{i}}"   
+          name="disabilitàSelection"   
           (change)="onClickDisabilita(d)"
         />
+      </ng-template>
         <span>{{ d.categoria.nome }}</span>
       </label>
     </div>

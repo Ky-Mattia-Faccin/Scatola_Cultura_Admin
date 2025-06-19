@@ -108,7 +108,6 @@ export class ModificaStruttura implements OnInit, OnDestroy {
           this.base64Image = base64.split(',')[1];
           this.selectedFile = file;
           this.cdr.detectChanges();
-          console.log('base64Image settata:', this.base64Image?.slice(0, 30));
         })
         .catch((err) => {
           console.error('Errore conversione file:', err);
@@ -153,11 +152,9 @@ export class ModificaStruttura implements OnInit, OnDestroy {
       }
     };
 
-    console.log(dataToSend);
 
     this.servizioHttp.updateStruttura(dataToSend,this.idStruttura).subscribe({
       next: (res) => {
-        console.log('Upload riuscito', res);
         alert('Struttura modificata con successo!');
       },
       error: (err) => {

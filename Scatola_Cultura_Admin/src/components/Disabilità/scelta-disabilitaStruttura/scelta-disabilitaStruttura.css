@@ -94,9 +94,13 @@
 }
 
 /*=== CHECKBOX  HIDDEN ===*/
-.radio {
+.radio,.checkbox{
   display: none;
 }
+.structure:has(input.checkbox:checked) {
+  background-color: #3434349a;
+  color: #e13a3a;
 
-
+  text-decoration: line-through;
+}
 

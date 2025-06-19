@@ -28,7 +28,7 @@ export const routes: Routes = [
         path:'creaDisabilità',component:CreaDisabilita
     },
     {
-        path:'modificaDisabilità/:categoria',component:ModificaDisabilita
+        path:'modificaDisabilità',component:ModificaDisabilita
     },
     {
         path:'sceltaDisabilitàStruttura/:id', component:SceltaDisabilitaStruttura
