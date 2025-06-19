@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Struttura } from '../../../../interfaces/Istruttura';
-import { ServizioHttp } from '../../../../services/servizio-http';
+import { Struttura } from '../../../interfaces/Istruttura';
+import { ServizioHttp } from '../../../services/servizio-http';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Observable, shareReplay, tap } from 'rxjs';
@@ -75,6 +75,9 @@ export class SceltaStruttura implements OnInit {
             },
           });
         break;
+      case 'selezionaDisabilità':
+        this.router.navigate(['/sceltaDisabilitàStruttura/', id])
+      break;
 
       default:
         console.warn('Azione non riconosciuta:', this.azione);

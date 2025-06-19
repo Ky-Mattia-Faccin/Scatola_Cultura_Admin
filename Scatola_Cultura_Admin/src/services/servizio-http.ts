@@ -3,13 +3,10 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Struttura } from '../interfaces/Istruttura';
 import { HttpClientModule } from '@angular/common/http';
-import { catDisabilita } from '../components/categoria/scelta-categoria/scelta-categoria';
+import { catDisabilita } from '../interfaces/Istruttura';
 @Injectable({
   providedIn: 'root',
 })
-
-
-
 export class ServizioHttp {
   constructor(private httpClient: HttpClient) {}
 
@@ -56,24 +53,21 @@ export class ServizioHttp {
     );
   }
 
-
-  updateStruttura(dati:any,id:number){
+  updateStruttura(dati: any, id: number) {
     return this.httpClient.put(
       `http://192.168.123.150:5000/api/Struttura/updateStruttura/${id}`,
       dati
     );
-
   }
 
-
-  patchStrutture(id:number,disattiva:boolean){
-    return this.httpClient.patch(`http://192.168.123.150:5000/api/Struttura/patch?id=${id}`,
+  patchStrutture(id: number, disattiva: boolean) {
+    return this.httpClient.patch(
+      `http://192.168.123.150:5000/api/Struttura/patch?id=${id}`,
       {
-        disattiva:true
+        disattiva: true,
       }
-    )
+    );
   }
-
 
   sendCategoria(dati: any): Observable<any> {
     return this.httpClient.post(
@@ -82,4 +76,41 @@ export class ServizioHttp {
     );
   }
 
+  getDisabilitàStruttura(id: number): Observable<Struttura> {
+    return this.httpClient
+      .get<Struttura>(
+        `http://192.168.123.150:5000/api/DisabilitaStruttura/getByID/${id}`
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Errore nel recupero delle disabilità:', error);
+
+          // Restituisci un oggetto "Struttura" vuoto
+          const strutturaVuota: Struttura = {
+            idStruttura: 0,
+            nomeStruttura: '',
+            descrizione: '',
+            indirizzoCompleto: '',
+            citta: '',
+            provincia: '',
+            via: '',
+            ambito: '',
+            social1: '',
+            social2: '',
+            posizione: '',
+            sitoWeb: '',
+            testoSemplificato: '',
+            flgDisabilita: false,
+            immagine: {
+              nomeImmagine: '',
+              byteImmagine: 0,
+              didascaliaImmagine: '',
+            },
+            disabilita: [],
+          };
+
+          return of(strutturaVuota);
+        })
+      );
+  }
 }

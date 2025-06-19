@@ -4,12 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ServizioHttp } from '../../../services/servizio-http';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { catDisabilita } from '../../../interfaces/Istruttura';
 
-export interface catDisabilita {
-  categoria: string;
-  descrizione: string;
-  flgDisabilita: boolean;
-}
 
 @Component({
   selector: 'app-disabilita-categoria',
@@ -31,10 +27,10 @@ export class SceltaCategoria implements OnInit {
     if (this.azione === 'disabilita') {
       const disattiva = cat.flgDisabilita;
 
-      this.servizioHttp.patchCategoria(cat.categoria, disattiva).subscribe({
+      this.servizioHttp.patchCategoria(cat.nome, disattiva).subscribe({
         next: () => {
           console.log(
-            `Categoria ${cat.categoria} ${
+            `Categoria ${cat.nome} ${
               disattiva ? 'disattivata' : 'riattivata'
             }`
           );
@@ -43,7 +39,7 @@ export class SceltaCategoria implements OnInit {
           console.error(
             `Errore ${
               disattiva ? 'disattivazione' : 'riattivazione'
-            } categoria ${cat.categoria}`,
+            } categoria ${cat.nome}`,
             err
           );
           cat.flgDisabilita = !cat.flgDisabilita;
@@ -51,8 +47,8 @@ export class SceltaCategoria implements OnInit {
       });
     } else if (this.azione === 'seleziona') {
       if (cat.flgDisabilita) {
-        sessionStorage.setItem('categoriaSelezionata', cat.categoria);
-        console.log('Categoria selezionata:', cat.categoria);
+        sessionStorage.setItem('categoriaSelezionata', cat.nome);
+        console.log('Categoria selezionata:', cat.nome);
         this.router.navigate(['/creaDisabilità']);
       }else{
         

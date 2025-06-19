@@ -3,9 +3,10 @@ import { CreaStruttura } from '../components/struttura/crea-struttura/crea-strut
 import { ModificaStruttura } from '../components/struttura/modifica-struttura/modifica-struttura';
 import { CreaCategoria } from '../components/categoria/crea-categoria/crea-categoria';
 import { SceltaCategoria } from '../components/categoria/scelta-categoria/scelta-categoria';
-import { SceltaStruttura } from '../components/struttura/modifica-struttura/scelta-struttura/scelta-struttura';
+import { SceltaStruttura } from '../components/struttura/scelta-struttura/scelta-struttura';
 import { CreaDisabilita } from '../components/Disabilità/crea-disabilita/crea-disabilita';
 import { ModificaDisabilita } from '../components/Disabilità/modifica-disabilita/modifica-disabilita';
+import { SceltaDisabilitaStruttura } from '../components/Disabilità/scelta-disabilitaStruttura/scelta-disabilitaStruttura';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,9 @@ export const routes: Routes = [
         path:'creaDisabilità',component:CreaDisabilita
     },
     {
-        path:'modificaDisabilita/:id',component:ModificaDisabilita
+        path:'modificaDisabilità/:id/:categoria',component:ModificaDisabilita
+    },
+    {
+        path:'sceltaDisabilitàStruttura/:id', component:SceltaDisabilitaStruttura
     }
 ];

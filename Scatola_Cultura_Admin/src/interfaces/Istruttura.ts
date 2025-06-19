@@ -18,7 +18,32 @@ export interface Struttura {
     byteImmagine:number;
     didascaliaImmagine:string;
   };
-  disabilita:[
-    {categoria:string, descrizione:string}
-  ];
+  disabilita:Disabilita[]
 }
+
+
+export interface catDisabilita {
+  nome: string;
+  descrizione: string;
+  flgDisabilita: boolean;
+}
+
+
+export interface Disabilita{
+  categoria:catDisabilita;
+  descrizione:string,
+  flgDisabilita:boolean;
+}
+
+/*
+disabilita:[
+  {
+  categoria:{
+    nome:'visiva',
+    descrizione:'desc',
+    flgDisabilita:false
+  },
+  descrizione:'descrizione',
+  flgDisabilita:false
+}
+]*/
