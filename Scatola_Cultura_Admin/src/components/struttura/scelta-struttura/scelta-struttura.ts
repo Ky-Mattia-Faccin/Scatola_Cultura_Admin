@@ -3,7 +3,7 @@ import { Struttura } from '../../../interfaces/Istruttura';
 import { ServizioHttp } from '../../../services/servizio-http';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Observable, shareReplay, tap } from 'rxjs';
+import { map, Observable, shareReplay, tap } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -26,15 +26,24 @@ export class SceltaStruttura implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activeRoute.queryParams.subscribe(parametri => {
+   this.activeRoute.queryParams.subscribe(parametri => {
     this.azione = parametri['azione'];
+
+    this.strutture$ = this.servizioHttp.getStrutture().pipe(
+      map(strutture => {
+        // Se azione è 'seleziona' ritorna tutte le strutture, anche disabilitate
+        if (this.azione === 'disabilita') {
+          return strutture;
+        }
+        // Altrimenti filtra fuori quelle disabilitate
+        return strutture.filter(s => !s.flgDisabilita);
+      }),
+      tap(strutture => sessionStorage.setItem('strutture', JSON.stringify(strutture))),
+      shareReplay(1)
+    );
   });
 
-  this.strutture$ = this.servizioHttp.getStrutture().pipe(
-    tap(strutture => sessionStorage.setItem('strutture', JSON.stringify(strutture))),
-    shareReplay(1)  // evita ulteriori chiamate multiple all'Observable
-  );
-  }
+}
 
   onSelectStruttura(struttura: Struttura, id: number) {
     switch (this.azione) {

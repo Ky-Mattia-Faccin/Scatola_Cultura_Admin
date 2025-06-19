@@ -88,4 +88,13 @@ export class ServizioHttp {
         })
       );
   }
+
+  patchDisabilità(id:number,disattiva:boolean): Observable<any>{
+    return this.httpClient.patch(
+      `http://192.168.123.150:5000/api/DisabilitaStruttura/patch?id=${id}`,
+      {
+        disattiva: true,
+      }
+    );
+  }
 }

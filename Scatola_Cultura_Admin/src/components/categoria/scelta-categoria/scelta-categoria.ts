@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ServizioHttp } from '../../../services/servizio-http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catDisabilita } from '../../../interfaces/Istruttura';
 
@@ -59,12 +59,28 @@ export class SceltaCategoria implements OnInit {
   disabilita$!: Observable<catDisabilita[]>;// Observable delle categorie disabilità
 
   ngOnInit(): void {
-    // Ottiene le categorie dal servizio HTTP
-    this.disabilita$ = this.servizioHttp.getCategorie();
 
     // Recupera l'azione da query params (disabilita o seleziona)
     this.Activeroute.queryParams.subscribe((parametri) => {
       this.azione = parametri['azione'];
-    });
+   
+
+    
+    // Trasforma la risposta del backend in oggetti compatibili con catDisabilita
+    this.disabilita$ = this.servizioHttp.getCategorie().pipe(
+      map((response: any[]) =>
+        response.map(item => ({
+          nome: item.categoria,          
+          descrizione: item.descrizione,
+          flgDisabilita: item.flgDisabilita
+        } as catDisabilita))
+        .filter(cat => {
+            // Se azione è 'disabilita', mostra tutto
+            // Altrimenti escludi le categorie disabilitate
+            return this.azione === 'disabilita' || !cat.flgDisabilita;
+          })
+      )
+    );
+     });
   }
 }

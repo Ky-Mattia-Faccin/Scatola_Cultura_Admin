@@ -79,6 +79,7 @@ export class SceltaDisabilitaStruttura implements OnInit {
               descrizione: item.descrizione,
               testoSemplice: 'semplice',
               flgDisabilita: item.flgDisabilita,
+              disabilitaStruttura:item.disabilitaStruttura
             })
           )
         ),
@@ -100,6 +101,26 @@ export class SceltaDisabilitaStruttura implements OnInit {
 
 
   onSelectDisabilita(dis:Disabilita){
+    const selezionata=this.disabilita[this.idStruttura]
+    const stato =selezionata.flgDisabilita;
 
+        this.servizioHttp
+          .patchDisabilità(selezionata.idStruttura, stato)
+          .subscribe({
+            next: () => {
+              console.log(
+                `Struttura ${selezionata.categoria} ${
+                  stato ? 'disabilitata' : 'riabilitata'
+                }`
+              );
+            },
+            error: (err) => {
+              console.error(
+                `Errore ${stato ? 'disabilitando' : 'riabilitando'} struttura`,
+                err
+              );
+              selezionata.flgDisabilita = !selezionata.flgDisabilita;
+            },
+          });
   }
 }

@@ -35,4 +35,5 @@ export interface Disabilita{
   descrizione:string,
   testoSemplice:'semplice',
   flgDisabilita:boolean;
+  disabilitaStruttura:number
 }
