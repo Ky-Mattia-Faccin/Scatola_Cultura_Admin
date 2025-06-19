@@ -100,27 +100,26 @@ export class SceltaDisabilitaStruttura implements OnInit {
   }
 
 
-  onSelectDisabilita(dis:Disabilita){
-    const selezionata=this.disabilita[this.idStruttura]
-    const stato =selezionata.flgDisabilita;
+  onSelectDisabilita(dis: Disabilita) {
+  const stato = dis.flgDisabilita;
 
-        this.servizioHttp
-          .patchDisabilità(selezionata.idStruttura, stato)
-          .subscribe({
-            next: () => {
-              console.log(
-                `Struttura ${selezionata.categoria} ${
-                  stato ? 'disabilitata' : 'riabilitata'
-                }`
-              );
-            },
-            error: (err) => {
-              console.error(
-                `Errore ${stato ? 'disabilitando' : 'riabilitando'} struttura`,
-                err
-              );
-              selezionata.flgDisabilita = !selezionata.flgDisabilita;
-            },
-          });
-  }
+  this.servizioHttp
+    .patchDisabilità(dis.disabilitaStruttura, stato)
+    .subscribe({
+      next: () => {
+        console.log(
+          `Disabilità ${dis.categoria.nome} ${
+            stato ? 'disabilitata' : 'riabilitata'
+          }`
+        );
+      },
+      error: (err) => {
+        console.error(
+          `Errore ${stato ? 'disabilitando' : 'riabilitando'} disabilità`,
+          err
+        );
+        dis.flgDisabilita = !dis.flgDisabilita; 
+      },
+    });
+}
 }

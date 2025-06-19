@@ -117,7 +117,7 @@
             maxlength="200"
             [(ngModel)]="datiForm.IndirizzoCompleto"
             required
-            name="posizione"
+            name="indirizzoCompleto"
             autocomplete="off"
           />
         </label>
@@ -131,7 +131,7 @@
             name="posizione"
             autocomplete="off"
             #posizioneRef="ngModel"
-             pattern="https?://(www\.)?(google\.[a-z]+|goo\.gl)/.*"
+            pattern="https:\/\/(www\.google\.com\/maps\/.+|maps\.app\.goo\.gl\/[A-Za-z0-9]+|goo\.gl\/maps\/[A-Za-z0-9]+)"
             [ngClass]="{ 'is-invalid': posizioneRef.invalid && posizioneRef.touched }"
           />
         </label>

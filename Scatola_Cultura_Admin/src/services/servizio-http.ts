@@ -105,4 +105,12 @@ export class ServizioHttp {
         body,
     );
   }
+
+
+  sendDisabilità(dati:any){
+    return this.httpClient.post(
+      'http://192.168.123.150:5000/api/DisabilitaStruttura/post',
+      dati
+    );
+  }
 }
