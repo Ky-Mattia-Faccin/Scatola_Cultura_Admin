@@ -1,0 +1,24 @@
+<div class="login container">
+  <div class="login-box">
+    <form class="form">
+      <div class="logo"></div>
+      <span class="header" *ngIf="!tipo">Login</span>
+      <span class="header" *ngIf="tipo === 'SingUp'">Register</span>
+      <input type="email" placeholder="Username" class="input" />
+      <input type="password" placeholder="Password" class="input" />
+      <button type="submit" class="button sign-in" *ngIf="!tipo">Sign In</button>
+      <button type="submit" class="button sign-in" *ngIf="tipo === 'SingUp'">Sign Up</button>
+
+      <div class="footer" *ngIf="!tipo">
+        Don't have an account?
+        <span  class="link" (click)="singUp()">Sign up,</span>
+        <br />
+      </div>
+      <div class="footer" *ngIf="tipo === 'SingUp'">
+        Already have an account?
+        <span  class="link" (click)="singIn()">Sign In</span>
+        <br />
+      </div>
+    </form>
+  </div>
+</div>
