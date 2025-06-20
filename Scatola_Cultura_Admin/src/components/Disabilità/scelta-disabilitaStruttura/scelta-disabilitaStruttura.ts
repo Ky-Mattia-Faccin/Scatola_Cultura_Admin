@@ -11,7 +11,7 @@ export interface DisabilitaBackend {
   descrizione: string;
   flgDisabilita: boolean;
   disabilitaStruttura: number;
-  testoSemplice:string;
+  testoSemplificato:string;
   disabilita: {
     categoria: string;
     descrizione: string;
@@ -79,7 +79,7 @@ export class SceltaDisabilitaStruttura implements OnInit {
                 flgDisabilita: item.disabilita.flgDisabilita,
               },
               descrizione: item.descrizione,
-              testoSemplice: item.testoSemplice,
+              testoSemplificato: item.testoSemplificato,
               flgDisabilita: item.flgDisabilita,
               disabilitaStruttura:item.disabilitaStruttura,
               flgWarning:item.flgWarning
@@ -95,6 +95,7 @@ export class SceltaDisabilitaStruttura implements OnInit {
   // Metodo chiamato quando si clicca su una disabilità:
   // naviga alla pagina per modificarla, passando la categoria nella route
   onClickDisabilita(dis: Disabilita) {
+    console.log(dis)
 
       sessionStorage.setItem('disabilitaSelezionata', JSON.stringify(dis));
       this.router.navigate(['/modificaDisabilità']);

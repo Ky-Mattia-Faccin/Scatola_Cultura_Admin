@@ -35,7 +35,7 @@ export class ModificaDisabilita implements OnInit {
  submit() {
   const body={
     descrizione:this.disabilita.descrizione,
-    testoSemplificato:this.disabilita.testoSemplice,
+    testoSemplificato:this.disabilita.testoSemplificato,
     flgWarning:this.disabilita.flgWarning
   }
   // Chiama il servizio HTTP per aggiornare la disabilità, passando descrizione e ID

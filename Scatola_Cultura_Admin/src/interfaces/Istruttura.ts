@@ -33,7 +33,7 @@ export interface Disabilita{
   idStruttura:number,
   categoria:catDisabilita;
   descrizione:string,
-  testoSemplice:string,
+  testoSemplificato:string,
   flgDisabilita:boolean;
   disabilitaStruttura:number
   flgWarning:boolean;
