@@ -107,7 +107,7 @@ export class CreaStruttura {
   error: (err) => {
     console.error('Errore upload', err);
 
-    // Try to get a meaningful error message
+
     let errorMsg = 'Errore nel caricamento, riprova.';
 
     if (err.error) {

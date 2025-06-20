@@ -11,6 +11,7 @@ export interface DisabilitaBackend {
   descrizione: string;
   flgDisabilita: boolean;
   disabilitaStruttura: number;
+  testoSemplice:string;
   disabilita: {
     categoria: string;
     descrizione: string;
@@ -78,7 +79,7 @@ export class SceltaDisabilitaStruttura implements OnInit {
                 flgDisabilita: item.disabilita.flgDisabilita,
               },
               descrizione: item.descrizione,
-              testoSemplice: 'semplice',
+              testoSemplice: item.testoSemplice,
               flgDisabilita: item.flgDisabilita,
               disabilitaStruttura:item.disabilitaStruttura,
               flgWarning:item.flgWarning

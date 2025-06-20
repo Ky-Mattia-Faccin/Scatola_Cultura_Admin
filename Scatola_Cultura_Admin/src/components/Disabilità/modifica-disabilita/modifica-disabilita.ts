@@ -33,8 +33,13 @@ export class ModificaDisabilita implements OnInit {
 
 
  submit() {
+  const body={
+    descrizione:this.disabilita.descrizione,
+    testoSemplificato:this.disabilita.testoSemplice,
+    flgWarning:this.disabilita.flgWarning
+  }
   // Chiama il servizio HTTP per aggiornare la disabilità, passando descrizione e ID
-  this.servizioHttp.UpdateDisabilità(this.disabilita.descrizione, this.disabilita.disabilitaStruttura)
+  this.servizioHttp.UpdateDisabilità(body, this.disabilita.disabilitaStruttura)
     .subscribe({
       next: (res) => {
         // Se la richiesta va a buon fine, mostra un messaggio di conferma all'utente

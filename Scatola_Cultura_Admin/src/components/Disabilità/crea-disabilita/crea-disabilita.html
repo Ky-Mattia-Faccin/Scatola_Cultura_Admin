@@ -17,7 +17,6 @@
         id="flgWarning"
         [(ngModel)]="flgWarning"
         name="flgWarning"
-        required
       />
       <label class="form-check-label" for="flgWarning">
          Warning
@@ -46,13 +45,14 @@
 <!-- Testo Semplice -->
 <div class="row mb-3">
   <div class="col">
-    <label for="testoSemplice">Testo Semplice</label>
+    <label for="testoSemplice">Testo Semplice (max 150 caratteri)</label>
     <textarea
       class="form-control textarea-large"
       id="testoSemplice"
       required
       name="testoSemplice"
       autocomplete="off"
+      maxlength="150"
       [(ngModel)]="testoSemplice"
     ></textarea>
   </div>

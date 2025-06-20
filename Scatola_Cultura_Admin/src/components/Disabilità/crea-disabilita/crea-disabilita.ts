@@ -37,14 +37,14 @@ submit() {
     IdCategoria: this.categoria,  
     IdStruttura: this.idStruttura, 
     Descrizione: this.descrizione,
-    TestoSemplice: this.testoSemplice,
+    TestoSemplificato: this.testoSemplice,
     flgWarning:this.flgWarning
   };
 
   // Invia i dati al server tramite il servizio HTTP
   this.servizio.sendDisabilità(body).subscribe({
 
-    next: () => window.alert('Categoria inviata con successo'),
+    next: () => window.alert('Disabilità inviata con successo'),
     
 
     error: () => window.alert('Errore invio categoria'),
