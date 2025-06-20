@@ -1,20 +1,19 @@
 .form {
   display: flex;
   flex-direction: column;
-
   position: relative;
 
   height: 88vh;
   width: 98vw;
 
   padding: 2vw;
+  padding-top: 1vw;
 
   background-color: #1a1a1a;
   color: #fff;
 
   border: 1px solid #333;
   border-radius: 25px;
-
   margin: 1%;
 
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -53,7 +52,7 @@ label span {
   margin-bottom: 6px;
 }
 
-/* Bootstrap .form-control overrides */
+
 .form-control {
   background-color: #333;
   color: #fff;
@@ -65,26 +64,26 @@ label span {
 
   font-size: 1rem;
 
-  /* Per input più alti (Riga 2 e 3) */
+ 
   height: 100%;
   min-height: 3rem;
 
-  /* Per il testo nel campo */
+
   transition: border-color 0.3s ease;
 }
 
 .form-control:focus {
   background-color: #222;
-  color:#fff;
+  color: #fff;
   border-color: #00bfff;
   box-shadow: none;
   outline: none;
 }
 
-/* ========== TEXTAREA SIZING FIXES ========== */
+
 .textarea-large {
-  height: 20vh;    /* fixed height */
-  resize: vertical; /* allow vertical resize */
+  height: 20vh; 
+  resize: vertical; 
 }
 
 /* ========== CHECKBOX CUSTOMIZATION ========== */

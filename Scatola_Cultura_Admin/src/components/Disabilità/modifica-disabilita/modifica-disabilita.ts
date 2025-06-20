@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Disabilita } from '../../../interfaces/Istruttura';
 import { ServizioHttp } from '../../../services/servizio-http';
+
 
 @Component({
   selector: 'app-modifica-disabilita',
@@ -13,10 +14,12 @@ import { ServizioHttp } from '../../../services/servizio-http';
   styleUrl: './modifica-disabilita.css',
 })
 export class ModificaDisabilita implements OnInit {
-  constructor(private route: ActivatedRoute,private servizioHttp:ServizioHttp) {}
+  constructor(private route: ActivatedRoute,private servizioHttp:ServizioHttp,private router: Router) {}
 
   disabilita !: Disabilita;
   id !: number;
+
+
 
   // Sottoscrizione per ascoltare i parametri della route
   private routeSub!: Subscription;
@@ -57,6 +60,6 @@ export class ModificaDisabilita implements OnInit {
         alert('Errore nel caricamento, riprova.');
       }
     });
+   
 }
-
 }

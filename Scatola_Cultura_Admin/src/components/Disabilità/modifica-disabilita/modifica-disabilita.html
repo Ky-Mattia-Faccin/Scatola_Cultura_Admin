@@ -1,4 +1,10 @@
-<form class="form" *ngIf="disabilita" (submit)="submit()" #formDisabilita="ngForm" novalidate>
+<form
+  class="form"
+  *ngIf="disabilita"
+  (submit)="submit()"
+  #formDisabilita="ngForm"
+  novalidate
+>
   <p class="title">Modifica Disabilità</p>
   <p class="message">Modifica la descrizione</p>
 
@@ -16,34 +22,31 @@
       </label>
     </div>
 
-
     <div class="col-6 d-flex align-items-end">
-    <div class="form-check custom-checkbox">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="flgWarning"
-        [(ngModel)]="disabilita.flgWarning"
-        name="flgWarning"
-      />
-      <label class="form-check-label" for="flgWarning">
-         Warning
-      </label>
+      <div class="form-check custom-checkbox">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="flgWarning"
+          [(ngModel)]="disabilita.flgWarning"
+          name="flgWarning"
+        />
+        <label class="form-check-label" for="flgWarning"> Warning </label>
+      </div>
     </div>
-  </div>
   </div>
 
   <!-- Riga 2: Descrizione -->
   <div class="row mb-3">
     <div class="col">
       <label for="descrizione">Descrizione</label>
-        <textarea
-          class="form-control textarea-large "
-          required
-          name="descrizione"
-          autocomplete="off"
-          [(ngModel)]="disabilita!.descrizione"
-        ></textarea>
+      <textarea
+        class="form-control textarea-large"
+        required
+        name="descrizione"
+        autocomplete="off"
+        [(ngModel)]="disabilita!.descrizione"
+      ></textarea>
     </div>
   </div>
 
@@ -51,15 +54,15 @@
 
   <div class="row mb-3">
     <div class="col">
- <label for="testoSemplice">Testo Semplice (max 150 caratteri)</label>
-        <textarea
-          class="form-control textarea-large"
-          required
-          name="testoSemplice"
-          autocomplete="off"
-          maxlength="150"
-          [(ngModel)]="disabilita!.testoSemplificato"
-        ></textarea>
+      <label for="testoSemplice">Testo Semplice (max 150 caratteri)</label>
+      <textarea
+        class="form-control textarea-large"
+        required
+        name="testoSemplice"
+        autocomplete="off"
+        maxlength="150"
+        [(ngModel)]="disabilita!.testoSemplificato"
+      ></textarea>
     </div>
   </div>
 
