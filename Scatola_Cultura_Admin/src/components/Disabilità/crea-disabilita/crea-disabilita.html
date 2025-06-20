@@ -1,36 +1,71 @@
-<form class="form" (submit)="submit()" #disabilitaForm="ngForm" novalidate>
-  <p class="title">Crea Disabilità</p>
-  <p class="message">Completa tutti i campi</p>
+  <form class="form" (submit)="submit()" #disabilitaForm="ngForm" novalidate>
+    <p class="title">Crea Disabilità</p>
+    <p class="message">Completa tutti i campi</p>
 
-  <!-- Riga 1: Nome -->
-  <div class="row mb-3">
-    <div class="col-6 d-flex gap-2">
-      <label class="flex-fill d-flex flex-column">
-        <span>Categoria</span>
-        <span
-          class="form-control flex-grow-1"
-          name="nomeStruttura"
-          [textContent]="categoria"
-        ></span>
+    <!-- Riga 1 -->
+<div class="row mb-3">
+  <div class="col-6 d-flex flex-column">
+    <label for="categoria">Categoria</label>
+    <div class="form-control" id="categoria" readonly>{{ categoria }}</div>
+  </div>
+
+  <div class="col-6 d-flex align-items-end">
+    <div class="form-check custom-checkbox">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="flgWarning"
+        [(ngModel)]="flgWarning"
+        name="flgWarning"
+        required
+      />
+      <label class="form-check-label" for="flgWarning">
+         Warning
       </label>
     </div>
   </div>
+</div>
 
-  <!-- Riga 2: Descrizione -->
-  <div class="row mb-3" style="min-height: 40vh">
-    <div class="col d-flex flex-column">
-      <label class="flex-grow-1 d-flex flex-column">
-        <span>Descrizione</span>
-        <textarea
-          class="form-control flex-grow-1"
-          required
-          name="descrizione"
-          rows="6"
-           [(ngModel)]="descrizione"
-        ></textarea>
-      </label>
-    </div>
+ <!-- Riga 2 -->
+<!-- Descrizione -->
+<div class="row mb-3">
+  <div class="col">
+    <label for="descrizione">Descrizione</label>
+    <textarea
+      class="form-control textarea-large"
+      id="descrizione"
+      required
+      name="descrizione"
+      autocomplete="off"
+      [(ngModel)]="descrizione"
+    ></textarea>
   </div>
+</div>
 
-  <button class="btn btn-primary confirm-btn" type="submit" [disabled]="!disabilitaForm.valid" >Crea</button>
-</form>
+ <!-- Riga 3 -->
+<!-- Testo Semplice -->
+<div class="row mb-3">
+  <div class="col">
+    <label for="testoSemplice">Testo Semplice</label>
+    <textarea
+      class="form-control textarea-large"
+      id="testoSemplice"
+      required
+      name="testoSemplice"
+      autocomplete="off"
+      [(ngModel)]="testoSemplice"
+    ></textarea>
+  </div>
+</div>
+
+
+    <button
+      class="btn btn-primary confirm-btn"
+      type="submit"
+      [disabled]="!disabilitaForm.valid"
+    >
+      Crea
+    </button>
+
+    
+  </form>

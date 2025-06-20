@@ -16,6 +16,7 @@ export interface DisabilitaBackend {
     descrizione: string;
     flgDisabilita: boolean;
   };
+  flgWarning:boolean;
 }
 
 @Component({
@@ -79,7 +80,8 @@ export class SceltaDisabilitaStruttura implements OnInit {
               descrizione: item.descrizione,
               testoSemplice: 'semplice',
               flgDisabilita: item.flgDisabilita,
-              disabilitaStruttura:item.disabilitaStruttura
+              disabilitaStruttura:item.disabilitaStruttura,
+              flgWarning:item.flgWarning
             })
           )
         ),

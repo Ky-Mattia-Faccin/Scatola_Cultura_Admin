@@ -11,9 +11,13 @@ import { ServizioHttp } from '../../../services/servizio-http';
   styleUrl: './crea-disabilita.css',
 })
 export class CreaDisabilita implements OnInit {
+
+  
   idStruttura: number = 0;
   categoria: string = '';
   descrizione: string = '';
+  testoSemplice:string='';
+  flgWarning:boolean=false
 
   constructor(private servizio: ServizioHttp) {}
 
@@ -33,6 +37,8 @@ submit() {
     IdCategoria: this.categoria,  
     IdStruttura: this.idStruttura, 
     Descrizione: this.descrizione,
+    TestoSemplice: this.testoSemplice,
+    flgWarning:this.flgWarning
   };
 
   // Invia i dati al server tramite il servizio HTTP
