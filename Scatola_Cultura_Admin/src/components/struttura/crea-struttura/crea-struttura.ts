@@ -91,18 +91,42 @@ export class CreaStruttura {
         DidascaliaImmagine: this.formData.didascaliaImmagine,
       }
     };
-      // Invio dei dati al backend tramite servizio HTTP
+
+
+
+     this.sendData(dataToSend);
+  }
+
+
+  sendData(dataToSend:any){
+
     this.servizoHttp.sendStruttura(dataToSend).subscribe({
-      next: (res) => {
-        alert('Struttura creata con successo!');
-      },
-      error: (err) => {
-        console.error('Errore upload', err);
-        if (err.error && err.error.errors) {
-          console.error('Dettagli errori validazione:', err.error.errors);
-        }
-        alert('Errore nel caricamento, riprova.');
-      },
-    });
+  next: (res) => {
+    alert('Struttura creata con successo!');
+  },
+  error: (err) => {
+    console.error('Errore upload', err);
+
+    // Try to get a meaningful error message
+    let errorMsg = 'Errore nel caricamento, riprova.';
+
+    if (err.error) {
+      if (typeof err.error === 'string') {
+        // se è una semplice stringa
+        errorMsg = err.error;
+      } else if (err.error.message) {
+        // se c'è una proprietà
+        errorMsg = err.error.message;
+      } else if (err.error.errors) {
+        // se ci sono più errori li concatena
+        errorMsg = Object.values(err.error.errors)
+          .flat()
+          .join('\n');
+      }
+    }
+
+    alert(`Errore nel caricamento: \n${errorMsg}`);
+  },
+});
   }
 }

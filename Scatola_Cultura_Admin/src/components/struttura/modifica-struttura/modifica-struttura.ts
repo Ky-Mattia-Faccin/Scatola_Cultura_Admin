@@ -129,7 +129,7 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     }
   }
 
-    // Funzione helper per convertire un file in base64
+  // Funzione helper per convertire un file in base64
   convertToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -139,15 +139,14 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     });
   }
 
-    // Funzione chiamata al submit del form per inviare dati aggiornati
+  // Funzione chiamata al submit del form per inviare dati aggiornati
   submit() {
     if (!this.base64Image) {
       console.error('Nessuna immagine selezionata');
       return;
     }
 
-
-     //  oggetto con i dati da inviare al backend
+    //  oggetto con i dati da inviare al backend
     const dataToSend = {
       NomeStruttura: this.datiForm.nomeStruttura,
       Ambito: this.datiForm.ambito,
@@ -169,24 +168,43 @@ export class ModificaStruttura implements OnInit, OnDestroy {
         DidascaliaImmagine: this.datiForm.didascaliaImmagine,
       },
     };
+    this.sendData(dataToSend);
+  }
 
-       // Invia la richiesta di aggiornamento al backend via servizio HTTP
-    this.servizioHttp.updateStruttura(dataToSend, this.idStruttura).subscribe({
+  // Quando il componente viene distrutto, annulla la subscription ai parametri rotta
+  ngOnDestroy(): void {
+    this.routeSub.unsubscribe();
+  }
+
+
+
+
+  sendData(dataToSend: any) {
+    this.servizioHttp.sendStruttura(dataToSend).subscribe({
       next: (res) => {
-        alert('Struttura modificata con successo!');
+        alert('Struttura creata con successo!');
       },
       error: (err) => {
         console.error('Errore upload', err);
-        if (err.error && err.error.errors) {
-          console.error('Dettagli errori validazione:', err.error.errors);
+
+        // Try to get a meaningful error message
+        let errorMsg = 'Errore nel caricamento, riprova.';
+
+        if (err.error) {
+          if (typeof err.error === 'string') {
+            // se è una semplice stringa
+            errorMsg = err.error;
+          } else if (err.error.message) {
+            // se c'è una proprietà
+            errorMsg = err.error.message;
+          } else if (err.error.errors) {
+            // se ci sono più errori li concatena
+            errorMsg = Object.values(err.error.errors).flat().join('\n');
+          }
         }
-        alert('Errore nel caricamento, riprova.');
+
+        alert(`Errore nel caricamento: \n${errorMsg}`);
       },
     });
-  }
-
-    // Quando il componente viene distrutto, annullo la subscription ai parametri rotta
-  ngOnDestroy(): void {
-    this.routeSub.unsubscribe();
   }
 }
