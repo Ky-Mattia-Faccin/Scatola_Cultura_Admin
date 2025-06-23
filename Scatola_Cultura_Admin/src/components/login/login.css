@@ -140,6 +140,10 @@
 .input:focus {
   border: 1px solid #fff;
 }
+.input-error:focus{
+  border-color: red;
+  
+}
 
 .button {
   width: 100%;
@@ -176,6 +180,9 @@
     inset 0px 3px 6px rgba(255, 255, 255, 0.6),
     inset 0px -3px 6px rgba(0, 0, 0, 0.8),
     0px 0px 8px rgba(255, 255, 255, 0.05);
+}
+.button-disabled{
+  cursor:default;
 }
 
 .icon {

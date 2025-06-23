@@ -10,13 +10,14 @@ import { SceltaDisabilitaStruttura } from '../components/Disabilità/scelta-disa
 import { Login } from '../components/login/login';
 import { authGuard } from '../guard/auth-guard';
 import { App } from './app';
+import { Layout } from '../components/layout/layout';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
 
   {
     path: '',
-    component: App,
+    component: Layout,
     canActivateChild: [authGuard],
     children: [
       { path: '', redirectTo: 'creaStruttura', pathMatch: 'full' },

@@ -8,14 +8,19 @@ import {
 import { Auth } from '../../services/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login implements OnInit, OnDestroy {
+  username!: string;
+  email!: string;
+  password!: string;
+
   tipo: string | null = null;
 
   constructor(
@@ -37,11 +42,34 @@ export class Login implements OnInit, OnDestroy {
     document.body.classList.remove('login-page');
   }
 
-  singUp() {
+  ChangeSignUp() {
     this.router.navigate(['/login'], { queryParams: { tipo: 'SingUp' } });
   }
 
-  singIn() {
+  ChangeSignIn() {
     this.router.navigate(['/login']);
+  }
+
+  signIn() {
+    this.auth.login(this.username, this.password).subscribe((success) => {
+      if (success) {
+        this.router.navigateByUrl('/');
+      }
+    });
+  }
+
+  signUp() {
+    this.auth
+      .signUp(this.username, this.password, this.email)
+      .subscribe((success) => {
+        if (success) {
+          // effettua login direttamente
+          this.auth.login(this.username, this.password).subscribe((success) => {
+            if (success) {
+              this.router.navigate(['/']);
+            }
+          });
+        }
+      });
   }
 }
