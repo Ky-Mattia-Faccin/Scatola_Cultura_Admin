@@ -7,8 +7,8 @@
     </div>
 
     <div class="nb-desktop-menu">
-      <div class="nb-struttura-item" (click)="toggleStruttura()">
-        <button class="nb-struttura-button">
+      <div class="nb-item" (click)="toggleStruttura()">
+        <button class="nb-button">
           Struttura
           <svg
             class="nb-icon"
@@ -26,7 +26,7 @@
             ></path>
           </svg>
         </button>
-        <div class="nb-struttura-dropdown" *ngIf="isStrutturaOpen">
+        <div class="nb-dropdown" *ngIf="isStrutturaOpen">
           <div class="nb-dropdown-item" routerLink="/creaStruttura">Crea</div>
           <div
             class="nb-dropdown-item"
@@ -45,8 +45,8 @@
         </div>
       </div>
 
-      <div class="nb-disabilita-item" (click)="toggleDisabilita()">
-        <button class="nb-disabilita-button">
+      <div class="nb-item" (click)="toggleDisabilita()">
+        <button class="nb-button">
           Disabilità
           <svg
             class="nb-icon"
@@ -64,7 +64,7 @@
             ></path>
           </svg>
         </button>
-        <div class="nb-disabilita-dropdown" *ngIf="isDisabilitaOpen">
+        <div class="nb-dropdown" *ngIf="isDisabilitaOpen">
           <div
             class="nb-dropdown-item"
             routerLink="/sceltaStruttura"
@@ -115,8 +115,8 @@
         </div>
       </div>
 
-      <div class="nb-categoria-item" (click)="toggleCategoria()">
-        <button class="nb-categoria-button">
+      <div class="nb-item" (click)="toggleCategoria()">
+        <button class="nb-button">
           Categoria
           <svg
             class="nb-icon"
@@ -134,7 +134,7 @@
             ></path>
           </svg>
         </button>
-        <div class="nb-categoria-dropdown" *ngIf="isCategoriaOpen">
+        <div class="nb-dropdown" *ngIf="isCategoriaOpen">
           <div class="nb-dropdown-item" routerLink="/creaCategoria">Crea</div>
           <div
             class="nb-dropdown-item"
@@ -142,6 +142,32 @@
             [queryParams]="{azione:'disabilita'}"
           >
             Disabilita
+          </div>
+        </div>
+      </div>
+      <div class="nb-item"   (click)="toggleAccount()">
+        <button class="nb-button" aria-label="account">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="30"
+            fill="black"
+            class="bi bi-person-circle"
+            viewBox="0 0 16 16"
+          >
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+            <path
+              fill-rule="evenodd"
+              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
+            />
+          </svg>
+        </button>
+        <div class="nb-dropdown nb-account-dropdown" *ngIf="isAccountOpen">
+          <div class="nb-dropdown-item" routerLink="/cambiaPassword">
+            Modifica Password
+          </div>
+          <div class="nb-dropdown-item" (click)="logOut()">
+            Logout
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import { Login } from '../components/login/login';
 import { authGuard } from '../guard/auth-guard';
 import { App } from './app';
 import { Layout } from '../components/layout/layout';
+import { CambioPassword } from '../components/cambio-password/cambio-password';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -31,6 +32,9 @@ export const routes: Routes = [
       {
         path: 'sceltaDisabilitàStruttura/:id',
         component: SceltaDisabilitaStruttura,
+      },
+      {
+        path:'cambioPassword',component:CambioPassword
       },
     ],
   },

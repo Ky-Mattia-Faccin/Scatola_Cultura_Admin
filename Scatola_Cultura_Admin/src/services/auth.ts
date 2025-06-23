@@ -37,7 +37,7 @@ export class Auth {
       );
   }
 
-  logout() {
+  logOut() {
     sessionStorage.removeItem('logged');
     this.router.navigate(['/login']);
   }
@@ -67,6 +67,8 @@ export class Auth {
         })
       );
   }
+
+
   private checkInterval: any;
   private promptShown = false;
   private userDeclined = false;
@@ -102,7 +104,7 @@ export class Auth {
       if (now >= expiration) {
         clearInterval(this.checkInterval);
         if (this.userDeclined) {
-          this.logout();
+          this.logOut();
         }
       }
     }

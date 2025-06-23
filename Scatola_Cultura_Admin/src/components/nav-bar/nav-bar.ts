@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Struttura } from '../../interfaces/Istruttura';
 import { ServizioHttp } from '../../services/servizio-http';
+import { Auth } from '../../services/auth';
 
 @Component({
   selector: 'app-nav-bar',
@@ -18,11 +19,12 @@ export class NavBar {
   isCategoriaOpen: Boolean = false;
   isStrutturaOpen: boolean = false;
   isDisabilitaOpen: boolean = false;
+  isAccountOpen:boolean=false
 
    // Array per memorizzare le strutture caricate
   strutture!: Struttura[];
 
-  constructor(private servizio: ServizioHttp, private router: Router) {}
+  constructor(private servizio: ServizioHttp, private router: Router,private auth:Auth) {}
 
    // Toggle apertura/chiusura menu strutture
   toggleStruttura() {
@@ -36,6 +38,10 @@ export class NavBar {
   // Toggle apertura/chiusura menu disabilità
   toggleDisabilita() {
     this.isDisabilitaOpen = !this.isDisabilitaOpen;
+  }
+
+  toggleAccount(){
+   this.isAccountOpen=!this.isAccountOpen 
   }
 
 
@@ -73,4 +79,11 @@ export class NavBar {
       this.router.navigate(['/modificaStruttura', struttura.idStruttura]);
     }
   }
+
+  logOut(){
+    this.auth.logOut()
+  }
+
+
+  
 }

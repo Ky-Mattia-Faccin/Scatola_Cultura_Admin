@@ -41,11 +41,11 @@
 }
 
 
-.nb-struttura-item,.nb-categoria-item,.nb-disabilita-item {
+.nb-item {
   position: relative;
 }
 
-.nb-struttura-button,.nb-categoria-button,.nb-disabilita-button {
+.nb-button {
   display: flex;
   align-items: center;
   
@@ -64,7 +64,7 @@
   transition: background-color 0.2s ease;
 }
 
-.nb-struttura-button:hover,.nb-categoria-button:hover,.nb-disabilita-button:hover {
+.nb-button:hover {
   background-color: #f3f4f6;
   outline: none;
 }
@@ -115,10 +115,8 @@
 }
 
 /* Dropdown */
-.nb-categoria-dropdown, 
-.nb-struttura-dropdown,
-.nb-disabilita-dropdown {
-  height: 10vh;
+.nb-dropdown{
+  height: 15vh;
   width: 10vw;
 
   border-radius:40px ;
@@ -140,9 +138,17 @@
 
   z-index: 10;
 }
-.nb-disabilita-dropdown,.nb-struttura-dropdown{
-  height: 15vh;
-}
+
 .nb-dropdown-item{
   cursor: pointer;
+}
+
+.nb-account-dropdown{
+  top: 120%;
+  right: -130%;
+}
+
+.nb-dropdown-item:hover{
+  background-color: #9a959533;
+  border-radius: 5px;
 }
