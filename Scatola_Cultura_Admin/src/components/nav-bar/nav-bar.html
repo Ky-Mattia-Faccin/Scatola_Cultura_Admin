@@ -151,7 +151,6 @@
             xmlns="http://www.w3.org/2000/svg"
             width="30"
             height="30"
-            fill="black"
             class="bi bi-person-circle"
             viewBox="0 0 16 16"
           >
@@ -163,7 +162,7 @@
           </svg>
         </button>
         <div class="nb-dropdown nb-account-dropdown" *ngIf="isAccountOpen">
-          <div class="nb-dropdown-item" routerLink="/cambiaPassword">
+          <div class="nb-dropdown-item" routerLink="/cambioPassword">
             Modifica Password
           </div>
           <div class="nb-dropdown-item" (click)="logOut()">

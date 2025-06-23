@@ -109,4 +109,9 @@ export class Auth {
       }
     }
   }
+
+
+  updatePw(vecchiaPw:string,nuovaPw:string){
+
+  }
 }
