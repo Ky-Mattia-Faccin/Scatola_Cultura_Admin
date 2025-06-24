@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-@Component({
+@Component({  
   selector: 'app-login',
   imports: [CommonModule, FormsModule],
   templateUrl: './login.html',

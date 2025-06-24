@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpInterceptorFn } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, of, Subscription, timer } from 'rxjs';
 
@@ -45,15 +45,9 @@ export class Auth {
       .post('http://192.168.123.150:5000/api/authenticate/login', body)
       .pipe(
         map((response: any) => {
-          this.token = response.token;
-          this.expirationDate = new Date(response.expiration);
-          const save = {
-            username: username,
-            stato: true,
-            token: this.token,
-            expiration: this.expirationDate,
-          };
-          sessionStorage.setItem('logged', JSON.stringify(save));
+          const token = response.accessToken;
+          const expiration = new Date(response.expiration);
+          this.saveSession(token, expiration, username);
           this.startTokenCheck();
           return true;
         }),
@@ -70,6 +64,24 @@ export class Auth {
           return of(false);
         })
       );
+  }
+
+  private saveSession(token: string, expiration: Date, username: string) {
+    this.token = token;
+    this.expirationDate = expiration;
+    const save = {
+      username: username,
+      stato: true,
+      token: token,
+      expiration: expiration,
+    };
+    sessionStorage.setItem('logged', JSON.stringify(save));
+  }
+
+  private clearSession() {
+    sessionStorage.removeItem('logged');
+    this.token = '';
+    this.expirationDate = new Date();
   }
 
   signUp(username: string, password: string, email: string) {
@@ -106,20 +118,19 @@ export class Auth {
 
   validateSession(): boolean {
     const loggedJSON = sessionStorage.getItem('logged');
-  if (!loggedJSON) return false;
+    if (!loggedJSON) return false;
 
-  const logged = JSON.parse(loggedJSON);
-  const now = new Date();
-  const expiration = new Date(logged.expiration);
+    const logged = JSON.parse(loggedJSON);
+    const now = new Date();
+    const expiration = new Date(logged.expiration);
 
-  if (logged.stato === true && now < expiration) {
-    return true;
-  } else {
-
-    sessionStorage.removeItem('logged');  
-    this.logOut();
-    return false;
-  }
+    if (logged.stato === true && now < expiration) {
+      return true;
+    } else {
+      sessionStorage.removeItem('logged');
+      this.logOut();
+      return false;
+    }
   }
 
   logOut() {
@@ -207,3 +218,19 @@ export class Auth {
     return this.httpClient.put(`http://192.168.123.150:5000/api/`, dati);
   }
 }
+
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const loggedJSON = sessionStorage.getItem('logged');
+  const token = loggedJSON ? JSON.parse(loggedJSON).token : null;
+
+  if (['POST', 'PUT', 'PATCH'].includes(req.method.toUpperCase()) && token) {
+    const authReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return next(authReq);
+  }
+
+  return next(req);
+};
