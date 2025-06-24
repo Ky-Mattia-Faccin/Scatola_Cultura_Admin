@@ -9,6 +9,7 @@ import { catchError, map, of, Subscription, timer } from 'rxjs';
 export class Auth {
   token: string = '';
   expirationDate!: Date;
+  refreshToken: string = '';
   private checkSubscription?: Subscription;
   private promptShown = false;
   private userDeclined = false;
@@ -25,6 +26,7 @@ export class Auth {
         if (logged.token && logged.expiration) {
           this.token = logged.token;
           this.expirationDate = new Date(logged.expiration);
+          this.refreshToken = logged.refreshToken;
 
           if (new Date() >= this.expirationDate) {
             this.logOut();
@@ -46,8 +48,11 @@ export class Auth {
       .pipe(
         map((response: any) => {
           const token = response.accessToken;
-          const expiration = new Date(response.expiration);
-          this.saveSession(token, expiration, username);
+          const refresh = response.refreshToken;
+          const expirationUTC = new Date(response.expiration);
+          const expiration=  new Date(expirationUTC.getTime() + (new Date().getTimezoneOffset() * -60000));
+          // const expiration = new Date(Date.now() + 2 * 60 * 1000);
+          this.saveSession(token, expiration, username, refresh);
           this.startTokenCheck();
           return true;
         }),
@@ -66,13 +71,19 @@ export class Auth {
       );
   }
 
-  private saveSession(token: string, expiration: Date, username: string) {
+  private saveSession(
+    token: string,
+    expiration: Date,
+    username: string,
+    refresh: string
+  ) {
     this.token = token;
     this.expirationDate = expiration;
     const save = {
       username: username,
       stato: true,
       token: token,
+      refreshToken: refresh,
       expiration: expiration,
     };
     sessionStorage.setItem('logged', JSON.stringify(save));
@@ -127,7 +138,7 @@ export class Auth {
     if (logged.stato === true && now < expiration) {
       return true;
     } else {
-      sessionStorage.removeItem('logged');
+      this.clearSession();
       this.logOut();
       return false;
     }
@@ -138,9 +149,7 @@ export class Auth {
       this.checkSubscription.unsubscribe();
       this.checkSubscription = undefined;
     }
-    sessionStorage.removeItem('logged');
-    this.token = '';
-    this.expirationDate = new Date();
+    this.clearSession();
     this.promptShown = false;
     this.userDeclined = false;
     this.router.navigate(['/login']);
@@ -168,24 +177,29 @@ export class Auth {
       );
 
       if (confirmRenew) {
-        this.getRefreshToken().subscribe({
+        this.loadSession();
+        const data = {
+          accessToken: this.token,
+          refreshToken: this.refreshToken,
+        };
+        this.getRefreshToken(data).subscribe({
           next: (value: any) => {
             if (!value?.refreshToken) {
               alert('Errore nel rinnovo del token.');
               this.logOut();
               return;
             }
-
-            const newExp = new Date(Date.now() + 60 * 60 * 1000); // 1 ora dopo
+            const newExpUTC = new Date(Date.now());
+            const newExpCET = new Date(newExpUTC.getTime()+((new Date().getTimezoneOffset()*-60000)))
             this.token = value.refreshToken;
-            this.expirationDate = newExp;
+            this.expirationDate = new Date(newExpCET.getTime()+60*60*1000);
             this.promptShown = false;
 
             const loggedJSON = sessionStorage.getItem('logged');
             if (loggedJSON) {
               const logged = JSON.parse(loggedJSON);
               logged.token = value.refreshToken;
-              logged.expiration = newExp;
+              logged.expiration = this.expirationDate;
               logged.stato = true;
               sessionStorage.setItem('logged', JSON.stringify(logged));
             }
@@ -203,14 +217,10 @@ export class Auth {
     }
   }
 
-  getRefreshToken() {
-    return this.httpClient.get(
+  getRefreshToken(data: any) {
+    return this.httpClient.post(
       'http://192.168.123.150:5000/api/authenticate/refresh',
-      {
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-        },
-      }
+      data
     );
   }
 
