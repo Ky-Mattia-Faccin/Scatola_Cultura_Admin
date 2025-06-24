@@ -7,7 +7,21 @@ import { catchError, map, of } from 'rxjs';
   providedIn: 'root',
 })
 export class Auth {
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  constructor(private httpClient: HttpClient, private router: Router) {
+    const loggedJSON = sessionStorage.getItem('logged');
+    if (loggedJSON) {
+      try {
+        const logged = JSON.parse(loggedJSON);
+        if (logged.token && logged.expiration) {
+          this.token = logged.token;
+          this.expirationDate = new Date(logged.expiration);
+          this.checkToken(); // Avvia il controllo token scaduto
+        }
+      } catch (e) {
+        sessionStorage.removeItem('logged');
+      }
+    }
+  }
 
   token: string = '';
   expirationDate!: Date;
@@ -56,7 +70,7 @@ export class Auth {
     let bool = false;
     if (loggedJSON) {
       var logged = JSON.parse(loggedJSON);
-      bool = Boolean(logged.token) && new Date(logged.expiration) > new Date();
+      bool = logged.stato
     }
     return bool;
   }
@@ -144,11 +158,24 @@ export class Auth {
     }
   }
 
-  updatePw(vecchiaPw: string, nuovaPw: string) {}
+
 
   getRefreshToken() {
     return this.httpClient.get(
       'http://192.168.123.150:5000/api/authenticate/refresh'
     );
   }
+
+  updatePw(dati:any) {
+
+    return this.httpClient.put(
+      `http://192.168.123.150:5000/api/`,
+        dati,
+    );
+
+
+  }
+  
+
+  
 }

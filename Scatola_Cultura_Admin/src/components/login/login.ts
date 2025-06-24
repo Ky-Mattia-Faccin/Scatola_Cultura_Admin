@@ -53,7 +53,7 @@ export class Login implements OnInit, OnDestroy {
   signIn() {
     this.auth.login(this.username, this.password).subscribe((success) => {
       if (success) {
-        this.router.navigateByUrl('/');
+        this.router.navigate(['/']);
         this.auth.checkToken();
       }
     });

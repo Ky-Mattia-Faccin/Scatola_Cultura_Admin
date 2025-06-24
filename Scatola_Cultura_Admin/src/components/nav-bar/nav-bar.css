@@ -145,7 +145,7 @@
 
 .nb-account-dropdown{
   top: 120%;
-  right: -130%;
+  right: -17%;
 }
 
 .nb-dropdown-item:hover{
@@ -156,3 +156,11 @@
 .bi-person-circle{
   fill: #3d4147;
 }
+
+.account{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+

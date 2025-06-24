@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Struttura } from '../../interfaces/Istruttura';
 import { ServizioHttp } from '../../services/servizio-http';
@@ -14,7 +14,7 @@ import { Auth } from '../../services/auth';
 
 
 
-export class NavBar {
+export class NavBar implements OnInit{
   // Stati per gestire l'apertura/chiusura dei menu a tendina
   isCategoriaOpen: Boolean = false;
   isStrutturaOpen: boolean = false;
@@ -24,7 +24,16 @@ export class NavBar {
    // Array per memorizzare le strutture caricate
   strutture!: Struttura[];
 
+  //
+  username:string=''
+
   constructor(private servizio: ServizioHttp, private router: Router,private auth:Auth) {}
+
+  ngOnInit(): void {
+    const loggedJSON=sessionStorage.getItem('logged')
+    const account=JSON.parse(loggedJSON!)
+    this.username=account.username
+  }
 
    // Toggle apertura/chiusura menu strutture
   toggleStruttura() {
