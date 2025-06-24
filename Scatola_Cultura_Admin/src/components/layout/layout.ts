@@ -6,17 +6,19 @@ import { Auth } from '../../services/auth';
 
 @Component({
   selector: 'app-layout',
-  imports: [CommonModule,RouterOutlet,NavBar],
+  imports: [CommonModule, RouterOutlet, NavBar],
   templateUrl: './layout.html',
-  styleUrl: './layout.css'
+  styleUrls: ['./layout.css'],
 })
-export class Layout implements OnInit{
-
-  constructor(private auth:Auth){}
+export class Layout implements OnInit {
+  constructor(private auth: Auth) {}
 
   ngOnInit(): void {
-    if(this.auth.isLoggedIn())
-      this.auth.checkToken();
-  }
 
+    if (!this.auth.validateSession()) {
+
+      return;
+    }
+
+  }
 }

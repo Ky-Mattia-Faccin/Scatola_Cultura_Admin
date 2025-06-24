@@ -163,4 +163,6 @@
   justify-content: center;
 }
 
-
+.nb-categoria-dropwdown{
+  height: 10vh;
+}

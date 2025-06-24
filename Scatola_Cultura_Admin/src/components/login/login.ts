@@ -1,9 +1,7 @@
 import {
   Component,
-  OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
 } from '@angular/core';
 import { Auth } from '../../services/auth';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -43,7 +41,7 @@ export class Login implements OnInit, OnDestroy {
   }
 
   ChangeSignUp() {
-    this.router.navigate(['/login'], { queryParams: { tipo: 'SingUp' } });
+    this.router.navigate(['/login'], { queryParams: { tipo: 'SignUp' } }); // corretto SignUp
   }
 
   ChangeSignIn() {
@@ -54,7 +52,6 @@ export class Login implements OnInit, OnDestroy {
     this.auth.login(this.username, this.password).subscribe((success) => {
       if (success) {
         this.router.navigate(['/']);
-        this.auth.checkToken();
       }
     });
   }
@@ -64,11 +61,10 @@ export class Login implements OnInit, OnDestroy {
       .signUp(this.username, this.password, this.email)
       .subscribe((success) => {
         if (success) {
-          // effettua login direttamente
-          this.auth.login(this.username, this.password).subscribe((success) => {
-            if (success) {
+          // Effettua login direttamente dopo la registrazione
+          this.auth.login(this.username, this.password).subscribe((loginSuccess) => {
+            if (loginSuccess) {
               this.router.navigate(['/']);
-              this.auth.checkToken();
             }
           });
         }
