@@ -20,17 +20,25 @@ export class Auth {
       .pipe(
         map((response: any) => {
           this.token = response.token;
-          this.expirationDate = response.expiration;
+          this.expirationDate = new Date(response.expiration);
           const save = {
-            stato: 'true',
-            token: response.token,
-            expiration: response.expirationDate,
+            username: username,
+            stato: true,
+            token: this.token,
+            expiration: this.expirationDate,
           };
           sessionStorage.setItem('logged', JSON.stringify(save));
           return true;
         }),
         catchError((err) => {
-          alert('Errore nel login');
+          let message = 'Errore nel login';
+          if (err.error?.message) {
+            message = err.error.message;
+          } else if (err.status === 401) {
+            message = 'Credenziali non valide.';
+          }
+
+          alert(message);
           sessionStorage.removeItem('logged');
           return of(false);
         })
@@ -38,6 +46,7 @@ export class Auth {
   }
 
   logOut() {
+    clearInterval(this.checkInterval);
     sessionStorage.removeItem('logged');
     this.router.navigate(['/login']);
   }
@@ -47,7 +56,7 @@ export class Auth {
     let bool = false;
     if (loggedJSON) {
       var logged = JSON.parse(loggedJSON);
-      bool = logged.stato;
+      bool = Boolean(logged.token) && new Date(logged.expiration) > new Date();
     }
     return bool;
   }
@@ -61,13 +70,20 @@ export class Auth {
         // Se registrazione ok, effettua login
         map(() => true),
         catchError((err) => {
-          alert('Errore nella registrazione');
+          let message = 'Errore nella registrazione';
+
+          if (err.error?.message) {
+            message = err.error.message;
+          } else if (err.status === 400) {
+            message = 'Registrazione non valida. Verifica i dati inseriti.';
+          }
+
+          alert(message);
           sessionStorage.removeItem('logged');
           return of(false);
         })
       );
   }
-
 
   private checkInterval: any;
   private promptShown = false;
@@ -77,41 +93,62 @@ export class Auth {
     const raw = sessionStorage.getItem('logged');
     if (!raw) return;
 
-    const logged = JSON.parse(raw);
-    const expIn = new Date(logged.expiration); // Data di scadenza del token
+    let logged: any;
+    try {
+      logged = JSON.parse(raw);
+      if (!logged.expiration) return;
+    } catch {
+      return;
+    }
+
+    const expIn = new Date(logged.expiration);
+    this.expirationDate = expIn;
 
     this.checkInterval = setInterval(() => {
-      this.handleTokenExpiration(expIn);
-    }, 60 * 1000); // ogni minuto
+      this.handleTokenExpiration(this.expirationDate);
+    }, 60 * 1000);
   }
 
   handleTokenExpiration(expiration: Date) {
     const now = new Date();
-
     const in5minutes = new Date(now.getTime() + 5 * 60 * 1000);
 
-    //propmt
     if (in5minutes >= expiration && !this.promptShown && !this.userDeclined) {
       this.promptShown = true;
       const confirm = window.confirm(
         'La tua sessione sta per scadere. Vuoi prolungarla?'
       );
       if (confirm) {
-        //refresh token?
+        this.getRefreshToken().subscribe((value: any) => {
+          const newExp = new Date(Date.now() + 60 * 60 * 1000); // nuova scadenza
+          this.token = value.refreshToken;
+          this.expirationDate = newExp;
+          this.promptShown = false;
+
+          const loggedJSON = sessionStorage.getItem('logged');
+          if (loggedJSON) {
+            const logged = JSON.parse(loggedJSON);
+            logged.token = value.refreshToken;
+            logged.expiration = newExp;
+            sessionStorage.setItem('logged', JSON.stringify(logged));
+          }
+        });
+      } else {
+        this.userDeclined = true;
       }
-    } else {
-      // Se il token è scaduto ed è stato rifiutato il rinnovo
-      if (now >= expiration) {
-        clearInterval(this.checkInterval);
-        if (this.userDeclined) {
-          this.logOut();
-        }
+    } else if (now >= expiration) {
+      clearInterval(this.checkInterval);
+      if (this.userDeclined) {
+        this.logOut();
       }
     }
   }
 
+  updatePw(vecchiaPw: string, nuovaPw: string) {}
 
-  updatePw(vecchiaPw:string,nuovaPw:string){
-
+  getRefreshToken() {
+    return this.httpClient.get(
+      'http://192.168.123.150:5000/api/authenticate/refresh'
+    );
   }
 }

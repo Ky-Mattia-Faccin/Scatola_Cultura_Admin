@@ -54,6 +54,7 @@ export class Login implements OnInit, OnDestroy {
     this.auth.login(this.username, this.password).subscribe((success) => {
       if (success) {
         this.router.navigateByUrl('/');
+        this.auth.checkToken();
       }
     });
   }
@@ -67,6 +68,7 @@ export class Login implements OnInit, OnDestroy {
           this.auth.login(this.username, this.password).subscribe((success) => {
             if (success) {
               this.router.navigate(['/']);
+              this.auth.checkToken();
             }
           });
         }
