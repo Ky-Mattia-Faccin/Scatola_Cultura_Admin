@@ -1,13 +1,13 @@
 <form class="form" (submit)="submit()" #strutturaForm="ngForm" novalidate>
   <p class="title">Modifica Struttura</p>
-  <p class="message">Completa tutti i campi (tutti obbligatori)</p>
+  <p class="message">i campi con l' * sono obbligatori</p>
 
   <div class="container">
     <!-- Riga 1 -->
     <div class="row mb-3">
       <div class="col-6 d-flex gap-2">
         <label class="flex-fill d-flex flex-column">
-          <span>Nome (max 100 caratteri)</span>
+          <span>Nome* (max 100 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             type="text"
@@ -20,7 +20,7 @@
         </label>
 
         <label class="flex-fill d-flex flex-column">
-          <span>Ambito (max 200 caratteri)</span>
+          <span>Ambito* (max 200 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             required
@@ -34,7 +34,7 @@
 
       <div class="col-6 d-flex gap-2">
         <label class="flex-fill d-flex flex-column">
-          <span>Città (max 50 caratteri)</span>
+          <span>Città* (max 50 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             type="text"
@@ -46,7 +46,7 @@
         </label>
 
         <label class="flex-fill d-flex flex-column">
-          <span>Provincia (max 2 caratteri)</span>
+          <span>Provincia* (max 2 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             type="text"
@@ -59,7 +59,7 @@
         </label>
 
         <label class="flex-fill d-flex flex-column">
-          <span>Via (max 100 caratteri)</span>
+          <span>Via* (max 100 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             type="text"
@@ -77,7 +77,7 @@
     <div class="row mb-3" style="min-height: 15vh">
       <div class="col d-flex flex-column">
         <label class="flex-grow-1 d-flex flex-column">
-          <span>Descrizione</span>
+          <span>Descrizione*</span>
           <textarea
             class="form-control flex-grow-1"
             type="text"
@@ -110,7 +110,7 @@
     <div class="row mb-3">
       <div class="col-6 d-flex gap-2">
         <label class="flex-fill d-flex flex-column">
-          <span>Indirizzo Completo (max 200 caratteri)</span>
+          <span>Indirizzo Completo* (max 200 caratteri)</span>
           <input
             class="form-control flex-grow-1"
             type="text"
@@ -127,7 +127,6 @@
             class="form-control flex-grow-1"
             type="url"
             [(ngModel)]="datiForm.posizione"
-            required
             name="posizione"
             autocomplete="off"
             #posizioneRef="ngModel"
@@ -142,7 +141,6 @@
           <span>Instagram (link)</span>
           <input
             class="form-control flex-grow-1"
-          
             type="url"
             pattern="https?://(www\.)?instagram\.com/.*"
             [(ngModel)]="datiForm.Instagram"
@@ -151,6 +149,7 @@
             maxlength="250"
             #instagramRef="ngModel"
             [ngClass]="{ 'is-invalid': instagramRef.invalid && instagramRef.touched }"
+            [pattern]="datiForm.Instagram ? 'https?://(www\\.)?instagram\\.com/.*' : ''"
           />
         </label>
         <label class="flex-fill d-flex flex-column">
@@ -165,6 +164,7 @@
             autocomplete="off"
             #facebookRef="ngModel"
             [ngClass]="{ 'is-invalid': facebookRef.invalid && facebookRef.touched }"
+             [pattern]="datiForm.Facebook ? 'https?://(www\\.)?facebook\\.com/.*' : ''"
           />
         </label>
         <label class="flex-fill d-flex flex-column">
@@ -178,6 +178,7 @@
             autocomplete="off"
             #sitoWebRef="ngModel"
             [ngClass]="{ 'is-invalid': sitoWebRef.invalid && sitoWebRef.touched }"
+             [pattern]="datiForm.sitoWeb ? 'https?://.*' : ''"
           />
         </label>
       </div>
@@ -186,29 +187,27 @@
     <!-- Riga 5: immagine personalizzata + didascalia + pulsante -->
     <div class="row mb-3 align-items-end">
       <!-- Input immagine personalizzato -->
-      <div class="col-md-4">
-        <label for="file" class="custum-file-upload d-flex flex-column" [ngClass]="{'loaded':base64Image}">
-          <div class="text mb-1" >
-            <span *ngIf="!base64Image">Carica immagine</span>
-            <span *ngIf="base64Image" class="d-block mt-2">
-               Immagine caricata con successo
-              <img
-                [src]="'data:image/*;base64,' + base64Image"
-                alt="Anteprima immagine"
-                style="
-                  max-width: 20%;
-                  max-height: 20%;
-                  border: 1px solid #ccc;
-                "
-              />
-            </span>
+       <div class="col-md-4">
+        <label for="file" class="custum-file-upload d-flex flex-column">
+          <div class="text mb-1">
+            <span>Carica immagine</span>
           </div>
           <input
             id="file"
             type="file"
+            accept="image/*"
             (change)="onFileSelected($event)"
             style="cursor: pointer"
           />
+
+          <!-- Mostra anteprima solo se c'è un file -->
+          <div *ngIf="getImagePreview()" class="mt-2">
+            <img
+              [src]="getImagePreview()"
+              alt="Anteprima immagine"
+              style="max-width: 8vw; max-height: 7vh; border: 1px solid #ccc"
+            />
+          </div>
         </label>
       </div>
 

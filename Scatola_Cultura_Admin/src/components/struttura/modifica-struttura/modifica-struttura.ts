@@ -27,9 +27,7 @@ interface FormData {
   imports: [CommonModule, FormsModule],
   templateUrl: './modifica-struttura.html',
   styleUrls: ['./modifica-struttura.css'], // Nota: styleUrls (plural)
-})
-export class ModificaStruttura implements OnInit, OnDestroy {
-  // Oggetto che contiene i dati del form, inizializzato con valori vuoti
+})export class ModificaStruttura implements OnInit, OnDestroy {
   datiForm: FormData = {
     nomeStruttura: '',
     ambito: '',
@@ -46,15 +44,14 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     didascaliaImmagine: '',
   };
 
-  // Variabile per la struttura caricata da modificare
   struttura!: Struttura;
-  // Subscription per l'osservazione dei parametri della rotta
   private routeSub!: Subscription;
 
-  // Immagine codificata in base64
-  base64Image: string | null = null;
-  // File immagine selezionato
+  // --- Mantengo base64 ma commentato ---
+  // base64Image: string | null = null;
+
   selectedFile: File | null = null;
+  previewUrl: string | null = null;
 
   constructor(
     private rotta: ActivatedRoute,
@@ -62,21 +59,18 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {}
 
-  // Id della struttura da modificare
   idStruttura: number = 0;
 
   ngOnInit(): void {
-    // Sottoscrizione ai parametri della rotta per ottenere l'id struttura
     this.routeSub = this.rotta.paramMap.subscribe((params: ParamMap) => {
       const parametroId = params.get('id');
       if (parametroId !== null) {
         this.idStruttura = parseInt(parametroId, 10);
-        this.loadStruttura(this.idStruttura); // Carica dati struttura dal sessionStorage
+        this.loadStruttura(this.idStruttura);
       }
     });
   }
 
-  // Carica la struttura dal sessionStorage e popola i dati del form
   loadStruttura(idStruttura: number) {
     const strutture: Struttura[] = JSON.parse(
       sessionStorage.getItem('strutture') || '[]'
@@ -86,7 +80,6 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     if (trovata) {
       this.struttura = trovata;
 
-      // Popola i campi del form con i valori della struttura trovata
       this.datiForm = {
         nomeStruttura: this.struttura.nomeStruttura || '',
         ambito: this.struttura.ambito || '',
@@ -103,33 +96,45 @@ export class ModificaStruttura implements OnInit, OnDestroy {
         didascaliaImmagine: this.struttura.immagine?.didascaliaImmagine || '',
       };
 
-      // Carica immagine in base64 (stringa)
-      this.base64Image = this.struttura.immagine?.byteImmagine.toString() || '';
+      // this.base64Image = this.struttura.immagine?.byteImmagine.toString() || '';
+
+      this.previewUrl = this.struttura.immagine?.immagineUrl || null;
     } else {
       console.error(`Struttura con id: ${idStruttura} non trovata`);
     }
   }
 
-  // Evento scatenato quando viene selezionato un file immagine
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      // Converte il file in base64 per l'anteprima e il salvataggio
+      // --- gestione base64 commentata ---
+      /*
       this.convertToBase64(file)
         .then((base64) => {
-          // Salva solo la parte base64 senza il prefix data:
           this.base64Image = base64.split(',')[1];
           this.selectedFile = file;
-          // Forza il rilevamento cambiamenti per aggiornare la vista
           this.cdr.detectChanges();
         })
         .catch((err) => {
           console.error('Errore conversione file:', err);
         });
+      */
+
+      // Gestione file diretta (senza base64)
+      this.selectedFile = file;
+      this.previewUrl = URL.createObjectURL(file);
+      this.cdr.detectChanges();
     }
   }
 
-  // Funzione helper per convertire un file in base64
+  getImagePreview(): string | null {
+  return this.selectedFile
+    ? URL.createObjectURL(this.selectedFile)
+    : this.previewUrl;
+}
+
+  // Funzione base64 commentata
+  /*
   convertToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -138,16 +143,22 @@ export class ModificaStruttura implements OnInit, OnDestroy {
       reader.onerror = (error) => reject(error);
     });
   }
+  */
 
-  // Funzione chiamata al submit del form per inviare dati aggiornati
   submit() {
+    // Se vuoi puoi riattivare il controllo base64 (commentato)
+    /*
     if (!this.base64Image) {
       console.error('Nessuna immagine selezionata');
       return;
     }
+    */
+    if (!this.selectedFile && !this.previewUrl) {
+      alert("Seleziona un'immagine!");
+      return;
+    }
 
-    //  oggetto con i dati da inviare al backend
-    const dataToSend = {
+    const strutturaDTO = {
       NomeStruttura: this.datiForm.nomeStruttura,
       Ambito: this.datiForm.ambito,
       Citta: this.datiForm.citta,
@@ -163,45 +174,43 @@ export class ModificaStruttura implements OnInit, OnDestroy {
       DataInserimento: new Date().toISOString(),
       FlgDisabilita: false,
       Immagine: {
-        ByteImmagine: this.base64Image,
-        NomeImmagine: this.selectedFile?.name || 'errore',
+        // ByteImmagine: this.base64Image, // commentato
+        NomeImmagine: this.selectedFile ? this.selectedFile.name : 'esistente',
+         immagineUrl: '', 
         DidascaliaImmagine: this.datiForm.didascaliaImmagine,
       },
     };
-    this.sendData(dataToSend);
+
+    const formDataToSend = new FormData();
+    formDataToSend.append('dto', JSON.stringify(strutturaDTO));
+    if (this.selectedFile) {
+      formDataToSend.append('file', this.selectedFile, this.selectedFile.name);
+    }
+
+    this.sendData(formDataToSend);
   }
 
-  // Quando il componente viene distrutto, annulla la subscription ai parametri rotta
   ngOnDestroy(): void {
     this.routeSub.unsubscribe();
   }
 
-
-
-
   sendData(dataToSend: any) {
     this.servizioHttp.sendStruttura(dataToSend).subscribe({
       next: (res) => {
-        alert('Struttura creata con successo!');
+        alert('Struttura aggiornata con successo!');
       },
       error: (err) => {
         console.error('Errore upload', err);
-
         let errorMsg = 'Errore nel caricamento, riprova.';
-
         if (err.error) {
           if (typeof err.error === 'string') {
-            // se è una semplice stringa
             errorMsg = err.error;
           } else if (err.error.message) {
-            // se c'è una proprietà
             errorMsg = err.error.message;
           } else if (err.error.errors) {
-            // se ci sono più errori li concatena
             errorMsg = Object.values(err.error.errors).flat().join('\n');
           }
         }
-
         alert(`Errore nel caricamento: \n${errorMsg}`);
       },
     });

@@ -15,7 +15,8 @@ export interface Struttura {
   flgDisabilita:boolean;
   immagine:{
     nomeImmagine:string;
-    byteImmagine:number;
+    // byteImmagine:number;
+    immagineUrl: '', 
     didascaliaImmagine:string;
   };
   disabilita:Disabilita[]
