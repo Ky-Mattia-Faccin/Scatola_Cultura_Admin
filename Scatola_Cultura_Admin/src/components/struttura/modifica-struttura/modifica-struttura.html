@@ -1,54 +1,242 @@
-<form class="form">
+<form class="form" (submit)="submit()" #strutturaForm="ngForm" novalidate>
   <p class="title">Modifica Struttura</p>
-  <p class="message">Modifica i campi</p>
-  <div class="flex">
-    <label>
-      <span>Nome</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.nomeStruttura" name="nomeStruttura" />
-    </label>
+  <p class="message">i campi con l' * sono obbligatori</p>
 
-    <label>
-      <span>Ambito</span>
-      <input class="input" required [(ngModel)]="struttura.ambito" name="ambito" />
-    </label>
+  <div class="container">
+    <!-- Riga 1 -->
+    <div class="row mb-3">
+      <div class="col-6 d-flex gap-2">
+        <label class="flex-fill d-flex flex-column">
+          <span>Nome* (max 100 caratteri)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            required
+            maxlength="100"
+            [(ngModel)]="datiForm.nomeStruttura"
+            name="nomeStruttura"
+            autocomplete="off"
+          />
+        </label>
 
-    <label>
-      <span>Descrizione</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.descrizione" name="descrizione" />
-    </label>
+        <label class="flex-fill d-flex flex-column">
+          <span>Ambito* (max 200 caratteri)</span>
+          <input
+            class="form-control flex-grow-1"
+            required
+            maxlength="200"
+            [(ngModel)]="datiForm.ambito"
+            name="ambito"
+            autocomplete="off"
+          />
+        </label>
+      </div>
 
-    <label>
-      <span>Città</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.citta" name="citta" />
-    </label>
+      <div class="col-6 d-flex gap-2">
+        <label class="flex-fill d-flex flex-column">
+          <span>Città* (max 50 caratteri)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            required
+            [(ngModel)]="datiForm.citta"
+            name="citta"
+            autocomplete="off"
+          />
+        </label>
 
-    <label>
-      <span>Provincia</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.provincia" name="provincia" />
-    </label>
+        <label class="flex-fill d-flex flex-column">
+          <span>Provincia* (max 2 caratteri)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            required
+            maxlength="2"
+            [(ngModel)]="datiForm.provincia"
+            name="provincia"
+            autocomplete="off"
+          />
+        </label>
 
-    <label>
-      <span>Via</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.via" name="via" />
-    </label>
-
-    <label>
-      <span>Posizione</span>
-      <input class="input" type="text" required [(ngModel)]="struttura.indirizzoCompleto" name="indirizzoCompleto" />
-    </label>
-
-      <label>
-        <span>Social</span>
-        <input class="input" type="text"  />
-      </label>
-  </div>
-
-  <label for="file" class="custum-file-upload">
-    <div class="text">
-      <span>Premi per caricare un'immagine</span>
+        <label class="flex-fill d-flex flex-column">
+          <span>Via* (max 100 caratteri)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            required
+             maxlength="100"
+            [(ngModel)]="datiForm.via"
+            name="via"
+            autocomplete="off"
+          />
+        </label>
+      </div>
     </div>
-    <input id="file" type="file" (change)="onFileSelected($event)" />
-  </label>
 
-  <button class="confirm">Conferma</button>
+    <!-- Riga 2: Descrizione più alta -->
+    <div class="row mb-3" style="min-height: 15vh">
+      <div class="col d-flex flex-column">
+        <label class="flex-grow-1 d-flex flex-column">
+          <span>Descrizione*</span>
+          <textarea
+            class="form-control flex-grow-1"
+            type="text"
+            required
+            [(ngModel)]="datiForm.descrizione"
+            name="descrizione"
+            autocomplete="off"
+          ></textarea>
+        </label>
+      </div>
+    </div>
+    <!-- Riga 3: Testi Semplici -->
+    <div class="row mb-3" style="min-height: 15vh">
+      <div class="col d-flex flex-column">
+        <label class="flex-grow-1 d-flex flex-column">
+          <span>TestiSemplici (max 150 caratteri)</span>
+          <textarea
+            class="form-control flex-grow-1"
+            type="text"
+            name="testiSemplici"
+            maxlength="150"
+            [(ngModel)]="datiForm.testiSemplici"
+            placeholder=".."
+            autocomplete="off"
+          ></textarea>
+        </label>
+      </div>
+    </div>
+    <!-- Riga 4: Posizione e Social -->
+    <div class="row mb-3">
+      <div class="col-6 d-flex gap-2">
+        <label class="flex-fill d-flex flex-column">
+          <span>Indirizzo Completo* (max 200 caratteri)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="text"
+            maxlength="200"
+            [(ngModel)]="datiForm.IndirizzoCompleto"
+            required
+            name="indirizzoCompleto"
+            autocomplete="off"
+          />
+        </label>
+        <label class="flex-fill d-flex flex-column">
+          <span>Posizione (link)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="url"
+            [(ngModel)]="datiForm.posizione"
+            name="posizione"
+            autocomplete="off"
+            #posizioneRef="ngModel"
+            pattern="https:\/\/(www\.google\.com\/maps\/.+|maps\.app\.goo\.gl\/[A-Za-z0-9]+|goo\.gl\/maps\/[A-Za-z0-9]+)"
+            [ngClass]="{ 'is-invalid': posizioneRef.invalid && posizioneRef.touched }"
+          />
+        </label>
+      </div>
+
+      <div class="col-6 d-flex gap-2">
+        <label class="flex-fill d-flex flex-column">
+          <span>Instagram (link)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="url"
+            pattern="https?://(www\.)?instagram\.com/.*"
+            [(ngModel)]="datiForm.Instagram"
+            name="instagram"
+            autocomplete="off"
+            maxlength="250"
+            #instagramRef="ngModel"
+            [ngClass]="{ 'is-invalid': instagramRef.invalid && instagramRef.touched }"
+            [pattern]="datiForm.Instagram ? 'https?://(www\\.)?instagram\\.com/.*' : ''"
+          />
+        </label>
+        <label class="flex-fill d-flex flex-column">
+          <span>Facebook (link)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="url"
+            pattern="https?://(www\.)?facebook\.com/.*"
+            [(ngModel)]="datiForm.Facebook"
+            name="facebook"
+            maxlength="250"
+            autocomplete="off"
+            #facebookRef="ngModel"
+            [ngClass]="{ 'is-invalid': facebookRef.invalid && facebookRef.touched }"
+             [pattern]="datiForm.Facebook ? 'https?://(www\\.)?facebook\\.com/.*' : ''"
+          />
+        </label>
+        <label class="flex-fill d-flex flex-column">
+          <span>Sito Web (link)</span>
+          <input
+            class="form-control flex-grow-1"
+            type="url"
+            [(ngModel)]="datiForm.sitoWeb"
+            name="sitoWeb"
+            maxlength="250"
+            autocomplete="off"
+            #sitoWebRef="ngModel"
+            [ngClass]="{ 'is-invalid': sitoWebRef.invalid && sitoWebRef.touched }"
+             [pattern]="datiForm.sitoWeb ? 'https?://.*' : ''"
+          />
+        </label>
+      </div>
+    </div>
+    <!-- Riga 5: input + bottone in basso a destra -->
+    <!-- Riga 5: immagine personalizzata + didascalia + pulsante -->
+    <div class="row mb-3 align-items-end">
+      <!-- Input immagine personalizzato -->
+       <div class="col-md-4">
+        <label for="file" class="custum-file-upload d-flex flex-column">
+          <div class="text mb-1">
+            <span>Carica immagine</span>
+          </div>
+          <input
+            id="file"
+            type="file"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            style="cursor: pointer"
+          />
+
+          <!-- Mostra anteprima solo se c'è un file -->
+          <div *ngIf="getImagePreview()" class="mt-2">
+            <img
+              [src]="getImagePreview()"
+              alt="Anteprima immagine"
+              style="max-width: 8vw; max-height: 7vh; border: 1px solid #ccc"
+            />
+          </div>
+        </label>
+      </div>
+
+      <!-- Didascalia -->
+      <div class="col-md-5">
+        <label class="d-flex flex-column">
+          <span class="mb-1">Didascalia (max 50 caratteri)</span>
+          <textarea
+            type="text"
+            class="form-control"
+            required
+            maxlength="50"
+            name="didascaliaImmagine"
+            [(ngModel)]="datiForm.didascaliaImmagine"
+            autocomplete="off"
+          ></textarea>
+        </label>
+      </div>
+
+      <!-- Bottone "Conferma" -->
+      <div class="col-md-3 d-flex justify-content-end">
+        <button
+          class="btn btn-primary mt-3 mt-md-0"
+          type="submit"
+          [disabled]="!strutturaForm.valid"
+        >
+          Conferma
+        </button>
+      </div>
+    </div>
+  </div>
 </form>

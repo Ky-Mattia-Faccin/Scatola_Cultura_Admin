@@ -1,0 +1,76 @@
+<form
+  class="form"
+  *ngIf="disabilita"
+  (submit)="submit()"
+  #formDisabilita="ngForm"
+  novalidate
+>
+  <p class="title">Modifica Facilitazione</p>
+  <p class="message">Modifica la descrizione</p>
+
+  <!-- Riga 1: Nome -->
+  <div class="row mb-3">
+    <div class="col-6 d-flex flex-column">
+      <label class="flex-fill d-flex flex-column">
+        <span>Categoria</span>
+        <input
+          class="form-control"
+          type="text"
+          [value]="disabilita?.categoria?.nome"
+          readonly
+        />
+      </label>
+    </div>
+
+    <div class="col-6 d-flex align-items-end">
+      <div class="form-check custom-checkbox">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="flgWarning"
+          [(ngModel)]="disabilita.flgWarning"
+          name="flgWarning"
+        />
+        <label class="form-check-label" for="flgWarning"> Warning </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Riga 2: Descrizione -->
+  <div class="row mb-3">
+    <div class="col">
+      <label for="descrizione">Descrizione</label>
+      <textarea
+        class="form-control textarea-large"
+        required
+        name="descrizione"
+        autocomplete="off"
+        [(ngModel)]="disabilita!.descrizione"
+      ></textarea>
+    </div>
+  </div>
+
+  <!-- riga 3-->
+
+  <div class="row mb-3">
+    <div class="col">
+      <label for="testoSemplice">Testo Semplice (max 150 caratteri)</label>
+      <textarea
+        class="form-control textarea-large"
+        required
+        name="testoSemplice"
+        autocomplete="off"
+        maxlength="150"
+        [(ngModel)]="disabilita!.testoSemplificato"
+      ></textarea>
+    </div>
+  </div>
+
+  <button
+    class="btn btn-primary confirm-btn"
+    type="submit"
+    [disabled]="!formDisabilita.valid"
+  >
+    Conferma
+  </button>
+</form>

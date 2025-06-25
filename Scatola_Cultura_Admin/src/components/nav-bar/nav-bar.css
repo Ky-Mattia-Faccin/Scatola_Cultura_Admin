@@ -15,8 +15,21 @@
 
 /* Logo */
 .nb-logo {
-  width: 5vw;
-  padding: 1vw;
+  display: flex;
+  width: 10vw;
+  height: 100%;
+  padding: 0.5vw;
+
+}
+.nb-logo-text{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.nb-logo-text img{
+  object-fit: cover;
+      height: 100%;
+    width: 100%;
 }
 
 /* Desktop menu */
@@ -27,12 +40,12 @@
   width: 90vw;
 }
 
-/* Struttura */
-.nb-struttura-item {
+
+.nb-item {
   position: relative;
 }
 
-.nb-struttura-button {
+.nb-button {
   display: flex;
   align-items: center;
   
@@ -51,34 +64,13 @@
   transition: background-color 0.2s ease;
 }
 
-.nb-struttura-button:hover {
+.nb-button:hover {
   background-color: #f3f4f6;
   outline: none;
 }
 
-/* Categoria */
-.nb-categoria-item {
-  position: relative;
-}
 
-.nb-categoria-button {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem 0.75rem;
-  background: none;
-  border: none;
-  color: #4b5563; 
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 0.375rem;
-  transition: background-color 0.2s ease;
-}
 
-.nb-categoria-button:hover {
-  background-color: #f3f4f6;
-  outline: none;
-}
 
 /* Icone */
 .nb-icon {
@@ -89,6 +81,7 @@
 /* Search bar */
 .nb-search-bar {
   position: relative;
+  width: 30vw;
 }
 
 .nb-search-input-wrapper {
@@ -122,9 +115,8 @@
 }
 
 /* Dropdown */
-.nb-categoria-dropdown, 
-.nb-struttura-dropdown {
-  height: 10vh;
+.nb-dropdown{
+  height: 15vh;
   width: 10vw;
 
   border-radius:40px ;
@@ -146,6 +138,31 @@
 
   z-index: 10;
 }
+
 .nb-dropdown-item{
   cursor: pointer;
+}
+
+.nb-account-dropdown{
+  top: 120%;
+  right: -17%;
+}
+
+.nb-dropdown-item:hover{
+  background-color: #9a959533;
+  border-radius: 5px;
+}
+
+.bi-person-circle{
+  fill: #3d4147;
+}
+
+.account{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nb-categoria-dropwdown{
+  height: 10vh;
 }

@@ -7,9 +7,35 @@ export interface Struttura {
   provincia: string;
   via: string;
   ambito: string;
-  disabilita:[
-    {categoria:string, descrizione:string}
-  ];
-  DidascaliaImmagine:string;
-  TestoSemplificato:string;
+  social1:string;
+  social2:string;
+  posizione:string;
+  sitoWeb:string;
+  testoSemplificato:string;
+  flgDisabilita:boolean;
+  immagine:{
+    nomeImmagine:string;
+    // byteImmagine:number;
+    immagineUrl: '', 
+    didascaliaImmagine:string;
+  };
+  disabilita:Disabilita[]
+}
+
+
+export interface catDisabilita {
+  nome: string;
+  descrizione: string;
+  flgDisabilita: boolean;
+}
+
+
+export interface Disabilita{
+  idStruttura:number,
+  categoria:catDisabilita;
+  descrizione:string,
+  testoSemplificato:string,
+  flgDisabilita:boolean;
+  disabilitaStruttura:number
+  flgWarning:boolean;
 }

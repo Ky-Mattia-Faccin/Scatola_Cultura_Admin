@@ -1,0 +1,71 @@
+  <form class="form" (submit)="submit()" #disabilitaForm="ngForm" novalidate>
+    <p class="title">Crea Facilitazione</p>
+    <p class="message">Completa tutti i campi</p>
+
+    <!-- Riga 1 -->
+<div class="row mb-3">
+  <div class="col-6 d-flex flex-column">
+    <label for="categoria">Categoria</label>
+    <div class="form-control" id="categoria" readonly>{{ categoria }}</div>
+  </div>
+
+  <div class="col-6 d-flex align-items-end">
+    <div class="form-check custom-checkbox">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="flgWarning"
+        [(ngModel)]="flgWarning"
+        name="flgWarning"
+      />
+      <label class="form-check-label" for="flgWarning">
+         Warning
+      </label>
+    </div>
+  </div>
+</div>
+
+ <!-- Riga 2 -->
+<!-- Descrizione -->
+<div class="row mb-3">
+  <div class="col">
+    <label for="descrizione">Descrizione</label>
+    <textarea
+      class="form-control textarea-large"
+      id="descrizione"
+      required
+      name="descrizione"
+      autocomplete="off"
+      [(ngModel)]="descrizione"
+    ></textarea>
+  </div>
+</div>
+
+ <!-- Riga 3 -->
+<!-- Testo Semplice -->
+<div class="row mb-3">
+  <div class="col">
+    <label for="testoSemplice">Testo Semplice (max 150 caratteri)</label>
+    <textarea
+      class="form-control textarea-large"
+      id="testoSemplice"
+      required
+      name="testoSemplice"
+      autocomplete="off"
+      maxlength="150"
+      [(ngModel)]="testoSemplice"
+    ></textarea>
+  </div>
+</div>
+
+
+    <button
+      class="btn btn-primary confirm-btn"
+      type="submit"
+      [disabled]="!disabilitaForm.valid"
+    >
+      Crea
+    </button>
+
+    
+  </form>

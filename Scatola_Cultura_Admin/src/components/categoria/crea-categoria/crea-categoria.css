@@ -1,0 +1,15 @@
+
+label {
+  display: flex;
+  flex-direction: column;
+  color: #ccc;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+label span {
+  margin-bottom: 6px;
+}
+
+

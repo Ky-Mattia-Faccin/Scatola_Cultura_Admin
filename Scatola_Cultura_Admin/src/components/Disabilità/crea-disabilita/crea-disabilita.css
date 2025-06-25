@@ -1,0 +1,39 @@
+
+/* ========== LABEL + INPUT STILE ========== */
+label {
+  display: flex;
+  flex-direction: column;
+  color: #ccc;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+label span {
+  margin-bottom: 6px;
+}
+
+.textarea-large {
+  height: 20vh;   
+  resize: vertical; 
+}
+
+/* ========== CHECKBOX CUSTOMIZATION ========== */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 0.5rem;
+}
+
+.custom-checkbox .form-check-input {
+  transform: scale(1.3);
+  cursor: pointer;
+}
+
+.custom-checkbox .form-check-label {
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+}
+
