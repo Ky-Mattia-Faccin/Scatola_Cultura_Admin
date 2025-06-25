@@ -2,20 +2,23 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Disabilita, Struttura } from '../interfaces/Istruttura';
-import { HttpClientModule } from '@angular/common/http';
 import { catDisabilita } from '../interfaces/Istruttura';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ServizioHttp {
+  // Base URL per comodità e manutenzione (puoi aggiungerlo se vuoi)
+  private baseUrl = 'http://192.168.123.150:5000/api';
+
   constructor(private httpClient: HttpClient) {}
 
+  /**
+   * Recupera tutte le strutture dal backend.
+   * In caso di errore ritorna un array vuoto e stampa in console l'errore.
+   */
   getStrutture(): Observable<Struttura[]> {
-    return this.httpClient
-      .get<Struttura[]>(
-        //'https://dev.api.scatolacultura.it/api/DisabilitaStruttura/get'
-        `http://192.168.123.150:5000/api/DisabilitaStruttura/get`
-      )
+    return this.httpClient.get<Struttura[]>(`${this.baseUrl}/DisabilitaStruttura/get`)
       .pipe(
         catchError((error) => {
           console.error('Errore nel recupero delle strutture:', error);
@@ -24,11 +27,12 @@ export class ServizioHttp {
       );
   }
 
+  /**
+   * Recupera tutte le categorie di disabilità.
+   * Gestisce errori ritornando array vuoto e loggando in console.
+   */
   getCategorie(): Observable<catDisabilita[]> {
-    return this.httpClient
-      .get<catDisabilita[]>(
-        'http://192.168.123.150:5000/api/Disabilita/getAllDisabilita'
-      )
+    return this.httpClient.get<catDisabilita[]>(`${this.baseUrl}/Disabilita/getAllDisabilita`)
       .pipe(
         catchError((error) => {
           console.error('Errore nel recupero delle categorie:', error);
@@ -37,50 +41,51 @@ export class ServizioHttp {
       );
   }
 
+  /**
+   * Patch per attivare/disattivare una categoria tramite ID.
+   */
   patchCategoria(id: string, disattiva: boolean): Observable<any> {
-    return this.httpClient.patch(
-      `http://192.168.123.150:5000/api/Disabilita/patch?id=${id}`,
-      {
-        disattiva: true,
-      }
-    );
+    return this.httpClient.patch(`${this.baseUrl}/Disabilita/patch?id=${id}`, {
+      disattiva: disattiva,
+    });
   }
 
+  /**
+   * POST per inviare una nuova struttura (con eventuale immagine).
+   */
   sendStruttura(dati: any): Observable<any> {
-    return this.httpClient.post(
-      'http://192.168.123.150:5000/api/Struttura/postConImmagine',
-      dati
-    );
+    return this.httpClient.post(`${this.baseUrl}/Struttura/postConImmagine`, dati);
   }
 
+  /**
+   * PUT per aggiornare una struttura esistente dato l'id.
+   */
   updateStruttura(dati: any, id: number) {
-    return this.httpClient.put(
-      `http://192.168.123.150:5000/api/Struttura/updateStruttura/${id}`,
-      dati
-    );
+    return this.httpClient.put(`${this.baseUrl}/Struttura/updateStruttura/${id}`, dati);
   }
 
+  /**
+   * PATCH per disattivare/attivare una struttura tramite id.
+   */
   patchStrutture(id: number, disattiva: boolean) {
-    return this.httpClient.patch(
-      `http://192.168.123.150:5000/api/Struttura/patch?id=${id}`,
-      {
-        disattiva: true,
-      }
-    );
+    return this.httpClient.patch(`${this.baseUrl}/Struttura/patch?id=${id}`, {
+      disattiva: disattiva,
+    });
   }
 
+  /**
+   * POST per creare una nuova categoria di disabilità.
+   */
   sendCategoria(dati: any): Observable<any> {
-    return this.httpClient.post(
-      'http://192.168.123.150:5000/api/Disabilita/post',
-      dati
-    );
+    return this.httpClient.post(`${this.baseUrl}/Disabilita/post`, dati);
   }
 
+  /**
+   * GET per recuperare le disabilità associate a una struttura tramite id.
+   * In caso di errore ritorna array vuoto.
+   */
   getDisabilitàStruttura(id: number): Observable<any[]> {
-    return this.httpClient
-      .get<any[]>(
-        `http://192.168.123.150:5000/api/DisabilitaStruttura/getByID/${id}`
-      )
+    return this.httpClient.get<any[]>(`${this.baseUrl}/DisabilitaStruttura/getByID/${id}`)
       .pipe(
         catchError((error) => {
           console.error('Errore nel recupero delle disabilità:', error);
@@ -89,34 +94,27 @@ export class ServizioHttp {
       );
   }
 
+  /**
+   * PATCH per abilitare/disabilitare una disabilità specifica tramite id.
+   */
   patchDisabilità(id: number, disattiva: boolean): Observable<any> {
-    return this.httpClient.patch(
-      `http://192.168.123.150:5000/api/DisabilitaStruttura/patch?id=${id}`,
-      {
-        disattiva: true,
-      }
-    );
+    return this.httpClient.patch(`${this.baseUrl}/DisabilitaStruttura/patch?id=${id}`, {
+      disattiva: disattiva,
+    });
   }
 
+  /**
+   * PUT per aggiornare la descrizione di una disabilità tramite id.
+   * body contiene i dati da aggiornare.
+   */
   UpdateDisabilità(body: any, id: number) {
-    
-    return this.httpClient.put(
-      `http://192.168.123.150:5000/api/DisabilitaStruttura/aggiornaDescrizione?id=${id}`,
-        body,
-    );
+    return this.httpClient.put(`${this.baseUrl}/DisabilitaStruttura/aggiornaDescrizione?id=${id}`, body);
   }
 
-
-  sendDisabilità(dati:any){
-    return this.httpClient.post(
-      'http://192.168.123.150:5000/api/DisabilitaStruttura/post',
-      dati
-    );
+  /**
+   * POST per creare una nuova disabilità associata a una struttura.
+   */
+  sendDisabilità(dati: any) {
+    return this.httpClient.post(`${this.baseUrl}/DisabilitaStruttura/post`, dati);
   }
-
-  
-
-
-  
-  
 }

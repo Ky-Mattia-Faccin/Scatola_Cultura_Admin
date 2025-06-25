@@ -4,7 +4,7 @@
       <div class="logo"></div>
 
       <span class="header" *ngIf="!tipo">Login</span>
-      <span class="header" *ngIf="tipo === 'SingUp'">Registrati</span>
+      <span class="header" *ngIf="tipo === 'SignUp'">Registrati</span>
 
       <input
         type="text"
@@ -18,18 +18,17 @@
       />
 
       <input
-        *ngIf="tipo === 'SingUp'"
-          type="email"
-          placeholder="Email"
-          class="input"
-          [(ngModel)]="email"
-          name="email"
-          #emailModel="ngModel"
-          required
-          email
-          [ngClass]="{ 'input-error': emailModel.invalid && emailModel.touched }"
-        />
-
+        *ngIf="tipo === 'SignUp'"
+        type="email"
+        placeholder="Email"
+        class="input"
+        [(ngModel)]="email"
+        name="email"
+        #emailModel="ngModel"
+        required
+        email
+        [ngClass]="{ 'input-error': emailModel.invalid && emailModel.touched }"
+      />
 
       <input
         type="password"
@@ -42,21 +41,22 @@
         required
         [ngClass]="{ 'input-error': passwordModel.invalid && passwordModel.touched }"
       />
-
+      
+      
 
       <button
         type="button"
         class="button sign-in"
         *ngIf="!tipo"
         (click)="signIn()"
-         [ngClass]="{ 'button-disabled': !form.valid}"
+        [ngClass]="{ 'button-disabled': !form.valid}"
       >
         Accedi
       </button>
       <button
         type="button"
         class="button sign-in"
-        *ngIf="tipo === 'SingUp'"
+        *ngIf="tipo === 'SignUp'"
         (click)="signUp()"
         [ngClass]="{ 'button-disabled': !form.valid}"
       >
@@ -64,11 +64,11 @@
       </button>
 
       <div class="footer" *ngIf="!tipo">
-       Non hai un account?
+        Non hai un account?
         <span class="link" (click)="ChangeSignUp()">Registrati</span><br />
       </div>
 
-      <div class="footer" *ngIf="tipo === 'SingUp'">
+      <div class="footer" *ngIf="tipo === 'SignUp'">
         Hai già un account?
         <span class="link" (click)="ChangeSignIn()">Accedi</span><br />
       </div>
