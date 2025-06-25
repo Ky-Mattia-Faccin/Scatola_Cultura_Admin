@@ -62,6 +62,7 @@ export class Auth {
             expirationUTC.getTime() + new Date().getTimezoneOffset() * -60000
           );
 
+          // per test
           //  const expiration = new Date(Date.now() + 2 * 60 * 1000);
 
           // Salva i dati della sessione
@@ -216,7 +217,7 @@ export class Auth {
               return;
             }
 
-            // Aggiorna token e scadenza (attenzione: vedi nota nel feedback!)
+            // Aggiorna token e scadenza 
             const newExpUTC = new Date(Date.now());
             const newExpCET = new Date(
               newExpUTC.getTime() + new Date().getTimezoneOffset() * -60000
@@ -240,7 +241,7 @@ export class Auth {
           },
           error: () => {
             alert('Sessione scaduta. Effettua nuovamente il login.');
-            // this.logOut();
+            this.logOut();
           },
         });
       } else {
@@ -261,7 +262,7 @@ export class Auth {
     );
   }
 
-  // Aggiorna password utente (endpoint da completare)
+  // Aggiorna password utente
   updatePw(dati: any) {
     return this.httpClient
       .post(
@@ -286,26 +287,35 @@ export class Auth {
   }
 }
 
+
+
+
+
+
 // Interceptor HTTP per aggiungere token di autorizzazione alle richieste
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const loggedJSON = sessionStorage.getItem('logged');
   const token = loggedJSON ? JSON.parse(loggedJSON).token : null;
+
   const refreshToken = loggedJSON ? JSON.parse(loggedJSON).refreshToken : null;
 
   // URL endpoint refresh token da escludere
   const refreshUrl = 'http://192.168.123.150:5000/api/authenticate/refresh';
 
   // Se la richiesta è al refresh token, inserisce, il refresh token
-  // if (req.url === refreshUrl) {
-  //   const authReq = req.clone({
-  //     setHeaders: {
-  //       Authorization: `Bearer ${refreshToken}`,
-  //     },})
-  //   return next(authReq);
-  // }
+  if (req.url === refreshUrl) {
+    // const authReq = req.clone({
+    //   setHeaders: {
+    //     Authorization: `Bearer ${refreshToken}`,
+    //   },})
+    // return next(authReq);
+    return next(req)
+  }
 
-  // Se c'è token, lo aggiunginge a tutte le richieste (GET, POST, PUT, PATCH, DELETE ecc.)
+
+
+  // Se c'è token, lo aggiunginge a alle richieste (GET, POST, PUT, PATCH, DELETE ecc.)
   if (token) {
     const authReq = req.clone({
       setHeaders: {
