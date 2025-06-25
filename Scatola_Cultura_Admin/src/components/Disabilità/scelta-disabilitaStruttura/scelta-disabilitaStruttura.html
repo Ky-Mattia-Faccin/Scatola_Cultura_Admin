@@ -1,5 +1,5 @@
   <div class="card">
-    <div class="title">Seleziona una Disabilità</div>
+    <div class="title">Seleziona una Facilitazione</div>
     <div class="structures-wrapper" *ngIf="disabilita$ | async as disabilita">
       <label class="structure" *ngFor="let d of disabilita ; let i = index" >
         <ng-container *ngIf="azione === 'disattiva'; else radioMode">
