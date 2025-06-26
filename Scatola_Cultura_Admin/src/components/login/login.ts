@@ -43,19 +43,8 @@ export class Login implements OnInit, OnDestroy {
     document.body.classList.remove('login-page');
   }
 
-  /**
-   * Naviga alla stessa pagina impostando query param tipo=SignUp per mostrare il form di registrazione
-   */
-  ChangeSignUp() {
-    this.router.navigate(['/login'], { queryParams: { tipo: 'SignUp' } });
-  }
 
-  /**
-   * Naviga alla pagina login senza query param, per mostrare il form di login
-   */
-  ChangeSignIn() {
-    this.router.navigate(['/login']);
-  }
+
 
   /**
    * Metodo per effettuare il login usando il servizio Auth
@@ -69,27 +58,5 @@ export class Login implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Metodo per la registrazione.
-   * Se la registrazione va a buon fine, esegue automaticamente il login e reindirizza alla home.
-   */
-  signUp() {
-    this.auth
-      .signUp(this.username, this.password, this.email)
-      .subscribe((success) => {
-        if (success) {
-          this.auth
-            .login(this.username, this.password)
-            .subscribe((loginSuccess) => {
-              if (loginSuccess) {
-                this.router.navigate(['/']);
-              } else {
-                alert('Login dopo registrazione fallito');
-              }
-            });
-        } else {
-          alert('Registrazione fallita');
-        }
-      });
-  }
+  
 }

@@ -27,7 +27,8 @@ interface FormData {
   imports: [CommonModule, FormsModule],
   templateUrl: './modifica-struttura.html',
   styleUrls: ['./modifica-struttura.css'], // Nota: styleUrls (plural)
-})export class ModificaStruttura implements OnInit, OnDestroy {
+})
+export class ModificaStruttura implements OnInit, OnDestroy {
   datiForm: FormData = {
     nomeStruttura: '',
     ambito: '',
@@ -128,10 +129,10 @@ interface FormData {
   }
 
   getImagePreview(): string | null {
-  return this.selectedFile
-    ? URL.createObjectURL(this.selectedFile)
-    : this.previewUrl;
-}
+    return this.selectedFile
+      ? URL.createObjectURL(this.selectedFile)
+      : this.previewUrl;
+  }
 
   // Funzione base64 commentata
   /*
@@ -153,10 +154,7 @@ interface FormData {
       return;
     }
     */
-    if (!this.selectedFile && !this.previewUrl) {
-      alert("Seleziona un'immagine!");
-      return;
-    }
+    if (!this.selectedFile && !this.previewUrl) this.selectedFile = null;
 
     const strutturaDTO = {
       NomeStruttura: this.datiForm.nomeStruttura,
@@ -176,7 +174,7 @@ interface FormData {
       Immagine: {
         // ByteImmagine: this.base64Image, // commentato
         NomeImmagine: this.selectedFile ? this.selectedFile.name : 'esistente',
-         immagineUrl: '', 
+        immagineUrl: '',
         DidascaliaImmagine: this.datiForm.didascaliaImmagine,
       },
     };
@@ -214,5 +212,20 @@ interface FormData {
         alert(`Errore nel caricamento: \n${errorMsg}`);
       },
     });
+  }
+
+  allowOnlyLetters(event: KeyboardEvent) {
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!/^[a-zA-Z]$/.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  allowOnlyValidChars(event: KeyboardEvent) {
+    const inputChar = String.fromCharCode(event.charCode);
+    const regex = /^[a-zA-Z0-9,\/\\\s]$/;
+    if (!regex.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

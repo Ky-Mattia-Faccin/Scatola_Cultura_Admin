@@ -67,10 +67,7 @@ export class CreaStruttura {
 
   // Metodo per inviare i dati della nuova struttura al backend
   submit() {
-    if (!this.selectedFile) {
-      alert("Seleziona un'immagine!");
-      return;
-    }
+    if (!this.selectedFile) this.selectedFile = null;
 
     const strutturaDTO = {
       nomeStruttura: this.formData.nomeStruttura,
@@ -87,15 +84,20 @@ export class CreaStruttura {
       flgDisabilita: false,
       testoSemplificato: this.formData.testiSemplici,
       immagine: {
-        nomeImmagine: this.selectedFile.name,
+        nomeImmagine: this.selectedFile?.name ?? '',
         immagineUrl: '', // può essere lasciato vuoto, sarà gestito dal backend
         didascaliaImmagine: this.formData.didascaliaImmagine,
       },
     };
 
     const formDataToSend = new FormData();
-    formDataToSend.append('dto', JSON.stringify(strutturaDTO));
-    formDataToSend.append('file', this.selectedFile, this.selectedFile.name);
+    if (this.selectedFile) {
+      formDataToSend.append('dto', JSON.stringify(strutturaDTO));
+      formDataToSend.append('file', this.selectedFile, this.selectedFile.name);
+    } else {
+      formDataToSend.append('dto', '');
+      formDataToSend.append('file', '');
+    }
 
     this.sendData(formDataToSend);
   }
@@ -126,5 +128,20 @@ export class CreaStruttura {
         alert(`Errore nel caricamento: \n${errorMsg}`);
       },
     });
+  }
+
+  allowOnlyLetters(event: KeyboardEvent) {
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!/^[a-zA-Z]$/.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  allowOnlyValidChars(event: KeyboardEvent) {
+    const inputChar = String.fromCharCode(event.charCode);
+    const regex = /^[a-zA-Z0-9,\/\\\s]$/;
+    if (!regex.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

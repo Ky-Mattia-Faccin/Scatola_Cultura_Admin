@@ -61,7 +61,7 @@ export class ServizioHttp {
    * PUT per aggiornare una struttura esistente dato l'id.
    */
   updateStruttura(dati: any, id: number) {
-    return this.httpClient.put(`${this.baseUrl}/Struttura/updateStruttura/${id}`, dati);
+    return this.httpClient.post(`${this.baseUrl}/Struttura/updateStruttura/${id}`, dati);
   }
 
   /**

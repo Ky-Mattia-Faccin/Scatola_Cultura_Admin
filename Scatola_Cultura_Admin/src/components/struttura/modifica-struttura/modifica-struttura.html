@@ -16,6 +16,7 @@
             [(ngModel)]="datiForm.nomeStruttura"
             name="nomeStruttura"
             autocomplete="off"
+            (keypress)="allowOnlyLetters($event)"
           />
         </label>
 
@@ -28,6 +29,7 @@
             [(ngModel)]="datiForm.ambito"
             name="ambito"
             autocomplete="off"
+            (keypress)="allowOnlyLetters($event)"
           />
         </label>
       </div>
@@ -42,6 +44,7 @@
             [(ngModel)]="datiForm.citta"
             name="citta"
             autocomplete="off"
+            (keypress)="allowOnlyLetters($event)"
           />
         </label>
 
@@ -55,6 +58,7 @@
             [(ngModel)]="datiForm.provincia"
             name="provincia"
             autocomplete="off"
+            (keypress)="allowOnlyLetters($event)"
           />
         </label>
 
@@ -68,6 +72,7 @@
             [(ngModel)]="datiForm.via"
             name="via"
             autocomplete="off"
+            (keypress)="allowOnlyValidChars($event)"
           />
         </label>
       </div>
@@ -85,6 +90,7 @@
             [(ngModel)]="datiForm.descrizione"
             name="descrizione"
             autocomplete="off"
+            (keypress)="allowOnlyValidChars($event)"
           ></textarea>
         </label>
       </div>
@@ -102,6 +108,7 @@
             [(ngModel)]="datiForm.testiSemplici"
             placeholder=".."
             autocomplete="off"
+            (keypress)="allowOnlyValidChars($event)"
           ></textarea>
         </label>
       </div>
@@ -119,6 +126,7 @@
             required
             name="indirizzoCompleto"
             autocomplete="off"
+            (keypress)="allowOnlyValidChars($event)"
           />
         </label>
         <label class="flex-fill d-flex flex-column">

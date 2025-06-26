@@ -115,28 +115,6 @@ export class Auth {
     this.expirationDate = new Date();
   }
 
-  // Metodo per registrare un nuovo utente/admin
-  signUp(username: string, password: string, email: string) {
-    const body = { username, email, password };
-
-    return this.httpClient
-      .post('http://192.168.123.150:5000/api/authenticate/register-admin', body)
-      .pipe(
-        map(() => true),
-        catchError((err) => {
-          // Gestione errori registrazione
-          let message = 'Errore nella registrazione';
-          if (err.error?.message) {
-            message = err.error.message;
-          } else if (err.status === 400) {
-            message = 'Registrazione non valida. Verifica i dati inseriti.';
-          }
-
-          alert(message);
-          return of(false);
-        })
-      );
-  }
 
   // Controlla se l’utente è loggato e il token non è scaduto
   isLoggedIn(): boolean {
