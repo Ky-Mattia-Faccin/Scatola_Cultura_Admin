@@ -124,7 +124,7 @@
             maxlength="200"
             [(ngModel)]="datiForm.IndirizzoCompleto"
             required
-            name="indirizzoCompleto"
+            name="IndirizzoCompleto"
             autocomplete="off"
             (keypress)="allowOnlyValidChars($event)"
           />
@@ -138,7 +138,7 @@
             name="posizione"
             autocomplete="off"
             #posizioneRef="ngModel"
-            pattern="https:\/\/(www\.google\.com\/maps\/.+|maps\.app\.goo\.gl\/[A-Za-z0-9]+|goo\.gl\/maps\/[A-Za-z0-9]+)"
+            [pattern]="datiForm.posizione? 'https:\/\/(www\.google\.com\/maps\/.+|maps\.app\.goo\.gl\/[A-Za-z0-9]+|goo\.gl\/maps\/[A-Za-z0-9]+)':''"
             [ngClass]="{ 'is-invalid': posizioneRef.invalid && posizioneRef.touched }"
           />
         </label>
@@ -150,7 +150,6 @@
           <input
             class="form-control flex-grow-1"
             type="url"
-            pattern="https?://(www\.)?instagram\.com/.*"
             [(ngModel)]="datiForm.Instagram"
             name="instagram"
             autocomplete="off"
@@ -165,14 +164,13 @@
           <input
             class="form-control flex-grow-1"
             type="url"
-            pattern="https?://(www\.)?facebook\.com/.*"
             [(ngModel)]="datiForm.Facebook"
             name="facebook"
             maxlength="250"
             autocomplete="off"
             #facebookRef="ngModel"
             [ngClass]="{ 'is-invalid': facebookRef.invalid && facebookRef.touched }"
-             [pattern]="datiForm.Facebook ? 'https?://(www\\.)?facebook\\.com/.*' : ''"
+            [pattern]="datiForm.Facebook ? 'https?://(www\\.)?facebook\\.com/.*' : ''"
           />
         </label>
         <label class="flex-fill d-flex flex-column">
@@ -186,7 +184,7 @@
             autocomplete="off"
             #sitoWebRef="ngModel"
             [ngClass]="{ 'is-invalid': sitoWebRef.invalid && sitoWebRef.touched }"
-             [pattern]="datiForm.sitoWeb ? 'https?://.*' : ''"
+            [pattern]="datiForm.sitoWeb ? 'https?://.*' : ''"
           />
         </label>
       </div>
@@ -206,6 +204,7 @@
             accept="image/*"
             (change)="onFileSelected($event)"
             style="cursor: pointer"
+            name="loadImage"
           />
 
           <!-- Mostra anteprima solo se c'è un file -->
@@ -226,7 +225,6 @@
           <textarea
             type="text"
             class="form-control"
-            required
             maxlength="50"
             name="didascaliaImmagine"
             [(ngModel)]="datiForm.didascaliaImmagine"
@@ -240,7 +238,7 @@
         <button
           class="btn btn-primary mt-3 mt-md-0"
           type="submit"
-          [disabled]="!strutturaForm.valid"
+          [disabled]="!strutturaForm.valid || !isFormModified()"
         >
           Conferma
         </button>

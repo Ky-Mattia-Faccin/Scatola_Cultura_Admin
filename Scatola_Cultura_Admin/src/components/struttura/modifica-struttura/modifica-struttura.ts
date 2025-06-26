@@ -1,11 +1,19 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+// Import dei moduli necessari
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Struttura } from '../../../interfaces/Istruttura';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ServizioHttp } from '../../../services/servizio-http';
 import { Subscription } from 'rxjs';
 
+// Interfaccia per rappresentare i dati del form
 interface FormData {
   nomeStruttura: string;
   ambito: string;
@@ -24,11 +32,12 @@ interface FormData {
 
 @Component({
   selector: 'app-modifica-struttura',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule], // Import dei moduli necessari per template
   templateUrl: './modifica-struttura.html',
-  styleUrls: ['./modifica-struttura.css'], // Nota: styleUrls (plural)
+  styleUrls: ['./modifica-struttura.css'], // Foglio di stile associato
 })
 export class ModificaStruttura implements OnInit, OnDestroy {
+  // Dati iniziali del form
   datiForm: FormData = {
     nomeStruttura: '',
     ambito: '',
@@ -45,34 +54,37 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     didascaliaImmagine: '',
   };
 
-  struttura!: Struttura;
-  private routeSub!: Subscription;
+  struttura!: Struttura; // Oggetto struttura corrente
+  private routeSub!: Subscription; // Per gestire la sottoscrizione alla route
 
-  // --- Mantengo base64 ma commentato ---
-  // base64Image: string | null = null;
-
-  selectedFile: File | null = null;
-  previewUrl: string | null = null;
+  selectedFile: File | null = null; // File immagine selezionato
+  previewUrl: string | null = null; // Preview dell'immagine
 
   constructor(
-    private rotta: ActivatedRoute,
-    private servizioHttp: ServizioHttp,
-    private cdr: ChangeDetectorRef
+    private rotta: ActivatedRoute, // Servizio per accedere ai parametri dell'URL
+    private servizioHttp: ServizioHttp, // Servizio HTTP per le chiamate al backend
+    private cdr: ChangeDetectorRef // Permette il rilevamento manuale dei cambiamenti
   ) {}
 
-  idStruttura: number = 0;
+  idStruttura: number = 0; // ID della struttura da modificare
+
+  @ViewChild('strutturaForm') strutturaForm!: NgForm; // Accesso al form tramite template reference
 
   ngOnInit(): void {
+    // Ottenimento dell'ID della struttura dai parametri dell'URL
     this.routeSub = this.rotta.paramMap.subscribe((params: ParamMap) => {
       const parametroId = params.get('id');
       if (parametroId !== null) {
         this.idStruttura = parseInt(parametroId, 10);
-        this.loadStruttura(this.idStruttura);
+        this.loadStruttura(this.idStruttura); // Caricamento dei dati
       }
     });
   }
 
+  datiFormOriginale: any; // Per il confronto con i dati originali
+
   loadStruttura(idStruttura: number) {
+    // Carica la struttura dal sessionStorage
     const strutture: Struttura[] = JSON.parse(
       sessionStorage.getItem('strutture') || '[]'
     );
@@ -81,6 +93,7 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     if (trovata) {
       this.struttura = trovata;
 
+      // Popola il form con i dati della struttura
       this.datiForm = {
         nomeStruttura: this.struttura.nomeStruttura || '',
         ambito: this.struttura.ambito || '',
@@ -97,65 +110,49 @@ export class ModificaStruttura implements OnInit, OnDestroy {
         didascaliaImmagine: this.struttura.immagine?.didascaliaImmagine || '',
       };
 
-      // this.base64Image = this.struttura.immagine?.byteImmagine.toString() || '';
-
+      // Salva una copia originale per rilevare modifiche
+      this.datiFormOriginale = { ...this.datiForm };
       this.previewUrl = this.struttura.immagine?.immagineUrl || null;
     } else {
       console.error(`Struttura con id: ${idStruttura} non trovata`);
     }
   }
 
+  // Gestione selezione immagine
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      // --- gestione base64 commentata ---
-      /*
-      this.convertToBase64(file)
-        .then((base64) => {
-          this.base64Image = base64.split(',')[1];
-          this.selectedFile = file;
-          this.cdr.detectChanges();
-        })
-        .catch((err) => {
-          console.error('Errore conversione file:', err);
-        });
-      */
-
-      // Gestione file diretta (senza base64)
+      // Rimuove la preview precedente se esistente
+      if (this.previewUrl) URL.revokeObjectURL(this.previewUrl);
       this.selectedFile = file;
       this.previewUrl = URL.createObjectURL(file);
-      this.cdr.detectChanges();
+      this.cdr.detectChanges(); // Forza l'aggiornamento del DOM
     }
   }
 
+  // Restituisce l'anteprima da visualizzare
   getImagePreview(): string | null {
     return this.selectedFile
       ? URL.createObjectURL(this.selectedFile)
       : this.previewUrl;
   }
 
-  // Funzione base64 commentata
-  /*
-  convertToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  }
-  */
-
+  // Funzione per l’invio dei dati
   submit() {
-    // Se vuoi puoi riattivare il controllo base64 (commentato)
-    /*
-    if (!this.base64Image) {
-      console.error('Nessuna immagine selezionata');
+    // Se c’è una didascalia ma nessuna immagine, mostra un alert
+    if (
+      !this.selectedFile &&
+      !this.previewUrl &&
+      this.datiForm.didascaliaImmagine
+    ) {
+      alert('Hai inserito una didascalia ma nessuna immagine.');
       return;
     }
-    */
+
+    // Se non è presente immagine nuova, la proprietà resta null
     if (!this.selectedFile && !this.previewUrl) this.selectedFile = null;
 
+    // Crea il DTO da inviare
     const strutturaDTO = {
       NomeStruttura: this.datiForm.nomeStruttura,
       Ambito: this.datiForm.ambito,
@@ -172,28 +169,35 @@ export class ModificaStruttura implements OnInit, OnDestroy {
       DataInserimento: new Date().toISOString(),
       FlgDisabilita: false,
       Immagine: {
-        // ByteImmagine: this.base64Image, // commentato
-        NomeImmagine: this.selectedFile ? this.selectedFile.name : 'esistente',
+        NomeImmagine: this.selectedFile ? this.selectedFile.name : ' ',
         immagineUrl: '',
         DidascaliaImmagine: this.datiForm.didascaliaImmagine,
       },
     };
 
+    // Costruzione del payload
     const formDataToSend = new FormData();
+    this.selectedFile
+      ? formDataToSend.append('file', this.selectedFile, this.selectedFile.name)
+      : formDataToSend.append('file', '');
+
     formDataToSend.append('dto', JSON.stringify(strutturaDTO));
-    if (this.selectedFile) {
-      formDataToSend.append('file', this.selectedFile, this.selectedFile.name);
-    }
 
     this.sendData(formDataToSend);
   }
 
+  // Pulizia alla distruzione del componente
   ngOnDestroy(): void {
     this.routeSub.unsubscribe();
   }
 
+  // Invio al backend
   sendData(dataToSend: any) {
-    this.servizioHttp.sendStruttura(dataToSend).subscribe({
+    
+    for (const pair of dataToSend.entries()) {
+      console.log(`${pair[0]}:`, pair[1]); // Log dei dati inviati
+    }
+    this.servizioHttp.updateStruttura(dataToSend, this.idStruttura).subscribe({
       next: (res) => {
         alert('Struttura aggiornata con successo!');
       },
@@ -214,18 +218,28 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     });
   }
 
+  // Permette solo lettere e spazi (es. per nomi)
   allowOnlyLetters(event: KeyboardEvent) {
-    const inputChar = String.fromCharCode(event.charCode);
-    if (!/^[a-zA-Z]$/.test(inputChar)) {
+    const inputChar = event.key;
+    if (!/^[a-zA-Z\s]$/.test(inputChar)) {
       event.preventDefault();
     }
   }
 
+  // Permette lettere, numeri, spazi e alcuni simboli (per indirizzi)
   allowOnlyValidChars(event: KeyboardEvent) {
-    const inputChar = String.fromCharCode(event.charCode);
+    const inputChar = event.key;
     const regex = /^[a-zA-Z0-9,\/\\\s]$/;
     if (!regex.test(inputChar)) {
       event.preventDefault();
     }
+  }
+
+  // Verifica se il form è stato modificato
+  isFormModified(): boolean {
+    const isDataChanged =
+      JSON.stringify(this.datiForm) !== JSON.stringify(this.datiFormOriginale);
+    const isImageChanged = !!this.selectedFile;
+    return isDataChanged || isImageChanged;
   }
 }
