@@ -73,11 +73,6 @@ export class SceltaStruttura implements OnInit {
         this.servizioHttp
           .patchStrutture(struttura.idStruttura, stato) // Invia richiesta PATCH con lo stato corrente (per cambiarlo)
           .subscribe({
-            next: () => {
-              console.log(
-                `Struttura ${struttura.nomeStruttura} ${stato ? 'disabilitata' : 'riabilitata'}`
-              );
-            },
             error: (err) => {
               // In caso di errore ripristina il valore originale
               console.error(`Errore ${stato ? 'disabilitando' : 'riabilitando'} struttura`, err);

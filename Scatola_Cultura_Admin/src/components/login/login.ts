@@ -32,7 +32,6 @@ export class Login implements OnInit, OnDestroy {
 
     this.route.queryParams.subscribe((params) => {
       this.tipo = params['tipo'] || null;
-      console.log('Tipo query param:', this.tipo);
     });
   }
 

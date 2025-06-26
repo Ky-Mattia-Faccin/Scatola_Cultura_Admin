@@ -30,13 +30,6 @@ export class SceltaCategoria implements OnInit {
       const disattiva = cat.flgDisabilita;
 
       this.servizioHttp.patchCategoria(cat.nome, disattiva).subscribe({
-        next: () => {
-          console.log(
-            `Categoria ${cat.nome} ${
-              disattiva ? 'disattivata' : 'riattivata'
-            }`
-          );
-        },
         error: (err) => {
           console.error(
             `Errore ${

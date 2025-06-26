@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Struttura } from '../../interfaces/Istruttura';
 import { ServizioHttp } from '../../services/servizio-http';
 import { Auth } from '../../services/auth';
+import { share, shareReplay } from 'rxjs';
 
 @Component({
   selector: 'app-nav-bar',
@@ -67,13 +68,8 @@ export class NavBar implements OnInit {
       const struttureJSON = sessionStorage.getItem('strutture');
       this.strutture = JSON.parse(struttureJSON || '[]');
       this.filterAndNavigate(filtro);
-    } else {
-      // Altrimenti, le carica da backend e poi filtra
-      this.servizio.getStrutture().subscribe((value) => {
-        this.strutture = value;
-        this.filterAndNavigate(filtro);
-      });
     }
+    
   }
 
   /**

@@ -31,7 +31,6 @@ export class ModificaDisabilita implements OnInit {
   } else {
     console.warn('Nessuna disabilità selezionata trovata in sessionStorage');
   }
-  console.log(this.disabilita);
 }
 
 

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ServizioHttp } from '../../../services/servizio-http'; 
 import { FormsModule } from '@angular/forms'; 
 import { CommonModule } from '@angular/common'; 
@@ -134,10 +134,6 @@ export class CreaStruttura {
 
   // Metodo che si occupa dell'invio dei dati al backend tramite il servizio HTTP
   sendData(dataToSend: any) {
-    
-     for (const pair of dataToSend.entries()) {
-      console.log(`${pair[0]}:`, pair[1]); // Log dei dati inviati
-    }
     this.servizoHttp.sendStruttura(dataToSend).subscribe({
       next: (res) => {
         alert('Struttura creata con successo!');

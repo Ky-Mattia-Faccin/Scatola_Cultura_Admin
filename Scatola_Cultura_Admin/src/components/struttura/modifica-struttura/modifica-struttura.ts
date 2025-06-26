@@ -1,15 +1,13 @@
-// Import dei moduli necessari
 import {
   ChangeDetectorRef,
   Component,
   OnDestroy,
-  OnInit,
-  ViewChild,
+  OnInit
 } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Struttura } from '../../../interfaces/Istruttura';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ServizioHttp } from '../../../services/servizio-http';
 import { Subscription } from 'rxjs';
 
@@ -32,9 +30,9 @@ interface FormData {
 
 @Component({
   selector: 'app-modifica-struttura',
-  imports: [CommonModule, FormsModule], // Import dei moduli necessari per template
+  imports: [CommonModule, FormsModule], 
   templateUrl: './modifica-struttura.html',
-  styleUrls: ['./modifica-struttura.css'], // Foglio di stile associato
+  styleUrls: ['./modifica-struttura.css'], 
 })
 export class ModificaStruttura implements OnInit, OnDestroy {
   // Dati iniziali del form
@@ -68,7 +66,6 @@ export class ModificaStruttura implements OnInit, OnDestroy {
 
   idStruttura: number = 0; // ID della struttura da modificare
 
-  @ViewChild('strutturaForm') strutturaForm!: NgForm; // Accesso al form tramite template reference
 
   ngOnInit(): void {
     // Ottenimento dell'ID della struttura dai parametri dell'URL
@@ -118,16 +115,38 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     }
   }
 
-  // Gestione selezione immagine
+  // Metodo chiamato quando l'utente seleziona un file dal form
+
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
-    if (file) {
-      // Rimuove la preview precedente se esistente
-      if (this.previewUrl) URL.revokeObjectURL(this.previewUrl);
-      this.selectedFile = file;
-      this.previewUrl = URL.createObjectURL(file);
-      this.cdr.detectChanges(); // Forza l'aggiornamento del DOM
+    if (!file) return;
+
+    // 1. Verifica che il file sia un'immagine supportata
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Tipo di file non supportato. Carica solo immagini JPG, PNG o GIF.');
+      return;
     }
+
+    // 2. Verifica che il file non superi i 5MB
+    const maxSizeInMB = 5;
+    if (file.size > maxSizeInMB * 1024 * 1024) {
+      alert('Il file è troppo grande. La dimensione massima è 5MB.');
+      return;
+    }
+
+    // 3. Prova a leggere il file
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.selectedFile = file; // Se va tutto bene, salva il file
+      this.cdr.detectChanges(); // Forza aggiornamento della vista
+    };
+    reader.onerror = () => {
+      alert('Errore durante la lettura del file. Potrebbe essere corrotto.');
+      this.selectedFile = null;
+    };
+
+    reader.readAsDataURL(file); // Avvia la lettura del file
   }
 
   // Restituisce l'anteprima da visualizzare
@@ -179,7 +198,7 @@ export class ModificaStruttura implements OnInit, OnDestroy {
     const formDataToSend = new FormData();
     this.selectedFile
       ? formDataToSend.append('file', this.selectedFile, this.selectedFile.name)
-      : formDataToSend.append('file', '');
+      : formDataToSend.append('file', 'vuoto');
 
     formDataToSend.append('dto', JSON.stringify(strutturaDTO));
 
@@ -193,10 +212,6 @@ export class ModificaStruttura implements OnInit, OnDestroy {
 
   // Invio al backend
   sendData(dataToSend: any) {
-    
-    for (const pair of dataToSend.entries()) {
-      console.log(`${pair[0]}:`, pair[1]); // Log dei dati inviati
-    }
     this.servizioHttp.updateStruttura(dataToSend, this.idStruttura).subscribe({
       next: (res) => {
         alert('Struttura aggiornata con successo!');

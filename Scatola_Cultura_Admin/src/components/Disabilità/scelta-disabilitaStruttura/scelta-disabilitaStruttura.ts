@@ -95,7 +95,6 @@ export class SceltaDisabilitaStruttura implements OnInit {
   // Metodo chiamato quando si clicca su una disabilità:
   // naviga alla pagina per modificarla, passando la categoria nella route
   onClickDisabilita(dis: Disabilita) {
-    console.log(dis)
 
       sessionStorage.setItem('disabilitaSelezionata', JSON.stringify(dis));
       this.router.navigate(['/modificaDisabilità']);
@@ -112,14 +111,6 @@ export class SceltaDisabilitaStruttura implements OnInit {
   this.servizioHttp
     .patchDisabilità(dis.disabilitaStruttura, stato)
     .subscribe({
-      next: () => {
-        // In caso di successo, logga in console un messaggio che indica l’azione effettuata
-        console.log(
-          `Disabilità ${dis.categoria.nome} ${
-            stato ? 'disabilitata' : 'riabilitata'
-          }`
-        );
-      },
       error: (err) => {
       // In caso di errore, logga l’errore in console
         console.error(
