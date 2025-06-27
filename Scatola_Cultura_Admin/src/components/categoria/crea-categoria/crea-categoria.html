@@ -14,6 +14,7 @@
           name="categoria"
           autocomplete="off"
           [(ngModel)]="formData.IdCategoria"
+          (keypress)="allowOnlyValidChars($event)"
         />
       </label>
     </div>
@@ -31,6 +32,7 @@
           rows="6"
           autocomplete="off"
           [(ngModel)]="formData.DescCategoria"
+          (keypress)="allowOnlyValidChars($event)"
         ></textarea>
       </label>
     </div>

@@ -45,6 +45,7 @@
         required
         name="descrizione"
         autocomplete="off"
+        (keypress)="allowOnlyValidChars($event)"
         [(ngModel)]="disabilita!.descrizione"
       ></textarea>
     </div>

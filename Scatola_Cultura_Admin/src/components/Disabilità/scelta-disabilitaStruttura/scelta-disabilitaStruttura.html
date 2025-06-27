@@ -10,6 +10,7 @@
           type="checkbox"
           class="checkbox"
           [checked]="d.flgDisabilita"
+          [disabled]="azione === 'disattiva' && d.categoria.flgDisabilita"
           [name]=`strutturaCheckbox${i}`
           (change)="onToggleCheckbox(d)"
         />

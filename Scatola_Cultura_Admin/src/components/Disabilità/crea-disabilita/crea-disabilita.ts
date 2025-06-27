@@ -51,4 +51,13 @@ submit() {
   });
 }
 
+// Permette lettere, numeri, spazi e alcuni simboli (per indirizzi)
+  allowOnlyValidChars(event: KeyboardEvent) {
+    const inputChar = event.key;
+    const regex = /^[a-zA-Z,\/\\\s]$/;
+    if (!regex.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
 }
