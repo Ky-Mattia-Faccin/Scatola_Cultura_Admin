@@ -8,7 +8,7 @@
         type="checkbox"
         class="checkbox"
         name="strutturaSelection{{i}}"
-        [(ngModel)]="d.flgDisabilita"
+        [checked]="d.flgDisabilita"
         [disabled]="azione === 'seleziona' && d.flgDisabilita"
         (change)="onToggleCategoria(d)"
       />

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule, ValueChangeEvent } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { map, Observable, shareReplay, Subscription, tap } from 'rxjs';
@@ -11,13 +11,13 @@ export interface DisabilitaBackend {
   descrizione: string;
   flgDisabilita: boolean;
   disabilitaStruttura: number;
-  testoSemplificato:string;
+  testoSemplificato: string;
   disabilita: {
     categoria: string;
     descrizione: string;
     flgDisabilita: boolean;
   };
-  flgWarning:boolean;
+  flgWarning: boolean;
 }
 
 @Component({
@@ -33,15 +33,15 @@ export class SceltaDisabilitaStruttura implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private servizioHttp: ServizioHttp,
-    private router: Router
+    private router: Router,
+     private cdRef: ChangeDetectorRef
   ) {}
 
   // Observable che conterrà la lista di disabilità ottenute da HTTP
   disabilita$!: Observable<Disabilita[]>;
   disabilita!: Disabilita[];
 
-
-  azione!:string
+  azione!: string;
 
   // Oggetto per gestire la sottoscrizione alla route
   private routeSub!: Subscription;
@@ -56,10 +56,9 @@ export class SceltaDisabilitaStruttura implements OnInit {
       }
     });
 
-    this.route.queryParams.subscribe(parametri => {
-    this.azione = parametri['azione'];
-    })
-
+    this.route.queryParams.subscribe((parametri) => {
+      this.azione = parametri['azione'];
+    });
   }
 
   //chiamata per ottenere le disabilita della struttura dall'id
@@ -81,8 +80,8 @@ export class SceltaDisabilitaStruttura implements OnInit {
               descrizione: item.descrizione,
               testoSemplificato: item.testoSemplificato,
               flgDisabilita: item.flgDisabilita,
-              disabilitaStruttura:item.disabilitaStruttura,
-              flgWarning:item.flgWarning
+              disabilitaStruttura: item.disabilitaStruttura,
+              flgWarning: item.flgWarning,
             })
           )
         ),
@@ -91,35 +90,42 @@ export class SceltaDisabilitaStruttura implements OnInit {
       );
   }
 
-
   // Metodo chiamato quando si clicca su una disabilità:
   // naviga alla pagina per modificarla, passando la categoria nella route
   onClickDisabilita(dis: Disabilita) {
-
-      sessionStorage.setItem('disabilitaSelezionata', JSON.stringify(dis));
-      this.router.navigate(['/modificaDisabilità']);
-
-    
+    sessionStorage.setItem('disabilitaSelezionata', JSON.stringify(dis));
+    this.router.navigate(['/modificaDisabilità']);
   }
 
-
   onSelectDisabilita(dis: Disabilita) {
-     // Salva lo stato attuale di disabilitazione della disabilità
-  const stato = dis.flgDisabilita;
+    const stato = !dis.flgDisabilita;
 
-    // Invia la richiesta PATCH al server per aggiornare lo stato di disabilitazione della disabilità
-  this.servizioHttp
-    .patchDisabilità(dis.disabilitaStruttura, stato)
-    .subscribe({
-      error: (err) => {
-      // In caso di errore, logga l’errore in console
-        console.error(
-          `Errore ${stato ? 'disabilitando' : 'riabilitando'} disabilità`,
-          err
-        );
-        // Ripristina lo stato originale della disabilità (inversione dell’azione fallita)
-        dis.flgDisabilita = !dis.flgDisabilita; 
-      },
-    });
-}
+    this.servizioHttp
+      .patchDisabilità(dis.disabilitaStruttura, stato)
+      .subscribe({
+        next: () => {
+          // // forza il rilevamento dei cambiamenti
+          // this.cdRef.detectChanges();
+          dis.flgDisabilita = !dis.flgDisabilita;
+        },
+        error: (err) => {
+          console.error(
+            `Errore ${stato ? 'disabilitando' : 'riabilitando'} disabilità`,
+            err
+          );
+          dis.flgDisabilita = !stato; // rollback in caso di errore
+        },
+      });
+  }
+
+  disabilitaFiltered(disabilita: Disabilita[]): Disabilita[] {
+    if (this.azione === 'disattiva') {
+      return disabilita; // mostra tutte
+    }
+    return disabilita.filter((d) => !d.flgDisabilita); // mostra solo abilitati
+  }
+
+  onToggleCheckbox(dis: Disabilita) {
+    this.onSelectDisabilita(dis);
+  }
 }

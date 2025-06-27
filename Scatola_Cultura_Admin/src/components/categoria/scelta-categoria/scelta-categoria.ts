@@ -30,15 +30,9 @@ export class SceltaCategoria implements OnInit {
       const disattiva = cat.flgDisabilita;
 
       this.servizioHttp.patchCategoria(cat.nome, disattiva).subscribe({
-        error: (err) => {
-          console.error(
-            `Errore ${
-              disattiva ? 'disattivazione' : 'riattivazione'
-            } categoria ${cat.nome}`,
-            err
-          );
-          cat.flgDisabilita = !cat.flgDisabilita; // Ripristina lo stato in caso di errore
-        },
+        next(){
+          cat.flgDisabilita=!cat.flgDisabilita;
+        }
       });
     } else if (this.azione === 'seleziona') {
        // Seleziona la categoria e naviga alla pagina di creazione disabilità

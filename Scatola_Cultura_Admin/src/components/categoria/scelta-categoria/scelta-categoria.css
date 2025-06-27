@@ -95,7 +95,9 @@
 
 /*=== CHECKBOX  HIDDEN ===*/
 .checkbox {
-  display: none;
+  position: absolute;
+  left: 5px;
+  opacity: 0;
 }
 
 .structure:has(input.checkbox:checked) {

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { ServizioHttp } from '../../../services/servizio-http'; 
-import { FormsModule } from '@angular/forms'; 
-import { CommonModule } from '@angular/common'; 
+import { ServizioHttp } from '../../../services/servizio-http';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 // Decoratore del componente Angular
 @Component({
@@ -45,7 +45,9 @@ export class CreaStruttura {
     // 1. Verifica che il file sia un'immagine supportata
     const allowedTypes = ['image/jpeg', 'image/png', 'image.gif'];
     if (!allowedTypes.includes(file.type)) {
-      alert('Tipo di file non supportato. Carica solo immagini JPG, PNG o GIF.');
+      alert(
+        'Tipo di file non supportato. Carica solo immagini JPG, PNG o GIF.'
+      );
       return;
     }
 
@@ -59,15 +61,27 @@ export class CreaStruttura {
     // 3. Prova a leggere il file
     const reader = new FileReader();
     reader.onload = () => {
-      this.selectedFile = file; // Se va tutto bene, salva il file
-      this.cdr.detectChanges(); // Forza aggiornamento della vista
+      const dataUrl = reader.result;
+      const img = new Image();
+
+      img.onload = () => {
+        this.selectedFile = file;
+        this.cdr.detectChanges();
+      };
+
+      img.onerror = () => {
+        alert("Il file sembra non essere un'immagine valida o è corrotto.");
+        this.selectedFile = null;
+      };
+
+      img.src = dataUrl as string;
     };
     reader.onerror = () => {
-      alert('Errore durante la lettura del file. Potrebbe essere corrotto.');
+      alert('Errore durante la lettura del file.');
       this.selectedFile = null;
     };
 
-    reader.readAsDataURL(file); // Avvia la lettura del file
+    reader.readAsDataURL(file);
   }
 
   // Restituisce un URL locale per la preview dell'immagine
@@ -128,10 +142,6 @@ export class CreaStruttura {
     this.sendData(formDataToSend);
   }
 
-
-
-
-
   // Metodo che si occupa dell'invio dei dati al backend tramite il servizio HTTP
   sendData(dataToSend: any) {
     this.servizoHttp.sendStruttura(dataToSend).subscribe({
@@ -159,8 +169,6 @@ export class CreaStruttura {
     });
   }
 
-
-
   // Permette solo lettere e spazi (es. per nomi)
   allowOnlyLetters(event: KeyboardEvent) {
     const inputChar = event.key;
@@ -168,8 +176,6 @@ export class CreaStruttura {
       event.preventDefault();
     }
   }
-
-
 
   // Permette lettere, numeri, spazi e alcuni simboli (per indirizzi)
   allowOnlyValidChars(event: KeyboardEvent) {

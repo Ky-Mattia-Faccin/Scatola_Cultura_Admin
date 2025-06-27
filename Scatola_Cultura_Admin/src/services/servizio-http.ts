@@ -45,9 +45,9 @@ export class ServizioHttp {
    * Patch per attivare/disattivare una categoria tramite ID.
    */
   patchCategoria(id: string, disattiva: boolean): Observable<any> {
-    return this.httpClient.patch(`${this.baseUrl}/Disabilita/patch?id=${id}`, {
-      disattiva: disattiva,
-    });
+    return this.httpClient.patch(`${this.baseUrl}/Disabilita/patch?id=${id}`,
+      disattiva
+    );
   }
 
   /**
