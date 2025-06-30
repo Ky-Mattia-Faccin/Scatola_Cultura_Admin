@@ -4,12 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import { Disabilita, Struttura } from '../interfaces/Istruttura';
 import { catDisabilita } from '../interfaces/Istruttura';
 
+  // Base URL per comodità e manutenzione 
+   export const baseUrl = 'http://192.168.123.150:5000/api';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ServizioHttp {
-  // Base URL per comodità e manutenzione (puoi aggiungerlo se vuoi)
-  private baseUrl = 'http://192.168.123.150:5000/api';
+
 
   constructor(private httpClient: HttpClient) {}
 
@@ -18,7 +20,7 @@ export class ServizioHttp {
    * In caso di errore ritorna un array vuoto e stampa in console l'errore.
    */
   getStrutture(): Observable<Struttura[]> {
-    return this.httpClient.get<Struttura[]>(`${this.baseUrl}/DisabilitaStruttura/get`)
+    return this.httpClient.get<Struttura[]>(`${baseUrl}/DisabilitaStruttura/get`)
       .pipe(
         catchError((error) => {
           console.error('Errore nel recupero delle strutture:', error);
@@ -32,7 +34,7 @@ export class ServizioHttp {
    * Gestisce errori ritornando array vuoto e loggando in console.
    */
   getCategorie(): Observable<catDisabilita[]> {
-    return this.httpClient.get<catDisabilita[]>(`${this.baseUrl}/Disabilita/getAllDisabilita`)
+    return this.httpClient.get<catDisabilita[]>(`${baseUrl}/Disabilita/getAllDisabilita`)
       .pipe(
         catchError((error) => {
           console.error('Errore nel recupero delle categorie:', error);
@@ -45,7 +47,7 @@ export class ServizioHttp {
    * Patch per attivare/disattivare una categoria tramite ID.
    */
   patchCategoria(id: string, disattiva: boolean): Observable<any> {
-    return this.httpClient.patch(`${this.baseUrl}/Disabilita/patch?id=${id}`,
+    return this.httpClient.patch(`${baseUrl}/Disabilita/patch?id=${id}`,
       disattiva
     );
   }
@@ -54,21 +56,21 @@ export class ServizioHttp {
    * POST per inviare una nuova struttura (con eventuale immagine).
    */
   sendStruttura(dati: any): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/Struttura/postConImmagine`, dati);
+    return this.httpClient.post(`${baseUrl}/Struttura/postConImmagine`, dati);
   }
 
   /**
    * PUT per aggiornare una struttura esistente dato l'id.
    */
   updateStruttura(dati: any, id: number) {
-    return this.httpClient.put(`${this.baseUrl}/Struttura/updateConImmagine/${id}`, dati);
+    return this.httpClient.put(`${baseUrl}/Struttura/updateConImmagine/${id}`, dati);
   }
 
   /**
    * PATCH per disattivare/attivare una struttura tramite id.
    */
   patchStrutture(id: number, disattiva: boolean) {
-    return this.httpClient.patch(`${this.baseUrl}/Struttura/patch?id=${id}`, {
+    return this.httpClient.patch(`${baseUrl}/Struttura/patch?id=${id}`, {
       disattiva: disattiva,
     });
   }
@@ -77,7 +79,7 @@ export class ServizioHttp {
    * POST per creare una nuova categoria di disabilità.
    */
   sendCategoria(dati: any): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/Disabilita/post`, dati);
+    return this.httpClient.post(`${baseUrl}/Disabilita/post`, dati);
   }
 
   /**
@@ -85,7 +87,7 @@ export class ServizioHttp {
    * In caso di errore ritorna array vuoto.
    */
   getDisabilitàStruttura(id: number): Observable<any[]> {
-    return this.httpClient.get<any[]>(`${this.baseUrl}/DisabilitaStruttura/getByID/${id}`)
+    return this.httpClient.get<any[]>(`${baseUrl}/DisabilitaStruttura/getByID/${id}`)
       .pipe(
         catchError((error) => {
           console.error('Errore nel recupero delle disabilità:', error);
@@ -98,7 +100,7 @@ export class ServizioHttp {
    * PATCH per abilitare/disabilitare una disabilità specifica tramite id.
    */
   patchDisabilità(id: number, disattiva: boolean): Observable<any> {
-    return this.httpClient.patch(`${this.baseUrl}/DisabilitaStruttura/patch?id=${id}`, {
+    return this.httpClient.patch(`${baseUrl}/DisabilitaStruttura/patch?id=${id}`, {
       disattiva: disattiva,
     });
   }
@@ -108,13 +110,13 @@ export class ServizioHttp {
    * body contiene i dati da aggiornare.
    */
   UpdateDisabilità(body: any, id: number) {
-    return this.httpClient.put(`${this.baseUrl}/DisabilitaStruttura/aggiornaDescrizione?id=${id}`, body);
+    return this.httpClient.put(`${baseUrl}/DisabilitaStruttura/aggiornaDescrizione?id=${id}`, body);
   }
 
   /**
    * POST per creare una nuova disabilità associata a una struttura.
    */
   sendDisabilità(dati: any) {
-    return this.httpClient.post(`${this.baseUrl}/DisabilitaStruttura/post`, dati);
+    return this.httpClient.post(`${baseUrl}/DisabilitaStruttura/post`, dati);
   }
 }

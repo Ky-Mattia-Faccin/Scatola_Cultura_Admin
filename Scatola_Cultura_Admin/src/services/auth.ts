@@ -2,6 +2,8 @@ import { HttpClient, HttpInterceptorFn } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, of, Subscription, throwError, timer } from 'rxjs';
+import { ServizioHttp,baseUrl } from './servizio-http';
+
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +16,10 @@ export class Auth {
   private promptShown = false; // Flag per mostrare conferma rinnovo solo una volta
   private userDeclined = false; // Flag per evitare prompt multipli se utente rifiuta
 
-  constructor(private httpClient: HttpClient, private router: Router) {
+  
+
+
+  constructor(private httpClient: HttpClient, private router: Router,private servizioHttp:ServizioHttp) {
     this.loadSession(); // Carica eventuale sessione salvata all’avvio
   }
 
@@ -49,7 +54,7 @@ export class Auth {
     const body = { username, password };
 
     return this.httpClient
-      .post('http://192.168.123.150:5000/api/authenticate/login', body)
+      .post(`${baseUrl}/authenticate/login`, body)
       .pipe(
         map((response: any) => {
           // Riceve token, refresh token e scadenza dal backend
@@ -235,7 +240,7 @@ export class Auth {
   // Richiede il rinnovo del token al backend
   getRefreshToken(data: any) {
     return this.httpClient.post(
-      'http://192.168.123.150:5000/api/authenticate/refresh',
+      `${baseUrl}/authenticate/refresh`,
       data
     );
   }
@@ -244,7 +249,7 @@ export class Auth {
   updatePw(dati: any) {
     return this.httpClient
       .post(
-        `http://192.168.123.150:5000/api/authenticate/changePassword`,
+        `${baseUrl}/authenticate/changePassword`,
         dati,
         { responseType: 'text' }
       )
@@ -274,13 +279,16 @@ export class Auth {
 // Interceptor HTTP per aggiungere token di autorizzazione alle richieste
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+
+
   const loggedJSON = sessionStorage.getItem('logged');
   const token = loggedJSON ? JSON.parse(loggedJSON).token : null;
 
   const refreshToken = loggedJSON ? JSON.parse(loggedJSON).refreshToken : null;
 
+
   // URL endpoint refresh token da escludere
-  const refreshUrl = 'http://192.168.123.150:5000/api/authenticate/refresh';
+  const refreshUrl = `${baseUrl}/authenticate/refresh`;
 
   // Se la richiesta è al refresh token, inserisce, il refresh token
   if (req.url === refreshUrl) {
