@@ -109,5 +109,9 @@
   text-decoration: line-through;
 }
 
+.structure:has(input.checkbox:disabled){
+  cursor: default;
 
+  color: grey;
+}
 

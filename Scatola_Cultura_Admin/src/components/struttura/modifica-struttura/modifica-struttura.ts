@@ -92,19 +92,19 @@ export class ModificaStruttura implements OnInit, OnDestroy {
 
       // Popola il form con i dati della struttura
       this.datiForm = {
-        nomeStruttura: this.struttura.nomeStruttura || '',
-        ambito: this.struttura.ambito || '',
-        citta: this.struttura.citta || '',
-        provincia: this.struttura.provincia || '',
-        via: this.struttura.via || '',
-        descrizione: this.struttura.descrizione || '',
-        testiSemplici: this.struttura.testoSemplificato || '',
-        IndirizzoCompleto: this.struttura.indirizzoCompleto || '',
-        posizione: this.struttura.posizione || '',
-        Instagram: this.struttura.social1 || '',
-        Facebook: this.struttura.social2 || '',
-        sitoWeb: this.struttura.sitoWeb || '',
-        didascaliaImmagine: this.struttura.immagine?.didascaliaImmagine || '',
+        nomeStruttura: this.struttura.nomeStruttura || 'null',
+        ambito: this.struttura.ambito || 'null',
+        citta: this.struttura.citta || 'null',
+        provincia: this.struttura.provincia || 'null',
+        via: this.struttura.via || 'null',
+        descrizione: this.struttura.descrizione || 'null',
+        testiSemplici: this.struttura.testoSemplificato || 'null',
+        IndirizzoCompleto: this.struttura.indirizzoCompleto || 'null',
+        posizione: this.struttura.posizione || 'null',
+        Instagram: this.struttura.social1 || 'null',
+        Facebook: this.struttura.social2 || 'null',
+        sitoWeb: this.struttura.sitoWeb || 'null',
+        didascaliaImmagine: this.struttura.immagine?.didascaliaImmagine || 'null',
       };
 
       // Salva una copia originale per rilevare modifiche
@@ -187,18 +187,18 @@ export class ModificaStruttura implements OnInit, OnDestroy {
       SitoWeb: this.datiForm.sitoWeb,
       DataInserimento: new Date().toISOString(),
       FlgDisabilita: false,
-      Immagine: {
-        NomeImmagine: this.selectedFile ? this.selectedFile.name : ' ',
+      Immagine: this.selectedFile? {
+        NomeImmagine: this.selectedFile ? this.selectedFile.name : '',
         immagineUrl: '',
         DidascaliaImmagine: this.datiForm.didascaliaImmagine,
-      },
+      }:null,
     };
 
     // Costruzione del payload
     const formDataToSend = new FormData();
     this.selectedFile
       ? formDataToSend.append('file', this.selectedFile, this.selectedFile.name)
-      : formDataToSend.append('file', 'vuoto');
+      : formDataToSend.append('file', '');
 
     formDataToSend.append('dto', JSON.stringify(strutturaDTO));
 

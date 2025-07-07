@@ -124,11 +124,11 @@ export class CreaStruttura {
       sitoWeb: this.formData.sitoWeb,
       flgDisabilita: false,
       testoSemplificato: this.formData.testiSemplici,
-      immagine: {
-        nomeImmagine: this.selectedFile?.name ?? '',
-        immagineUrl: '', // Probabilmente verrà riempito dal backend
+      immagine: this.selectedFile? {
+        nomeImmagine: this.selectedFile?.name,
+        immagineUrl: '', //  riempito dal backend
         didascaliaImmagine: this.formData.didascaliaImmagine,
-      },
+      }: null,
     };
 
     // Costruzione dell'oggetto FormData (file + JSON come stringa)

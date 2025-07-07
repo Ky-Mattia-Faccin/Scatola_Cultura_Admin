@@ -105,8 +105,8 @@ export class SceltaDisabilitaStruttura implements OnInit {
       .subscribe({
         next: () => {
           // // forza il rilevamento dei cambiamenti
-          // this.cdRef.detectChanges();
           dis.flgDisabilita = !dis.flgDisabilita;
+          this.cdRef.detectChanges();
         },
         error: (err) => {
           console.error(

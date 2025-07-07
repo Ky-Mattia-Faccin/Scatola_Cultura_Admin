@@ -47,7 +47,13 @@ submit() {
     next: () => window.alert('Disabilità inviata con successo'),
     
 
-    error: () => window.alert('Errore invio categoria'),
+    error: (err) =>{
+       if (err.status === 409) {
+      window.alert('Errore: la disabilità è già stata inserita.');
+    } else {
+      window.alert('Errore invio categoria');
+    }
+    }
   });
 }
 

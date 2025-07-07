@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ServizioHttp } from '../../../services/servizio-http';
 import { map, Observable } from 'rxjs';
@@ -19,7 +19,8 @@ export class SceltaCategoria implements OnInit {
   constructor(
     private servizioHttp: ServizioHttp,
     private Activeroute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdRef:ChangeDetectorRef
   ) {}
 
   // Gestisce il toggle della categoria: disabilita/riabilita o seleziona categoria
@@ -32,6 +33,7 @@ export class SceltaCategoria implements OnInit {
     this.servizioHttp.patchCategoria(cat.nome, nuovoStato).subscribe({
       next: () => {
         cat.flgDisabilita = nuovoStato; // Aggiorna lo stato localmente dopo la risposta
+        this.cdRef.detectChanges();
       },
       error: (err) => {
         console.error('Errore aggiornando categoria', err);

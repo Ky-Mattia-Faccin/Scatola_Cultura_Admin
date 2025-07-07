@@ -5,7 +5,7 @@ import { Disabilita, Struttura } from '../interfaces/Istruttura';
 import { catDisabilita } from '../interfaces/Istruttura';
 
   // Base URL per comodità e manutenzione 
-   export const baseUrl = 'http://192.168.123.150:5000/api';
+    export const baseUrl = 'https://dev.api.scatolacultura.it/api';
 
 @Injectable({
   providedIn: 'root',

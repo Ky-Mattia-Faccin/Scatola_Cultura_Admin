@@ -2,8 +2,7 @@ import { HttpClient, HttpInterceptorFn } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, of, Subscription, throwError, timer } from 'rxjs';
-import { ServizioHttp,baseUrl } from './servizio-http';
-
+import { ServizioHttp, baseUrl } from './servizio-http';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +15,11 @@ export class Auth {
   private promptShown = false; // Flag per mostrare conferma rinnovo solo una volta
   private userDeclined = false; // Flag per evitare prompt multipli se utente rifiuta
 
-  
-
-
-  constructor(private httpClient: HttpClient, private router: Router,private servizioHttp:ServizioHttp) {
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router,
+    private servizioHttp: ServizioHttp
+  ) {
     this.loadSession(); // Carica eventuale sessione salvata all’avvio
   }
 
@@ -53,45 +53,43 @@ export class Auth {
   login(username: string, password: string) {
     const body = { username, password };
 
-    return this.httpClient
-      .post(`${baseUrl}/authenticate/login`, body)
-      .pipe(
-        map((response: any) => {
-          // Riceve token, refresh token e scadenza dal backend
-          const token = response.accessToken;
-          const refresh = response.refreshToken;
+    return this.httpClient.post(`${baseUrl}/authenticate/login`, body).pipe(
+      map((response: any) => {
+        // Riceve token, refresh token e scadenza dal backend
+        const token = response.accessToken;
+        const refresh = response.refreshToken;
 
-          // Converte la data di scadenza da UTC a locale
-          const expirationUTC = new Date(response.expiration);
-          const expiration = new Date(
-            expirationUTC.getTime() + new Date().getTimezoneOffset() * -60000
-          );
+        // Converte la data di scadenza da UTC a locale
+        const expirationUTC = new Date(response.expiration);
+        const expiration = new Date(
+          expirationUTC.getTime() + new Date().getTimezoneOffset() * -60000
+        );
 
-          // per test
-          //  const expiration = new Date(Date.now() + 2 * 60 * 1000);
+        // per test
+        //  const expiration = new Date(Date.now() + 2 * 60 * 1000);
 
-          // Salva i dati della sessione
-          this.saveSession(token, expiration, username, refresh);
+        // Salva i dati della sessione
+        this.saveSession(token, expiration, username, refresh);
 
-          // Avvia il timer di controllo token
-          this.startTokenCheck();
+        // Avvia il timer di controllo token
+        this.startTokenCheck();
 
-          return true;
-        }),
-        catchError((err) => {
-          // Gestione errori login, con messaggi personalizzati
-          let message = 'Errore nel login';
-          if (err.error?.message) {
-            message = err.error.message;
-          } else if (err.status === 401) {
-            message = 'Credenziali non valide.';
-          }
+        return true;
+      }),
+      catchError((err) => {
+        // Gestione errori login, con messaggi personalizzati
+        let message = 'Errore nel login';
+        if (err.error?.message) {
+          message = err.error.message;
+        } else if (err.status === 401) {
+          message = 'Credenziali non valide.';
+        }
 
-          alert(message);
-          sessionStorage.removeItem('logged');
-          return of(false);
-        })
-      );
+        alert(message);
+        sessionStorage.removeItem('logged');
+        return of(false);
+      })
+    );
   }
 
   // Salva i dati della sessione in sessionStorage
@@ -120,7 +118,6 @@ export class Auth {
     this.expirationDate = new Date();
   }
 
-
   // Controlla se l’utente è loggato e il token non è scaduto
   isLoggedIn(): boolean {
     const loggedJSON = sessionStorage.getItem('logged');
@@ -145,7 +142,6 @@ export class Auth {
     if (logged.stato === true && now < expiration) {
       return true;
     } else {
-      this.clearSession();
       this.logOut();
       return false;
     }
@@ -153,10 +149,24 @@ export class Auth {
 
   // Esegue logout: annulla timer, pulisce sessione e reindirizza al login
   logOut() {
+    this.httpClient.post(`${baseUrl}/authenticate/logout`, null,{ responseType: 'text' }).subscribe({
+      next: () => {
+        // Logout eseguito correttamente
+        this.cleanupAfterLogout();
+      },
+      error: (err) => {
+        console.error('Errore durante il logout:', err);
+        alert('Errore nel logout, riprova')
+      },
+    });
+  }
+
+  private cleanupAfterLogout() {
     if (this.checkSubscription) {
       this.checkSubscription.unsubscribe();
       this.checkSubscription = undefined;
     }
+
     this.clearSession();
     this.promptShown = false;
     this.userDeclined = false;
@@ -200,7 +210,7 @@ export class Auth {
               return;
             }
 
-            // Aggiorna token e scadenza 
+            // Aggiorna token e scadenza
             const newExpUTC = new Date(Date.now());
             const newExpCET = new Date(
               newExpUTC.getTime() + new Date().getTimezoneOffset() * -60000
@@ -239,20 +249,15 @@ export class Auth {
 
   // Richiede il rinnovo del token al backend
   getRefreshToken(data: any) {
-    return this.httpClient.post(
-      `${baseUrl}/authenticate/refresh`,
-      data
-    );
+    return this.httpClient.post(`${baseUrl}/authenticate/refresh`, data);
   }
 
   // Aggiorna password utente
   updatePw(dati: any) {
     return this.httpClient
-      .post(
-        `${baseUrl}/authenticate/changePassword`,
-        dati,
-        { responseType: 'text' }
-      )
+      .post(`${baseUrl}/authenticate/changePassword`, dati, {
+        responseType: 'text',
+      })
       .pipe(
         catchError((err) => {
           let message = 'Errore nel cambio di password';
@@ -270,22 +275,13 @@ export class Auth {
   }
 }
 
-
-
-
-
-
-
 // Interceptor HTTP per aggiungere token di autorizzazione alle richieste
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-
-
   const loggedJSON = sessionStorage.getItem('logged');
   const token = loggedJSON ? JSON.parse(loggedJSON).token : null;
 
   const refreshToken = loggedJSON ? JSON.parse(loggedJSON).refreshToken : null;
-
 
   // URL endpoint refresh token da escludere
   const refreshUrl = `${baseUrl}/authenticate/refresh`;
@@ -297,10 +293,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     //     Authorization: `Bearer ${refreshToken}`,
     //   },})
     // return next(authReq);
-    return next(req)
+    return next(req);
   }
-
-
 
   // Se c'è token, lo aggiunginge a alle richieste (GET, POST, PUT, PATCH, DELETE ecc.)
   if (token) {
