@@ -1,6 +1,6 @@
 <form class="form" (submit)="submit()" #strutturaForm="ngForm" novalidate>
   <p class="title">Crea Struttura</p>
-  <p class="message">i campi con l' * sono obbligatori</p>
+  <p class="message">i campi con l'asterisco sono obbligatori</p>
 
   <div class="container">
     <!-- Riga 1 -->
@@ -15,6 +15,7 @@
             maxlength="100"
             [(ngModel)]="formData.nomeStruttura"
             name="nomeStruttura"
+            (keypress)="allowOnlyLetters($event)"
             autocomplete="off"
           />
         </label>
@@ -27,6 +28,7 @@
             [(ngModel)]="formData.ambito"
             name="ambito"
             maxlength="200"
+            (keypress)="allowOnlyLetters($event)"
             autocomplete="off"
           />
         </label>
@@ -42,6 +44,7 @@
             maxlength="50"
             [(ngModel)]="formData.citta"
             name="citta"
+            (keypress)="allowOnlyLetters($event)"
             autocomplete="off"
           />
         </label>
@@ -55,6 +58,7 @@
             maxlength="2"
             [(ngModel)]="formData.provincia"
             name="provincia"
+            (keypress)="allowOnlyLetters($event)"
             autocomplete="off"
           />
         </label>
@@ -68,6 +72,7 @@
             maxlength="100"
             [(ngModel)]="formData.via"
             name="via"
+            (keypress)="allowOnlyValidChars($event)"
             autocomplete="off"
           />
         </label>
@@ -85,6 +90,7 @@
             required
             [(ngModel)]="formData.descrizione"
             name="descrizione"
+            (keypress)="allowOnlyValidChars($event)"
             autocomplete="off"
           ></textarea>
         </label>
@@ -104,6 +110,7 @@
             [(ngModel)]="formData.testiSemplici"
             placeholder=".."
             autocomplete="off"
+            (keypress)="allowOnlyValidChars($event)"
           ></textarea>
         </label>
       </div>
@@ -122,6 +129,7 @@
             maxlength="200"
             name="indirizzoCompleto"
             autocomplete="off"
+            (keypress)="allowOnlyValidChars($event)"
           />
         </label>
 
@@ -223,7 +231,7 @@
       <!-- Didascalia -->
       <div class="col-md-5">
         <label class="d-flex flex-column">
-          <span class="mb-1">Didascalia* (max 50 caratteri)</span>
+          <span class="mb-1">Didascalia (max 50 caratteri)</span>
           <textarea
             type="text"
             maxlength="50"

@@ -1,10 +1,10 @@
+
 <div class="login container">
   <div class="login-box">
     <form class="form-login" #form="ngForm" novalidate>
       <div class="logo"></div>
 
       <span class="header" *ngIf="!tipo">Login</span>
-      <span class="header" *ngIf="tipo === 'SignUp'">Registrati</span>
 
       <input
         type="text"
@@ -15,19 +15,6 @@
         #usernameModel="ngModel"
         required
         [ngClass]="{ 'input-error': usernameModel.invalid && usernameModel.touched }"
-      />
-
-      <input
-        *ngIf="tipo === 'SignUp'"
-        type="email"
-        placeholder="Email"
-        class="input"
-        [(ngModel)]="email"
-        name="email"
-        #emailModel="ngModel"
-        required
-        email
-        [ngClass]="{ 'input-error': emailModel.invalid && emailModel.touched }"
       />
 
       <input
@@ -53,25 +40,8 @@
       >
         Accedi
       </button>
-      <button
-        type="button"
-        class="button sign-in"
-        *ngIf="tipo === 'SignUp'"
-        (click)="signUp()"
-        [ngClass]="{ 'button-disabled': !form.valid}"
-      >
-        Crea
-      </button>
+     
 
-      <div class="footer" *ngIf="!tipo">
-        Non hai un account?
-        <span class="link" (click)="ChangeSignUp()">Registrati</span><br />
-      </div>
-
-      <div class="footer" *ngIf="tipo === 'SignUp'">
-        Hai già un account?
-        <span class="link" (click)="ChangeSignIn()">Accedi</span><br />
-      </div>
     </form>
   </div>
 </div>

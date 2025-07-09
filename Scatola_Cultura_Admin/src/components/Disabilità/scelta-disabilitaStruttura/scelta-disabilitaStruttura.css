@@ -37,6 +37,8 @@
   height: 90%;
   width: 100%;
 
+  position: relative;
+
   display: flex;
   flex-direction: column;
   gap: 1.2vh;
@@ -94,13 +96,22 @@
 }
 
 /*=== CHECKBOX  HIDDEN ===*/
-.radio,.checkbox{
-  display: none;
+.radio, .checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
+
 .structure:has(input.checkbox:checked) {
   background-color: #3434349a;
   color: #e13a3a;
 
   text-decoration: line-through;
+}
+
+.structure:has(input.checkbox:disabled){
+  cursor: default;
+
+  color: grey;
 }
 

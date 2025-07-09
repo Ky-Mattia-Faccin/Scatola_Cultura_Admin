@@ -18,11 +18,26 @@ export class CreaCategoria {
 
   constructor(private servizio: ServizioHttp) {}
 
-    // Invio dei dati al servizio HTTP  
+  // Invio dei dati al servizio HTTP
   submit() {
     this.servizio.sendCategoria(this.formData).subscribe({
-      next: () => window.alert('Categoria inviata con successo'),
-      error: () => window.alert('Errore invio categoria'),
+      next: () => window.alert('Categoria inviata con successo!'),
+      error: (err) => {
+        if (err.status === 409) {
+          window.alert('Errore: categoria già esistente.');
+        } else {
+          window.alert("Errore nell'invio della categoria.");
+        }
+      },
     });
+  }
+
+  // Permette lettere, numeri, spazi e alcuni simboli (per indirizzi)
+  allowOnlyValidChars(event: KeyboardEvent) {
+    const inputChar = event.key;
+    const regex = /^[a-zA-Z,\/\\\s]$/;
+    if (!regex.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

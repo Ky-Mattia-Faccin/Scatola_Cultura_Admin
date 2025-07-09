@@ -60,11 +60,5 @@ label span {
   text-decoration: line-through;
 }
 
-.loaded{
-  border-color: green;
-}
-.loaded:hover{
-  border-color: green;
-  
-}
+
 

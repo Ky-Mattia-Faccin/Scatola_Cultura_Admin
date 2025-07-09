@@ -1,6 +1,6 @@
   <form class="form" (submit)="submit()" #disabilitaForm="ngForm" novalidate>
     <p class="title">Crea Facilitazione</p>
-    <p class="message">Completa tutti i campi</p>
+    <p class="message">I campi con l'asterisco sono obbligatori</p>
 
     <!-- Riga 1 -->
 <div class="row mb-3">
@@ -29,11 +29,12 @@
 <!-- Descrizione -->
 <div class="row mb-3">
   <div class="col">
-    <label for="descrizione">Descrizione</label>
+    <label for="descrizione">Descrizione*</label>
     <textarea
       class="form-control textarea-large"
       id="descrizione"
       required
+      (keypress)="allowOnlyValidChars($event)"
       name="descrizione"
       autocomplete="off"
       [(ngModel)]="descrizione"
@@ -45,11 +46,12 @@
 <!-- Testo Semplice -->
 <div class="row mb-3">
   <div class="col">
-    <label for="testoSemplice">Testo Semplice (max 150 caratteri)</label>
+    <label for="testoSemplice">Testo Semplice* (max 150 caratteri)</label>
     <textarea
       class="form-control textarea-large"
       id="testoSemplice"
       required
+      (keypress)="allowOnlyValidChars($event)"
       name="testoSemplice"
       autocomplete="off"
       maxlength="150"

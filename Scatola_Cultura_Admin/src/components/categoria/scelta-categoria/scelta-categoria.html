@@ -1,18 +1,34 @@
 <div class="card">
-  <div class="title">
-    Seleziona una categoria
-  </div>
+  <div class="title">Seleziona una categoria</div>
   <div class="structures-wrapper" *ngIf="disabilita$ | async as disabilita">
-    <label class="structure" *ngFor="let d of disabilita; let i = index">
-      <input
-        type="checkbox"
-        class="checkbox"
-        name="strutturaSelection{{i}}"
-        [(ngModel)]="d.flgDisabilita"
-        [disabled]="azione === 'seleziona' && d.flgDisabilita"
-        (change)="onToggleCategoria(d)"
-      />
-      <span>{{ d.nome }}</span>
-    </label>
-</div>
+    <ng-container *ngFor="let d of disabilita; let i = index">
+      <ng-container *ngIf="(azione === 'seleziona' && !d.flgDisabilita) || azione !== 'seleziona'">
+        <label class="structure">
+          <!-- Se azione è 'disabilita', mostra checkbox -->
+          <ng-container *ngIf="azione === 'disabilita'; else selezionaMode">
+            <input
+              type="checkbox"
+              class="checkbox"
+              [checked]="d.flgDisabilita"
+              [name]="'categoriaCheckbox' + i"
+              (change)="onToggleCategoria(d)"
+            />
+          </ng-container>
 
+          <!-- Altrimenti mostra radio per seleziona -->
+          <ng-template #selezionaMode>
+            <input
+              type="radio"
+              class="radio"
+              name="categoriaSelection"
+              [id]="'categoria-' + i"
+              (change)="onSelezionaCategoria(d)"
+            />
+          </ng-template>
+
+          <span>{{ d.nome }} - {{ d.descrizione }}</span>
+        </label>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

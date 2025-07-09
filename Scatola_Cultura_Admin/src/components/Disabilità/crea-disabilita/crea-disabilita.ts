@@ -47,8 +47,23 @@ submit() {
     next: () => window.alert('Disabilità inviata con successo'),
     
 
-    error: () => window.alert('Errore invio categoria'),
+    error: (err) =>{
+       if (err.status === 409) {
+      window.alert('Errore: la disabilità è già stata inserita.');
+    } else {
+      window.alert('Errore invio categoria');
+    }
+    }
   });
 }
+
+// Permette lettere, numeri, spazi e alcuni simboli (per indirizzi)
+  allowOnlyValidChars(event: KeyboardEvent) {
+    const inputChar = event.key;
+    const regex = /^[a-zA-Z,\/\\\s]$/;
+    if (!regex.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
 
 }

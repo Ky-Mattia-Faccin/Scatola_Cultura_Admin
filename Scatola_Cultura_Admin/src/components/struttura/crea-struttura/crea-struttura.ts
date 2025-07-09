@@ -1,16 +1,18 @@
-import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ServizioHttp } from '../../../services/servizio-http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
+// Decoratore del componente Angular
 @Component({
-  selector: 'app-crea-struttura',
-  imports: [FormsModule, CommonModule],
-  templateUrl: './crea-struttura.html',
-  styleUrl: './crea-struttura.css',
+  selector: 'app-crea-struttura', // Nome usato per inserire questo componente in un template
+  imports: [FormsModule, CommonModule], // Moduli importati per il template
+  templateUrl: './crea-struttura.html', // Template HTML associato
+  styleUrl: './crea-struttura.css', // File CSS associato
 })
 export class CreaStruttura {
+  // Oggetto per raccogliere i dati inseriti nel form
   formData: any = {
-    // Oggetto contenente i dati del form per la nuova struttura
     nomeStruttura: '',
     ambito: '',
     citta: '',
@@ -26,52 +28,88 @@ export class CreaStruttura {
     didascaliaImmagine: '',
   };
 
-  // Variabili per la gestione dell'immagine
-  // base64Image: string | null = null;
+  // File selezionato dall'utente (immagine)
   selectedFile: File | null = null;
 
+  // Iniezione delle dipendenze: servizio HTTP personalizzato e ChangeDetector
   constructor(
     private servizoHttp: ServizioHttp,
     private cdr: ChangeDetectorRef
   ) {}
 
-  // Metodo chiamato al caricamento di un file: converte l'immagine in base64
+  // Metodo chiamato quando l'utente seleziona un file dal form
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
-    if (file) {
-      // this.convertToBase64(file)
-      //   .then((base64) => {
-      //     this.base64Image = base64.split(',')[1];
-      this.selectedFile = file;
-      this.cdr.detectChanges(); // Forza il rilevamento dei cambiamenti
-      // })
-      // .catch((err) => {
-      //   console.error('Errore conversione file:', err);
-      // });
+    if (!file) return;
+
+    // 1. Verifica che il file sia un'immagine supportata
+    const allowedTypes = ['image/jpeg', 'image/png', 'image.gif'];
+    if (!allowedTypes.includes(file.type)) {
+      alert(
+        'Tipo di file non supportato. Carica solo immagini JPG, PNG o GIF.'
+      );
+      return;
     }
+
+    // 2. Verifica che il file non superi i 5MB
+    const maxSizeInMB = 5;
+    if (file.size > maxSizeInMB * 1024 * 1024) {
+      alert('Il file è troppo grande. La dimensione massima è 5MB.');
+      return;
+    }
+
+    // 3. Prova a leggere il file
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      const img = new Image();
+
+      img.onload = () => {
+        this.selectedFile = file;
+        this.cdr.detectChanges();
+      };
+
+      img.onerror = () => {
+        alert("Il file sembra non essere un'immagine valida o è corrotto.");
+        this.selectedFile = null;
+      };
+
+      img.src = dataUrl as string;
+    };
+    reader.onerror = () => {
+      alert('Errore durante la lettura del file.');
+      this.selectedFile = null;
+    };
+
+    reader.readAsDataURL(file);
   }
 
+  // Restituisce un URL locale per la preview dell'immagine
   getImagePreview(): string | null {
     return this.selectedFile ? URL.createObjectURL(this.selectedFile) : null;
   }
 
-  // Metodo per convertire un file immagine in una stringa base64
-  // convertToBase64(file: File): Promise<string> {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result as string);
-  //     reader.onerror = (error) => reject(error);
-  //   });
-  // }
+  // Metodo per convertire un'immagine in base64
+  /*
+  convertToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+  */
 
-  // Metodo per inviare i dati della nuova struttura al backend
+  // Metodo chiamato al submit del form
   submit() {
-    if (!this.selectedFile) {
-      alert("Seleziona un'immagine!");
+    // Se non c'è immagine ma è stata inserita una didascalia, mostra avviso
+    if (!this.selectedFile && this.formData.didascaliaImmagine) {
+      alert('Hai inserito una didascalia ma nessuna immagine.');
       return;
     }
 
+    // Oggetto DTO che sarà inviato al backend
     const strutturaDTO = {
       nomeStruttura: this.formData.nomeStruttura,
       descrizione: this.formData.descrizione,
@@ -86,20 +124,25 @@ export class CreaStruttura {
       sitoWeb: this.formData.sitoWeb,
       flgDisabilita: false,
       testoSemplificato: this.formData.testiSemplici,
-      immagine: {
-        nomeImmagine: this.selectedFile.name,
-        immagineUrl: '', // può essere lasciato vuoto, sarà gestito dal backend
+      immagine: this.selectedFile? {
+        nomeImmagine: this.selectedFile?.name,
+        immagineUrl: '', //  riempito dal backend
         didascaliaImmagine: this.formData.didascaliaImmagine,
-      },
+      }: null,
     };
 
+    // Costruzione dell'oggetto FormData (file + JSON come stringa)
     const formDataToSend = new FormData();
+    this.selectedFile
+      ? formDataToSend.append('file', this.selectedFile, this.selectedFile.name)
+      : formDataToSend.append('file', '');
     formDataToSend.append('dto', JSON.stringify(strutturaDTO));
-    formDataToSend.append('file', this.selectedFile, this.selectedFile.name);
 
+    // Invio dei dati al backend
     this.sendData(formDataToSend);
   }
 
+  // Metodo che si occupa dell'invio dei dati al backend tramite il servizio HTTP
   sendData(dataToSend: any) {
     this.servizoHttp.sendStruttura(dataToSend).subscribe({
       next: (res) => {
@@ -110,15 +153,13 @@ export class CreaStruttura {
 
         let errorMsg = 'Errore nel caricamento, riprova.';
 
+        // Gestione dei vari formati di errore dal backend
         if (err.error) {
           if (typeof err.error === 'string') {
-            // se è una semplice stringa
             errorMsg = err.error;
           } else if (err.error.message) {
-            // se c'è una proprietà
             errorMsg = err.error.message;
           } else if (err.error.errors) {
-            // se ci sono più errori li concatena
             errorMsg = Object.values(err.error.errors).flat().join('\n');
           }
         }
@@ -126,5 +167,22 @@ export class CreaStruttura {
         alert(`Errore nel caricamento: \n${errorMsg}`);
       },
     });
+  }
+
+  // Permette solo lettere e spazi (es. per nomi)
+  allowOnlyLetters(event: KeyboardEvent) {
+    const inputChar = event.key;
+    if (!/^[a-zA-Z\s]$/.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  // Permette lettere, numeri, spazi e alcuni simboli (per indirizzi)
+  allowOnlyValidChars(event: KeyboardEvent) {
+    const inputChar = event.key;
+    const regex = /^[a-zA-Z0-9,\/\\\s]$/;
+    if (!regex.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }
